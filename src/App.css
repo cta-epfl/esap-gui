@@ -1,0 +1,67 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 60vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: inherit;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #1315c4;
+}
+
+.Observations-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: inherit;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.card-img-top {
+  width: 30vh;
+  height: 15vw;
+  object-fit: cover;
+  background-color: darkgrey;
+}
+
+.card-datasource {
+  display: flex;
+  object-fit: cover;
+  background-color: #d4d4d4;
+}
+
+.card-description {
+  display: flex;
+
+  //background-color: #BBDEFB;
+  font-family: Raleway;
+  //font-size: 14pt;
+}
+
+.card-telescope {
+  display: flex;
+  width: 40vh;
+  height: 35vw;
+}
+
+.card-query {
+  display: inline;
+  align-items: flex-start;
+  justify-content: inherit;
+  background-color: lightgrey;
+}
