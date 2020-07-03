@@ -17,7 +17,6 @@ export default function ASTRONVOResults({ catalog }) {
                 <InputGroup.Checkbox />
               </InputGroup>
             </th>
-            <th>RunId</th>
             <th>Target</th>
             <th>RA</th>
             <th>Dec</th>
@@ -36,7 +35,6 @@ export default function ASTRONVOResults({ catalog }) {
                     <InputGroup.Checkbox />
                   </InputGroup>
                 </th>
-                <td>{result.runId}</td>
                 <td>{result.target}</td>
                 <td>{result.RA}</td>
                 <td>{result.dec}</td>

@@ -25,8 +25,11 @@ export function GlobalContextProvider({ children }) {
       .then((response) => setArchives(response.data.results));
   }, [api_host]);
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [sessionid, setSessionid] = useState(null);
+  const [sessionid, setSessionid] = useState(getCookie("sessionid"));
+  console.log("waah", sessionid, getCookie("sessionid"), document.cookie);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    sessionid ? true : false
+  );
 
   const handleLogin = ({ history }) => {
     setIsAuthenticated(true);

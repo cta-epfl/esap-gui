@@ -7,7 +7,10 @@ export default function ApertifResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
-    console.log(queryMap.get(catalog).results.query_results);
+    console.log(
+      "LAla:",
+      queryMap.get(catalog).results.query_results["query_results"]
+    );
     return (
       <Table className="mt-3">
         <thead>
