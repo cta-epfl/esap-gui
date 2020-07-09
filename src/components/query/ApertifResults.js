@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Table, InputGroup } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -12,40 +12,52 @@ export default function ApertifResults({ catalog }) {
       queryMap.get(catalog).results.query_results["query_results"]
     );
     return (
-      <Table className="mt-3">
+      <Table className="mt-3" responsive>
         <thead>
           <tr className="bg-light">
-            <th>
+            {/* <th>
               <InputGroup>
                 <InputGroup.Checkbox />
               </InputGroup>
-            </th>
-            <th>RunId</th>
-            <th>Target</th>
+            </th> */}
+            <th>Name</th>
             <th>RA</th>
             <th>Dec</th>
             <th>fov</th>
-            <th>StartTime</th>
-            <th>EndTime</th>
+            <th>Dataset ID</th>
+            <th>Data Product Type</th>
+            <th>Data Product Subtype</th>
+            <th>Thumbnail</th>
             <th>Link to data</th>
           </tr>
         </thead>
         <tbody>
           {queryMap.get(catalog).results.query_results.map((result) => {
             return (
-              <tr key={result.runId}>
-                <th>
+              <tr key={result.PID}>
+                {/* <th>
                   <InputGroup>
                     <InputGroup.Checkbox />
                   </InputGroup>
-                </th>
-                <td>{result.runId}</td>
-                <td>{result.target}</td>
+                </th> */}
+                <td>{result.name}</td>
                 <td>{result.RA}</td>
                 <td>{result.dec}</td>
                 <td>{result.fov}</td>
-                <td>{result.startTime}</td>
-                <td>{result.endTime}</td>
+                <td>{result.datasetID}</td>
+                <td>{result.dataProductType}</td>
+                <td>{result.dataProductSubType}</td>
+                <td>
+                  {result.dataProductSubType === "continuumMF" ? (
+                    <a
+                      href={result.thumbnail}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Image
+                    </a>
+                  ) : null}
+                </td>
                 <td>
                   <a
                     href={result.url}
