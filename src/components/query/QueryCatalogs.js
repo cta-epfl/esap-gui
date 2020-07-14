@@ -27,6 +27,7 @@ export default function QueryCatalogs() {
 
     // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
     // This is under development in the backend at the moment
+    queryMap.clear();
     queries.forEach((query) => {
       queryMap.set(query.catalog, {
         catalog: query.catalog,
