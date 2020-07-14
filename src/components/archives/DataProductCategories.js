@@ -71,6 +71,7 @@ export default function DataProductCategories({ archive }) {
               if (category.documentation_url) {
                 documentation = (
                   <Button
+                    className="mt-3"
                     variant="outline-info"
                     href={category.documentation_url}
                     target="_blank"

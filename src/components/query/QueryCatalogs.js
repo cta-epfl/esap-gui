@@ -86,12 +86,19 @@ export default function QueryCatalogs() {
         onSubmit={({ formData }) => setFormData(formData)}
       ></Form>
       {Array.from(queryMap.keys()).map((catalog) => {
+        console.log("catalog:", catalog);
         const details = queryMap.get(catalog);
         console.log("Details:", details);
         console.log("Results:", details.results);
+        let catalogName =
+          config.query_schema.properties.catalog.enumNames[
+            config.query_schema.properties.catalog.enum.findIndex(
+              (name) => name === catalog
+            )
+          ];
         return (
           <div key={catalog} className="mt-3">
-            <h4>Query results for {catalog}</h4>
+            <h4>Query results for {catalogName}</h4>
             <QueryResults catalog={catalog} />
           </div>
         );
