@@ -17,17 +17,19 @@ export default function ASTRONVOResults({ catalog }) {
                 <InputGroup.Checkbox />
               </InputGroup>
             </th> */}
-            <th>Title</th>
+            <th>Collection</th>
             <th>RA</th>
             <th>Dec</th>
             <th>fov</th>
             <th>Data Product Type</th>
             <th>Calibration Level</th>
+            <th>Size</th>
             <th>Link to data</th>
           </tr>
         </thead>
         <tbody>
           {queryMap.get(catalog).results.query_results.map((result) => {
+            let size = Number((result.size / 1024).toFixed(1));
             return (
               <tr key={result.result}>
                 {/* <th>
@@ -35,19 +37,16 @@ export default function ASTRONVOResults({ catalog }) {
                     <InputGroup.Checkbox />
                   </InputGroup>
                 </th> */}
-                <td>{result.title}</td>
+                <td>{result.obs_collection}</td>
                 <td>{result.ra}</td>
                 <td>{result.dec}</td>
                 <td>{result.fov}</td>
                 <td>{result.dataproduct_type}</td>
                 <td>{result.calibration_level}</td>
+                <td>{size} MB</td>
                 <td>
-                  <a
-                    href={result.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View data
+                  <a href={result.url} rel="noopener noreferrer" download>
+                    Download
                   </a>
                 </td>
               </tr>

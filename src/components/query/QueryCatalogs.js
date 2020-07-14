@@ -25,54 +25,6 @@ export default function QueryCatalogs() {
     let gui = config.query_schema.name;
     const queries = parseQueryForm(gui, formData, catalogs);
 
-    // queries.forEach((query) => {
-    //   let url =
-    //     api_host + "query/create-query/?" + "archive_uri=" + query.catalog;
-    //   axios.get(url).then((response) => {
-    //     queryMap.set(query.catalog, {
-    //       catalog: query.catalog,
-    //       dataset_uri: response.data.query_input[0].dataset,
-    //       access_url: response.data.query_input[0].service_url,
-    //       catalogquery: response.data.query_input[0].query,
-    //       status: "fetching",
-    //       results: null,
-    //     });
-    //     console.log("CatalogQuery:", queryMap.get(query.catalog).catalogquery);
-    //     let queryUrl =
-    //       api_host +
-    //       "query/run-query/?" +
-    //       "dataset_uri=" +
-    //       queryMap.get(query.catalog).dataset_uri +
-    //       "&access_url=" +
-    //       queryMap.get(query.catalog).access_url +
-    //       "&query=" +
-    //       queryMap.get(query.catalog).catalogquery;
-
-    //     axios
-    //       .get(queryUrl)
-    //       .then((queryResponse) => {
-    //         queryMap.set(query.catalog, {
-    //           catalog: query.catalog,
-    //           dataset_uri: response.data.query_input[0].dataset,
-    //           access_url: response.data.query_input[0].service_url,
-    //           catalogquery: response.data.query_input[0].query,
-    //           status: "fetched",
-    //           results: queryResponse.data,
-    //         });
-    //       })
-    //       .catch(() => {
-    //         queryMap.set(query.catalog, {
-    //           catalog: query.catalog,
-    //           dataset_uri: response.data.query_input[0].dataset,
-    //           access_url: response.data.query_input[0].service_url,
-    //           catalogquery: response.data.query_input[0].query,
-    //           status: "error",
-    //           results: null,
-    //         });
-    //       });
-    //   });
-    // });
-
     // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
     // This is under development in the backend at the moment
     queries.forEach((query) => {
@@ -135,6 +87,7 @@ export default function QueryCatalogs() {
       ></Form>
       {Array.from(queryMap.keys()).map((catalog) => {
         const details = queryMap.get(catalog);
+        console.log("Details:", details);
         console.log("Results:", details.results);
         return (
           <div key={catalog} className="mt-3">
