@@ -74,7 +74,7 @@ export default function ApertifResults({ catalog }) {
             })}
           </tbody>
         </Table>
-        <Paginate />
+        {/* <Paginate /> */}
       </>
     );
   } else {

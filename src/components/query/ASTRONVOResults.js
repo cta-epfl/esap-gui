@@ -57,7 +57,7 @@ export default function ASTRONVOResults({ catalog }) {
             })}
           </tbody>
         </Table>
-        <Paginate />
+        {/* <Paginate /> */}
       </>
     );
   } else {
