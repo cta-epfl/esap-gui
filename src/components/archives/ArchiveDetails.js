@@ -7,8 +7,16 @@ import DataProductCategories from "./DataProductCategories";
 export default function ArchiveDetails(props) {
   const { uri } = useParams();
   console.log(uri);
-  const { archives } = useContext(GlobalContext);
+  const { archives, defaultConfigName, setConfigName} = useContext(GlobalContext);
   if (!archives) return null;
+
+  /* This is a nasty hack. There must be a better way! */
+  if (uri.search("zooniverse") >= 0){
+    setConfigName("zooniverse");
+  }
+  else{
+    setConfigName(defaultConfigName);
+  }
 
   const archive = archives.find((archive) => archive.uri === uri);
   if (!archive) return <Alert variant="danger">No Archive found!</Alert>;
