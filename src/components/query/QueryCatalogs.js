@@ -78,6 +78,7 @@ export default function QueryCatalogs() {
 
   console.log("queryMap", Array.from(queryMap.values()));
 
+  const uiSchemaProp = config.ui_schema ? { uiSchema : config.ui_schema } : {};
   return (
     <Container fluid>
       <Form
@@ -85,6 +86,7 @@ export default function QueryCatalogs() {
         ObjectFieldTemplate={formTemplate}
         formData={formData}
         onSubmit={({ formData }) => setFormData(formData)}
+        {...uiSchemaProp}
       ></Form>
       {Array.from(queryMap.keys()).map((catalog) => {
         console.log("catalog:", catalog);
