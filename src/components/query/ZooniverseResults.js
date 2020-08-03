@@ -110,8 +110,8 @@ function ZooniverseWorkflowResults(queryMap){
               })}
             </tbody>
           </Table>
-          </div>);
           {/* <Paginate /> */}
+          </div>);
         })}
       </>
     );
