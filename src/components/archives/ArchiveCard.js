@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Container, Row, Button } from "react-bootstrap";
+import { Card, Container, Row, Button, Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 // display a single archive on a card
@@ -7,26 +7,25 @@ export default function ArchiveCard({ archive }) {
   return (
     <Card className="card-description">
       <Card.Body>
-        <h2>{archive.name}</h2>
+        <Card.Title className="h2">{archive.name}</Card.Title>
         <Container fluid>
           <Row>
             <Card className="card-description">
               <Card.Body>
-                <img
+                <Image
+                  className="mx-auto d-block"
                   src={archive.thumbnail}
-                  alt=""
-                  height={200}
-                  width={300}
-                  className="img-fluid float-left float-sm-right float-md-left float-lg- 
-                  right float-xl-left pr-4"
+                  rounded
+                  fluid
                 />
-                <h4>{archive.short_description}</h4>
-                <p>{archive.long_description}</p>
+                <Card.Title className="h3 pt-3">{archive.short_description}</Card.Title>
+                <Card.Text className="text-justify">{archive.long_description}</Card.Text>
               </Card.Body>
             </Card>
           </Row>
           <Row className="p-2">
             <Button
+              className="mx-auto"
               as={NavLink}
               variant="outline-info"
               to={`/archives/${archive.uri}`}
