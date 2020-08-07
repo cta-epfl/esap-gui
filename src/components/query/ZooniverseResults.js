@@ -21,8 +21,10 @@ Object.isObject = function(obj) {
 
 function renderArray(array, currentReactKey=""){
   return array.map((element, index) => {
-    let updatedReactKey = `${currentReactKey}_${index}`;
-    return renderIfCompound(element, updatedReactKey);
+    const updatedReactKey = `${currentReactKey}_${index}`;
+    const separator = index < array.length - 1 ? ", " : "";
+    // console.log([index, array.length, separator]);
+    return renderIfCompound(element, updatedReactKey, separator);
   });
 }
 
@@ -31,7 +33,7 @@ function renderObject(object, currentReactKey=""){
     <Table key={currentReactKey + "_objTable"}>
     <tbody>
     {Object.entries(object).map(([key, value]) =>{
-      let updatedReactKey=`${currentReactKey}_${key}`;
+      const updatedReactKey=`${currentReactKey}_${key}`;
       return(
         <tr key={updatedReactKey}><td className="b">{key}</td><td>{renderIfCompound(value, updatedReactKey)}</td></tr>
       )
@@ -41,15 +43,17 @@ function renderObject(object, currentReactKey=""){
   )
 }
 
-function renderIfCompound(element, currentReactKey="") {
+function renderIfCompound(element, currentReactKey="", separatorForPod="", floatPrecision=3) {
   if (Array.isArray(element)) {
-    return renderArray(element, currentReactKey);
+    return renderArray(element, currentReactKey, separatorForPod);
   } else if (Object.isObject(element)) {
-    return renderObject(element, currentReactKey);
+    return renderObject(element, currentReactKey, separatorForPod);
   } else if (typeof element === "boolean") {
-    return JSON.stringify(element)
+    return JSON.stringify(element) + separatorForPod
+  } else if (typeof element === "float") {
+    return element.toFixed(floatPrecision) + separatorForPod
   }
-  return element
+  return  `${element}` + separatorForPod
 }
 
 function titleCase(string) {
