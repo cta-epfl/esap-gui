@@ -33,7 +33,7 @@ export default function ArchiveDetails(props) {
           <Col sm={4} md={4} lg={4}>
             <Card className="card-description">
               <Card.Body>
-                <Table bordered hover fluid size="sm">
+                <Table bordered hover fluid="true" size="sm">
                   <tbody>
                     <tr>
                       <td className="key">Instrument</td>
@@ -59,7 +59,7 @@ export default function ArchiveDetails(props) {
               </Card.Body>
             </Card>
           </Col>
-          <Col fluid>
+          <Col fluid="true">
             <Row>
               <Col>
                 <Card className="card-description">
