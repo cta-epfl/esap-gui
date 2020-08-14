@@ -8,15 +8,22 @@ export function GlobalContextProvider({ children }) {
   console.log("ASTRON ADEX Version 16 july 2020");
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "http://sdc.astron.nl:15671/esap-api/"
+      ? "http://localhost:15671/esap-api/"
       : "/esap-api/";
 
   const [config, setConfig] = useState();
+  const [configName, setConfigName] = useState("esap_config");
+  const [defaultConfigName, setDefaultConfigName] = useState("esap_config");
+
   useEffect(() => {
+    let configNameString=""
+    if (configName){
+      configNameString=`?name=${configName}`
+    }
     axios
-      .get(api_host + "query/configuration")
+      .get(api_host + "query/configuration" + configNameString)
       .then((response) => setConfig(response.data["configuration"]));
-  }, [api_host]);
+  }, [api_host, configName]);
   console.log("config: ", { config });
 
   const [archives, setArchives] = useState();
@@ -56,6 +63,7 @@ export function GlobalContextProvider({ children }) {
         archives,
         handleLogin,
         handleLogout,
+        setConfigName
       }}
     >
       {children}

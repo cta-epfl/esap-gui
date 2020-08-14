@@ -1,31 +1,39 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { Container, Row, Col, Card, Table, Alert } from "react-bootstrap";
+import { Container, Row, Col, Card, Table, Alert, Image } from "react-bootstrap";
 import DataProductCategories from "./DataProductCategories";
 
 export default function ArchiveDetails(props) {
   const { uri } = useParams();
   console.log(uri);
-  const { archives } = useContext(GlobalContext);
+  const { archives, defaultConfigName, setConfigName } = useContext(GlobalContext);
   if (!archives) return null;
+
+  /* This is a nasty hack. There must be a better way! */
+  if (uri.search("zooniverse") >= 0){
+    setConfigName("zooniverse");
+  }
+  else{
+    setConfigName(defaultConfigName);
+  }
 
   const archive = archives.find((archive) => archive.uri === uri);
   if (!archive) return <Alert variant="danger">No Archive found!</Alert>;
   console.log(archive);
 
   return (
-    <div>
+    <>
       <Container fluid>
         <Row>
           <h2 className="ml-3">Archive - {archive.name}</h2>
         </Row>
 
         <Row>
-          <Col sm={3} md={3} lg={3}>
+          <Col sm={4} md={4} lg={4}>
             <Card className="card-description">
               <Card.Body>
-                <Table striped bordered hover size="sm">
+                <Table bordered hover fluid="true" size="sm">
                   <tbody>
                     <tr>
                       <td className="key">Instrument</td>
@@ -37,19 +45,21 @@ export default function ArchiveDetails(props) {
                     </tr>
                   </tbody>
                 </Table>
-                <img
-                  className="mb-3"
-                  alt=""
+                <Card>
+                <Image
+                  className="mx-auto d-block"
                   src={archive.thumbnail}
-                  height={200}
-                  width={300}
+                  alt=""
+                  rounded
+                  fluid
                 />
-                <h4>{archive.short_description}</h4>
-                <p>{archive.long_description}</p>
+                <Card.Title className="text-center h4 pt-3">{archive.short_description}</Card.Title>
+                <Card.Text className="text-justify m-3">{archive.long_description}</Card.Text>
+                </Card>
               </Card.Body>
             </Card>
           </Col>
-          <Col sm={9} md={9} lg={9}>
+          <Col fluid="true">
             <Row>
               <Col>
                 <Card className="card-description">
@@ -60,7 +70,7 @@ export default function ArchiveDetails(props) {
                 </Card>
               </Col>
             </Row>
-            <Row>
+            <Row className="pt-3">
               <Col>
                 <DataProductCategories archive={archive} />
               </Col>
@@ -68,6 +78,6 @@ export default function ArchiveDetails(props) {
           </Col>
         </Row>
       </Container>
-    </div>
+    </>
   );
 }

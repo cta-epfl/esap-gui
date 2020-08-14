@@ -6,7 +6,6 @@ import {
   Button,
   Row,
   Col,
-  ListGroupItem,
 } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import axios from "axios";
@@ -28,13 +27,13 @@ export default function DataProductCategories({ archive }) {
         <Card.Title>Data Product Categories in {archive.name}</Card.Title>
 
         <ListGroup variant="flush">
-          <ListGroupItem>
+          <ListGroup.Item>
             <Row className="p-2">
-              <Col>Data Product Category</Col>
-              <Col>Catalog name</Col>
-              <Col>Categories access</Col>
+              <Col className="text-left">Data Product Category</Col>
+              <Col className="text-center">Catalog name</Col>
+              <Col className="text-center">Categories access</Col>
             </Row>
-          </ListGroupItem>
+          </ListGroup.Item>
           {categories
             .filter((category) => archive.datasets.includes(category.uri))
             .map((category) => {
@@ -84,8 +83,8 @@ export default function DataProductCategories({ archive }) {
                 <ListGroup.Item key={category.uri}>
                   <Row className="p-2 bg-light">
                     <Col>{category.name}</Col>
-                    <Col>{archive.name}</Col>
-                    <Col>{button}</Col>
+                    <Col className="text-center">{archive.name}</Col>
+                    <Col className="text-center">{button}</Col>
                   </Row>
                   <Row className="p-2 bg-light">
                     <Col>
