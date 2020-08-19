@@ -1,4 +1,5 @@
-export default function ParseADEXForm(formData, catalogs) {
+export default function ParseADEXForm(formData) {
+  let catalogs = ["apertif", "astron_vo"];
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",

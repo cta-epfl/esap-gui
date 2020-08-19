@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import Form from "react-jsonschema-form";
@@ -14,16 +15,38 @@ export default function QueryCatalogs() {
   //  "status": "fetching|fechted",
   //  "results": null}
   const { queryMap, formData, setFormData } = useContext(QueryContext);
-  const { config, api_host } = useContext(GlobalContext);
+  const { config, api_host, setConfigName } = useContext(GlobalContext);
+  const { uri } = useParams();
+  console.log(uri);
 
-  console.log(config.query_schema);
+  // set ConfigName for archive
   useEffect(() => {
+    switch (uri) {
+      case "adex":
+        setConfigName("adex");
+        break;
+      case "apertif":
+        setConfigName("apertif");
+        break;
+      case "zooniverse":
+        setConfigName("zooniverse");
+        break;
+      case "astron_vo":
+        setConfigName("astron_vo");
+        break;
+      case "lofar":
+        setConfigName("lofar");
+        break;
+      default:
+        setConfigName("esap_ivoa");
+    }
+  }, [uri]);
+
+  useEffect(() => {
+    console.log(config.query_schema);
     if (!formData) return;
-    let catalogs = config.query_schema.properties.catalog.enum.filter(
-      (name) => name !== "all"
-    );
     let gui = config.query_schema.name;
-    const queries = parseQueryForm(gui, formData, catalogs);
+    const queries = parseQueryForm(gui, formData);
 
     // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
     // This is under development in the backend at the moment
@@ -78,7 +101,7 @@ export default function QueryCatalogs() {
 
   console.log("queryMap", Array.from(queryMap.values()));
 
-  const uiSchemaProp = config.ui_schema ? { uiSchema : config.ui_schema } : {};
+  const uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
   return (
     <Container fluid>
       <Form

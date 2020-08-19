@@ -5,20 +5,19 @@ import getCookie from "../utils/getCookie";
 export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
-  console.log("ASTRON ADEX Version 16 july 2020");
+  console.log("ASTRON ESAP version 14 aug 2020");
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "http://localhost:15671/esap-api/"
+      ? "http://localhost:8000/esap-api/"
       : "/esap-api/";
 
   const [config, setConfig] = useState();
-  const [configName, setConfigName] = useState("esap_config");
-  const [defaultConfigName, setDefaultConfigName] = useState("esap_config");
+  const [configName, setConfigName] = useState("esap_ivoa");
 
   useEffect(() => {
-    let configNameString=""
-    if (configName){
-      configNameString=`?name=${configName}`
+    let configNameString = "";
+    if (configName) {
+      configNameString = `?name=${configName}`;
     }
     axios
       .get(api_host + "query/configuration" + configNameString)
@@ -63,7 +62,7 @@ export function GlobalContextProvider({ children }) {
         archives,
         handleLogin,
         handleLogout,
-        setConfigName
+        setConfigName,
       }}
     >
       {children}
