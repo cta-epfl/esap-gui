@@ -16,14 +16,13 @@ const DATETIME_OPTIONS = {
 };
 
 Object.isObject = function(obj) {
-    return obj && obj.constructor === this || false;
+    return (obj && obj.constructor === this) || false;
 };
 
 function renderArray(array, currentReactKey=""){
   return array.map((element, index) => {
     const updatedReactKey = `${currentReactKey}_${index}`;
     const separator = index < array.length - 1 ? ", " : "";
-    // console.log([index, array.length, separator]);
     return renderIfCompound(element, updatedReactKey, separator);
   });
 }
