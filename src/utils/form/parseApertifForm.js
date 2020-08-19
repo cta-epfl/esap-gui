@@ -1,12 +1,12 @@
-export default function parseZooniverseForm(formData) {
-  let catalogs = "zooniverse";
+export default function ParseApertifForm(formData) {
+  let catalogs = "apertif";
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
   //  "esapquery": "querystring"}
   let query = "";
   let formInput = Object.entries(formData);
-  console.log(formInput);
+  console.log("formInput:", formInput);
 
   for (let [key, value] of formInput) {
     console.log(`${key}: ${value}`);
@@ -14,21 +14,16 @@ export default function parseZooniverseForm(formData) {
       query += `${`${query}` ? "&" : ""}` + key + "=" + value;
     }
   }
-  console.log(`Query: ${query}`);
-  console.log(`Catalogs: ${catalogs}`);
+  console.log("Query:", query);
   // If catalog is set to "all", query for each catalog needs to be generated {"catalog": "catalogname",
   //  "catalogquery": "querystring",
   //  "status": "null|fetching|fetched",
   //  "results": null}
   let catalog = formInput.find(([key]) => key === "catalog")[1];
   if (catalog === "all") {
-    console.log(`Catalogs: ${catalogs}`);
+    console.log("Catalogs:", catalogs);
     catalogs.map((catalog) => {
-      let esapquery = [
-        query,
-        "archive_uri=zooniverse",
-        `catalog=${catalog}`,
-      ].join("&");
+      let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
 
       queries.push({
         catalog: catalog,
@@ -37,11 +32,7 @@ export default function parseZooniverseForm(formData) {
       return null;
     });
   } else {
-    let esapquery = [
-      query,
-      "archive_uri=zooniverse",
-      `catalog=${catalog}`,
-    ].join("&");
+    let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
 
     queries.push({
       catalog: catalog,

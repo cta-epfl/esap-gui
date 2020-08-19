@@ -1,22 +1,22 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { Container, Row, Col, Card, Table, Alert, Image } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Table,
+  Alert,
+  Image,
+} from "react-bootstrap";
 import DataProductCategories from "./DataProductCategories";
 
 export default function ArchiveDetails(props) {
   const { uri } = useParams();
   console.log(uri);
-  const { archives, defaultConfigName, setConfigName } = useContext(GlobalContext);
+  const { archives } = useContext(GlobalContext);
   if (!archives) return null;
-
-  /* This is a nasty hack. There must be a better way! */
-  if (uri.search("zooniverse") >= 0){
-    setConfigName("zooniverse");
-  }
-  else{
-    setConfigName(defaultConfigName);
-  }
 
   const archive = archives.find((archive) => archive.uri === uri);
   if (!archive) return <Alert variant="danger">No Archive found!</Alert>;
@@ -46,15 +46,19 @@ export default function ArchiveDetails(props) {
                   </tbody>
                 </Table>
                 <Card>
-                <Image
-                  className="mx-auto d-block"
-                  src={archive.thumbnail}
-                  alt=""
-                  rounded
-                  fluid
-                />
-                <Card.Title className="text-center h4 pt-3">{archive.short_description}</Card.Title>
-                <Card.Text className="text-justify m-3">{archive.long_description}</Card.Text>
+                  <Image
+                    className="mx-auto d-block"
+                    src={archive.thumbnail}
+                    alt=""
+                    rounded
+                    fluid
+                  />
+                  <Card.Title className="text-center h4 pt-3">
+                    {archive.short_description}
+                  </Card.Title>
+                  <Card.Text className="text-justify m-3">
+                    {archive.long_description}
+                  </Card.Text>
                 </Card>
               </Card.Body>
             </Card>
