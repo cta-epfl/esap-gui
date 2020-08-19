@@ -1,5 +1,5 @@
 export default function parseZooniverseForm(formData) {
-  let catalogs = "zooniverse";
+  let catalogs = ["zooniverse_projects", "zooniverse_workflows"];
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
