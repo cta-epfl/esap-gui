@@ -40,6 +40,10 @@ export default function QueryCatalogs() {
       default:
         setConfigName("esap_ivoa");
     }
+    return () => {
+      console.log("cleaned up");
+      setConfigName("esap_ivoa");
+    };
   }, [uri]);
 
   useEffect(() => {
