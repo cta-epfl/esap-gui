@@ -1,5 +1,4 @@
 export default function ParseIVOAForm(formData) {
-  let catalogs = "ivoa";
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
@@ -20,25 +19,14 @@ export default function ParseIVOAForm(formData) {
   //  "status": "null|fetching|fetched",
   //  "results": null}
   let catalog = formInput.find(([key]) => key === "catalog")[1];
-  if (catalog === "all") {
-    console.log("Catalogs:", catalogs);
-    catalogs.map((catalog) => {
-      let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
 
-      queries.push({
-        catalog: catalog,
-        esapquery: esapquery,
-      });
-      return null;
-    });
-  } else {
-    let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
+  let esapquery = query + `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
 
-    queries.push({
-      catalog: catalog,
-      esapquery: esapquery,
-    });
-  }
+  queries.push({
+    catalog: catalog,
+    esapquery: esapquery,
+  });
+
   console.log("Queries:", queries);
   return queries;
 }
