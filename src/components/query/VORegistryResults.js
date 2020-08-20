@@ -1,27 +1,56 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Table, Alert, InputGroup } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
+import { IVOAContext } from "../../contexts/IVOAContext";
 
 export default function VORegistryResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);
+  const { registryList, add, remove } = useContext(IVOAContext);
+  // const [checkAll, setCheckAll] = useState("");
+
+  useEffect(() => {
+    console.log("RegistryList:", registryList);
+  }, [registryList]);
+
+  // useEffect(() => {
+  //   console.log("checkAll:", checkAll);
+  // }, [checkAll]);
+
   if (!queryMap) return null;
   console.log("VOReg queryMap:", queryMap.get(catalog));
+
   if (queryMap.get(catalog).status === "fetched") {
     if (queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
     console.log("VO Registry results:", queryMap.get(catalog).results.results);
+
     return (
       <>
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
-              {/* <th>
-            <InputGroup>
-              <InputGroup.Checkbox />
-            </InputGroup>
-          </th> */}
+              <th>
+                <InputGroup>
+                  <InputGroup.Checkbox
+                  // onChange={(event) => {
+                  //   setCheckAll(event.target.checked);
+                  //   event.target.checked
+                  //     ? queryMap
+                  //         .get(catalog)
+                  //         .results.results.map((result) => {
+                  //           add(result.access_url);
+                  //         })
+                  //     : queryMap
+                  //         .get(catalog)
+                  //         .results.results.map((result) => {
+                  //           remove(result.access_url);
+                  //         });
+                  // }}
+                  />
+                </InputGroup>
+              </th>
               <th>Name</th>
               <th>Access URL</th>
               <th>Waveband</th>
@@ -33,10 +62,18 @@ export default function VORegistryResults({ catalog }) {
           <tbody>
             {queryMap.get(catalog).results.results.map((result) => {
               return (
-                <tr key={result.PID}>
+                <tr key={result.short_name}>
                   <th>
                     <InputGroup>
-                      <InputGroup.Checkbox />
+                      <InputGroup.Checkbox
+                        // checked={checkAll}
+                        onChange={(event) => {
+                          console.log(event.target.checked);
+                          event.target.checked
+                            ? add(result.access_url)
+                            : remove(result.access_url);
+                        }}
+                      />
                     </InputGroup>
                   </th>
                   <td>{result.short_name}</td>
@@ -50,7 +87,7 @@ export default function VORegistryResults({ catalog }) {
             })}
           </tbody>
         </Table>
-        {/* <Paginate /> */}
+        <Paginate />
       </>
     );
   } else {
