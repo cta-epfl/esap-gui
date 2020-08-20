@@ -4,6 +4,7 @@ import { Archives } from "../components/archives/Archives";
 import ArchiveDetails from "../components/archives/ArchiveDetails";
 import { GlobalContext } from "../contexts/GlobalContext";
 import QueryCatalogs from "../components/query/QueryCatalogs";
+import QueryIVOARegistry from "../components/query/QueryIVOARegistry";
 import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { QueryContextProvider } from "../contexts/QueryContext";
@@ -26,7 +27,7 @@ export default function Routes() {
         </Route>
         <Route exact path="/query">
           <QueryContextProvider>
-            <QueryCatalogs />
+            <QueryIVOARegistry />
           </QueryContextProvider>
         </Route>
         <Route exact path="/rucio">

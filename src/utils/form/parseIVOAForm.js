@@ -7,6 +7,9 @@ export default function ParseIVOAForm(formData) {
   let formInput = Object.entries(formData);
   console.log(formInput);
 
+  // IVOA query consists of multiple steps
+  // Step 1: get list of registry services
+
   for (let [key, value] of formInput) {
     console.log(`${key}: ${value}`);
     if (value && value !== "all" && key !== "catalog") {
@@ -20,7 +23,8 @@ export default function ParseIVOAForm(formData) {
   //  "results": null}
   let catalog = formInput.find(([key]) => key === "catalog")[1];
 
-  let esapquery = query + `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
+  let esapquery =
+    "get-services/?" + query + `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
 
   queries.push({
     catalog: catalog,
