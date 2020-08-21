@@ -44,7 +44,9 @@ export default function Routes() {
         <Route exact path="/archives/:uri" component={ArchiveDetails} />
         <Route exact path="/archives/:uri/query">
           <QueryContextProvider>
-            <QueryCatalogs />
+            <IVOAContextProvider>
+              <QueryCatalogs />
+            </IVOAContextProvider>
           </QueryContextProvider>
         </Route>
       </Switch>
