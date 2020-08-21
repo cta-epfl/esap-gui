@@ -22,12 +22,14 @@ export default function ParseIVOAForm(formData) {
   //  "status": "null|fetching|fetched",
   //  "results": null}
   let catalog = formInput.find(([key]) => key === "catalog")[1];
+  let service_type = formInput.find(([key]) => key === "service_type")[1];
 
   let esapquery =
     "get-services/?" + query + `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
 
   queries.push({
     catalog: catalog,
+    service_type: service_type,
     esapquery: esapquery,
   });
 

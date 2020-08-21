@@ -1,12 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Row, Col } from "react-bootstrap";
 import Form from "react-jsonschema-form";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { QueryContext } from "../../contexts/QueryContext";
 import QueryResults from "./QueryResults";
 import parseQueryForm from "../../utils/form/parseQueryForm";
+import { IVOAContext } from "../../contexts/IVOAContext";
 
 export default function QueryIVOARegistry() {
   // queryMap is a map of dictionaries, where each dictionary consists of
@@ -16,6 +17,7 @@ export default function QueryIVOARegistry() {
   //  "results": null}
   const { queryMap, formData, setFormData } = useContext(QueryContext);
   const { config, api_host, setConfigName } = useContext(GlobalContext);
+  const { selectedRegistry } = useContext(IVOAContext);
   const { uri } = useParams();
   console.log("uri:", uri);
 
@@ -59,6 +61,7 @@ export default function QueryIVOARegistry() {
     queries.forEach((query) => {
       queryMap.set(query.catalog, {
         catalog: query.catalog,
+        service_type: query.service_type,
         esapquery: query.esapquery,
         status: "fetching",
         results: null,
@@ -69,6 +72,7 @@ export default function QueryIVOARegistry() {
         .then((queryResponse) => {
           queryMap.set(query.catalog, {
             catalog: query.catalog,
+            service_type: query.service_type,
             esapquery: query.esapquery,
             status: "fetched",
             results: queryResponse.data,
@@ -77,6 +81,7 @@ export default function QueryIVOARegistry() {
         .catch(() => {
           queryMap.set(query.catalog, {
             catalog: query.catalog,
+            service_type: query.service_type,
             esapquery: query.esapquery,
             status: "error",
             results: null,
@@ -135,7 +140,18 @@ export default function QueryIVOARegistry() {
           ];
         return (
           <div key={catalog} className="mt-3">
-            <h4>List of registries</h4>
+            <Row>
+              <Col>
+                <h4>List of registries</h4>
+              </Col>
+              <Col>
+                {selectedRegistry.length === 0 ? (
+                  <></>
+                ) : (
+                  <Button type="submit">Query selected registry</Button>
+                )}
+              </Col>
+            </Row>
             <QueryResults catalog={catalog} />
           </div>
         );
