@@ -5,7 +5,11 @@ export default function Rucio() {
   return (
     <Alert variant="warning">
       <p>You will leave ESAP GUI and be redirected to</p>
-      <a target="_blank" href="https://escape-dios-dl.cern.ch/ui/">
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://escape-dios-dl.cern.ch/ui/"
+      >
         Rucio Web UI
       </a>
     </Alert>

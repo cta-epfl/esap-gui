@@ -4,11 +4,13 @@ import { Archives } from "../components/archives/Archives";
 import ArchiveDetails from "../components/archives/ArchiveDetails";
 import { GlobalContext } from "../contexts/GlobalContext";
 import QueryCatalogs from "../components/query/QueryCatalogs";
+import QueryIVOARegistry from "../components/query/QueryIVOARegistry";
 import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { QueryContextProvider } from "../contexts/QueryContext";
 import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
+import { IVOAContextProvider } from "../contexts/IVOAContext";
 
 export default function Routes() {
   const { config, handleLogin, handleLogout } = useContext(GlobalContext);
@@ -26,7 +28,9 @@ export default function Routes() {
         </Route>
         <Route exact path="/query">
           <QueryContextProvider>
-            <QueryCatalogs />
+            <IVOAContextProvider>
+              <QueryIVOARegistry />
+            </IVOAContextProvider>
           </QueryContextProvider>
         </Route>
         <Route exact path="/rucio">
