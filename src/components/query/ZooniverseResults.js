@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState} from "react";
 import { Table, Alert } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
@@ -49,10 +49,16 @@ function renderIfCompound(element, currentReactKey="", separatorForPod="", float
     return renderObject(element, currentReactKey, separatorForPod);
   } else if (typeof element === "boolean") {
     return JSON.stringify(element) + separatorForPod
-  } else if (typeof element === "float") {
-    return element.toFixed(floatPrecision) + separatorForPod
+  } else if (Number.isInteger(element)){
+    return element.toString() + separatorForPod;
+  } else {
+    try{
+      return element.toFixed(floatPrecision) + separatorForPod;
+    }
+    catch(err){
+      return  `${element}` + separatorForPod
+    }
   }
-  return  `${element}` + separatorForPod
 }
 
 function titleCase(string) {
@@ -63,7 +69,14 @@ function titleCase(string) {
    return sentence.join(" ");
    }
 
+function newPageCallback(args){
+  console.log(args.target);
+  console.log(args.target.text);
+}
+
 function ZooniverseProjectResults(queryMap){
+  const [currentPage, setCurrentPage] = useState(0);
+
   let date_formatter=new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
   let result = queryMap.get("zooniverse_projects").results.query_results[0];
   let mandatory_fields = ["launch_date", "created_at", "live", "updated_at", "project_id", "display_name", "slug"];
@@ -122,7 +135,7 @@ function ZooniverseProjectResults(queryMap){
             })}
           </tbody>
         </Table>
-        {/* <Paginate /> */}
+        <Paginate newPageCallback={newPageCallback} currentPage={currentPage}/>
       </>
     );
 
