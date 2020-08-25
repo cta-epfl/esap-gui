@@ -90,6 +90,7 @@ function ZooniverseProjectResults(context){
   });
     return (
       <>
+      <Paginate getNewPage={newPageCallback(setPage)} currentPage={page} numAdjacent={3} numPages={numPages}/>
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
@@ -158,6 +159,7 @@ function ZooniverseWorkflowResults(context){
   });
     return (
       <>
+      <Paginate getNewPage={newPageCallback(setPage)} currentPage={page} numAdjacent={3} numPages={numPages}/>
       {queryMap.get("zooniverse_workflows").results.query_results.map((project) => {
         return (<div key={project.project_id}>
         <h4>{project.display_name}</h4>

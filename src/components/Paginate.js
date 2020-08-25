@@ -11,14 +11,14 @@ export default function Paginate(props) {
     const itemKey = `page_below_${key}`;
     return (<Pagination.Item key={itemKey}>{currentPage - numBelow + key}</Pagination.Item>)
   });
-  const prefix = belowAdjacent.length >= numAdjacent ? (<><Pagination.First /><Pagination.Ellipsis disabled/>{belowAdjacent}</>) : (<>{belowAdjacent}</>);
+  const prefix = belowAdjacent.length >= numAdjacent ? (<><Pagination.Item>{1}</Pagination.Item><Pagination.Ellipsis disabled/>{belowAdjacent}</>) : (<>{belowAdjacent}</>);
 
   const numAbove = Math.min(numAdjacent, numPages-currentPage);
   const aboveAdjacent = [...Array(numAbove).keys()].map((key) => {
     const itemKey = `page_above_${key}`;
     return (<Pagination.Item key={itemKey}>{currentPage + key + 1}</Pagination.Item>)
   });
-  const suffix = aboveAdjacent.length >= numAdjacent ? (<>{aboveAdjacent}<Pagination.Ellipsis disabled/><Pagination.Last /></>) : (<>{aboveAdjacent}</>);
+  const suffix = aboveAdjacent.length >= numAdjacent ? (<>{aboveAdjacent}<Pagination.Ellipsis disabled/><Pagination.Item>{numPages}</Pagination.Item></>) : (<>{aboveAdjacent}</>);
 
   return (
     <Pagination onClick={getNewPage} size="lg">
