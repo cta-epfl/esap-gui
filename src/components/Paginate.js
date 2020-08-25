@@ -28,3 +28,6 @@ export default function Paginate(props) {
     </Pagination>
   );
 }
+
+const pagination_fields = ["requested_page", "pages"];
+export { pagination_fields };

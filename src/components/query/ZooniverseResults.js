@@ -2,7 +2,7 @@ import React, { useContext, useState} from "react";
 import { Table, Alert } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
-import Paginate from "../Paginate";
+import Paginate, { pagination_fields } from "../Paginate";
 
 const DATETIME_OPTIONS = {
   year: 'numeric',
@@ -83,7 +83,7 @@ function ZooniverseProjectResults(context){
   const result = queryMap.get("zooniverse_projects").results.query_results[0];
   const numPages = result.pages;
   const mandatory_fields = ["launch_date", "created_at", "live", "updated_at", "project_id", "display_name", "slug"];
-  const remaining_fields = Object.keys(result).filter(key => !mandatory_fields.includes(key));
+  const remaining_fields = Object.keys(result).filter(key => !(mandatory_fields.includes(key) || pagination_fields.includes(key)));
   const remaining_headers = remaining_fields.map((field) => {
     const title=titleCase(field.replace("_", " "));
     return (<th key={`project_header_${field}`}>{title}</th>);
@@ -151,7 +151,7 @@ function ZooniverseWorkflowResults(context){
   let result_workflow = result.workflows[0];
   const numPages = result.pages;
   let mandatory_fields = ["created_at", "updated_at", "workflow_id", "display_name"];
-  let remaining_fields = Object.keys(result_workflow).filter(key => !mandatory_fields.includes(key));
+  let remaining_fields = Object.keys(result_workflow).filter(key => !(mandatory_fields.includes(key) || pagination_fields.includes(key)));
   let remaining_headers = remaining_fields.map((field) => {
     let title=titleCase(field.replace("_", " "));
     return (<th key={`project_header_${field}`}>{title}</th>);
