@@ -5,8 +5,8 @@ export const IVOAContext = createContext();
 
 export function IVOAContextProvider({ children }) {
   const [registryList, setRegistryList] = useState([]);
-  //const [selectedRegistry, setSelectedRegistry] = useState([]);
-  //const [queryStep, setQueryStep] = useState("get-services");
+  const [selectedRegistry, setSelectedRegistry] = useState([]);
+  const [queryStep, setQueryStep] = useState("get-services");
   /* 
     IVOA query steps:
     1. get-services
@@ -15,13 +15,13 @@ export function IVOAContextProvider({ children }) {
 
   // For testing purpose
   // start manual setup block
-  const [queryStep, setQueryStep] = useState("run-query");
-  const [selectedRegistry, setSelectedRegistry] = useState([
-    // "http://astron.nl/tap",
-    // "http://aip.gavo.org/tap",
-    // "http://archive.stsci.edu/caomtap",
-    "http://vao.stsci.edu/CAOMTAP/TapService.aspx",
-  ]);
+  //const [queryStep, setQueryStep] = useState("run-query");
+  // const [selectedRegistry, setSelectedRegistry] = useState([
+  //   // "http://astron.nl/tap",
+  //   // "http://aip.gavo.org/tap",
+  //   // "http://archive.stsci.edu/caomtap",
+  //   "http://vao.stsci.edu/CAOMTAP/TapService.aspx",
+  // ]);
   // end block
 
   function handleAddRegistry(access_url) {

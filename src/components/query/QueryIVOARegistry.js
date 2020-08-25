@@ -128,7 +128,11 @@ export default function QueryIVOARegistry() {
   console.log("Form Data:", formData);
 
   if (queryStep === "run-query") {
-    uiSchemaProp.uiSchema = { query: { "ui:widget": "textarea" } };
+    uiSchemaProp.uiSchema = {
+      query: { "ui:widget": "textarea" },
+      keyword: { "ui:widget": "hidden" },
+      tap_schema: { "ui:widget": "hidden" },
+    };
     console.log("new ui schema:", uiSchemaProp);
     return (
       <Container fluid>
