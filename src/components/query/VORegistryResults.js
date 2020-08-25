@@ -7,12 +7,18 @@ import { IVOAContext } from "../../contexts/IVOAContext";
 
 export default function VORegistryResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);
-  const { registryList, add, remove } = useContext(IVOAContext);
+  const {
+    selectedRegistry,
+    addRegistry,
+    removeRegistry,
+    registryList,
+    setRegistryList,
+  } = useContext(IVOAContext);
   // const [checkAll, setCheckAll] = useState("");
 
   useEffect(() => {
-    console.log("RegistryList:", registryList);
-  }, [registryList]);
+    console.log("Selected Registry:", selectedRegistry);
+  }, [selectedRegistry]);
 
   // useEffect(() => {
   //   console.log("checkAll:", checkAll);
@@ -24,7 +30,10 @@ export default function VORegistryResults({ catalog }) {
   if (queryMap.get(catalog).status === "fetched") {
     if (queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
+
     console.log("VO Registry results:", queryMap.get(catalog).results.results);
+    setRegistryList(queryMap.get(catalog).results.results);
+    console.log("Registry List:", registryList);
 
     return (
       <>
@@ -40,12 +49,12 @@ export default function VORegistryResults({ catalog }) {
                   //     ? queryMap
                   //         .get(catalog)
                   //         .results.results.map((result) => {
-                  //           add(result.access_url);
+                  //           addRegistry(result.access_url);
                   //         })
                   //     : queryMap
                   //         .get(catalog)
                   //         .results.results.map((result) => {
-                  //           remove(result.access_url);
+                  //           removeRegistry(result.access_url);
                   //         });
                   // }}
                   />
@@ -70,8 +79,8 @@ export default function VORegistryResults({ catalog }) {
                         onChange={(event) => {
                           console.log(event.target.checked);
                           event.target.checked
-                            ? add(result.access_url)
-                            : remove(result.access_url);
+                            ? addRegistry(result.access_url)
+                            : removeRegistry(result.access_url);
                         }}
                       />
                     </InputGroup>
@@ -87,7 +96,7 @@ export default function VORegistryResults({ catalog }) {
             })}
           </tbody>
         </Table>
-        <Paginate />
+        {/* <Paginate /> */}
       </>
     );
   } else {

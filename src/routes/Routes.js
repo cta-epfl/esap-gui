@@ -42,6 +42,13 @@ export default function Routes() {
         <Route exact path="/login" component={handleLogin} />
         <Route exact path="/logout" component={handleLogout} />
         <Route exact path="/archives/:uri" component={ArchiveDetails} />
+        <Route exact path="/archives/ivoa/query">
+          <QueryContextProvider>
+            <IVOAContextProvider>
+              <QueryIVOARegistry />
+            </IVOAContextProvider>
+          </QueryContextProvider>
+        </Route>
         <Route exact path="/archives/:uri/query">
           <QueryContextProvider>
             <QueryCatalogs />
