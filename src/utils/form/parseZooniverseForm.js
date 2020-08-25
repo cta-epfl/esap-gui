@@ -1,4 +1,4 @@
-export default function parseZooniverseForm(formData) {
+export default function parseZooniverseForm(formData, page) {
   let catalogs = ["zooniverse_projects", "zooniverse_workflows"];
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
@@ -45,7 +45,7 @@ export default function parseZooniverseForm(formData) {
 
     queries.push({
       catalog: catalog,
-      esapquery: esapquery,
+      esapquery: esapquery + `&page=${page}`,
     });
   }
   console.log("Queries:", queries);
