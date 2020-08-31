@@ -8,7 +8,7 @@ export default function VORegistryResults({ catalog }) {
   if (!queryMap.get(catalog)) return null;
   console.log("VO service queryMap:", queryMap.get(catalog));
   if (queryMap.get(catalog).status === "fetched") {
-    if (queryMap.get(catalog).results.length === 0)
+    if (queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
     return (
       <div>
@@ -20,7 +20,7 @@ export default function VORegistryResults({ catalog }) {
             </tr>
           </thead>
           <tbody>
-            {queryMap.get(catalog).results.query_results.map((result) => {
+            {queryMap.get(catalog).results.results.map((result) => {
               return (
                 <tr key={result.result}>
                   <td>
