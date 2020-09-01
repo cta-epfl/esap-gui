@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState} from "react";
 import { Table, Alert } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
-import Paginate from "../Paginate";
+import Paginate, { pagination_fields } from "../Paginate";
 
 const DATETIME_OPTIONS = {
   year: 'numeric',
@@ -16,14 +16,13 @@ const DATETIME_OPTIONS = {
 };
 
 Object.isObject = function(obj) {
-    return obj && obj.constructor === this || false;
+    return (obj && obj.constructor === this) || false;
 };
 
 function renderArray(array, currentReactKey=""){
   return array.map((element, index) => {
     const updatedReactKey = `${currentReactKey}_${index}`;
     const separator = index < array.length - 1 ? ", " : "";
-    // console.log([index, array.length, separator]);
     return renderIfCompound(element, updatedReactKey, separator);
   });
 }
@@ -50,10 +49,16 @@ function renderIfCompound(element, currentReactKey="", separatorForPod="", float
     return renderObject(element, currentReactKey, separatorForPod);
   } else if (typeof element === "boolean") {
     return JSON.stringify(element) + separatorForPod
-  } else if (typeof element === "float") {
-    return element.toFixed(floatPrecision) + separatorForPod
+  } else if (Number.isInteger(element)){
+    return element.toString() + separatorForPod;
+  } else {
+    try{
+      return element.toFixed(floatPrecision) + separatorForPod;
+    }
+    catch(err){
+      return  `${element}` + separatorForPod
+    }
   }
-  return  `${element}` + separatorForPod
 }
 
 function titleCase(string) {
@@ -64,17 +69,28 @@ function titleCase(string) {
    return sentence.join(" ");
    }
 
-function ZooniverseProjectResults(queryMap){
-  let date_formatter=new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
-  let result = queryMap.get("zooniverse_projects").results.query_results[0];
-  let mandatory_fields = ["launch_date", "created_at", "live", "updated_at", "project_id", "display_name", "slug"];
-  let remaining_fields = Object.keys(result).filter(key => !mandatory_fields.includes(key));
-  let remaining_headers = remaining_fields.map((field) => {
-    let title=titleCase(field.replace("_", " "));
+function newPageCallback(setPage){
+  return (args) => {
+      if(args.target){
+        setPage(parseFloat(args.target.text));
+      }
+  };
+}
+
+function ZooniverseProjectResults(context){
+  const { queryMap, page, setPage }  = context;
+  const date_formatter=new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
+  const result = queryMap.get("zooniverse_projects").results.query_results[0];
+  const numPages = result.pages;
+  const mandatory_fields = ["launch_date", "created_at", "live", "updated_at", "project_id", "display_name", "slug"];
+  const remaining_fields = Object.keys(result).filter(key => !(mandatory_fields.includes(key) || pagination_fields.includes(key)));
+  const remaining_headers = remaining_fields.map((field) => {
+    const title=titleCase(field.replace("_", " "));
     return (<th key={`project_header_${field}`}>{title}</th>);
   });
     return (
       <>
+      <Paginate getNewPage={newPageCallback(setPage)} currentPage={page} numAdjacent={3} numPages={numPages}/>
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
@@ -95,12 +111,12 @@ function ZooniverseProjectResults(queryMap){
           </thead>
           <tbody>
             {queryMap.get("zooniverse_projects").results.query_results.map((result) => {
-              let launch_date = result.launch_date ? date_formatter.format(new Date(result.launch_date)) : "Not Launched";
-              let created_at = date_formatter.format(new Date(result.created_at));
-              let updated_at = date_formatter.format(new Date(result.updated_at));
-              let live = result.live ? "Yes" : "No"
-              let remaining_cells = remaining_fields.map((field) => {
-                let reactKey = `project_${result.project_id}_${field}`;
+              const launch_date = result.launch_date ? date_formatter.format(new Date(result.launch_date)) : "Not Launched";
+              const created_at = date_formatter.format(new Date(result.created_at));
+              const updated_at = date_formatter.format(new Date(result.updated_at));
+              const live = result.live ? "Yes" : "No"
+              const remaining_cells = remaining_fields.map((field) => {
+                const reactKey = `project_${result.project_id}_${field}`;
                 return (<td key={reactKey}>{renderIfCompound(result[field], reactKey)}</td>);
               });
               return (
@@ -123,24 +139,27 @@ function ZooniverseProjectResults(queryMap){
             })}
           </tbody>
         </Table>
-        {/* <Paginate /> */}
+        <Paginate getNewPage={newPageCallback(setPage)} currentPage={page} numAdjacent={3} numPages={numPages}/>
       </>
     );
 
 }
 
-function ZooniverseWorkflowResults(queryMap){
+function ZooniverseWorkflowResults(context){
+  const { queryMap, page, setPage }  = context;
   let date_formatter=new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
   let result = queryMap.get("zooniverse_workflows").results.query_results[0];
-  let result_workflow = result.workflows[0]
+  let result_workflow = result.workflows[0];
+  const numPages = result.pages;
   let mandatory_fields = ["created_at", "updated_at", "workflow_id", "display_name"];
-  let remaining_fields = Object.keys(result_workflow).filter(key => !mandatory_fields.includes(key));
+  let remaining_fields = Object.keys(result_workflow).filter(key => !(mandatory_fields.includes(key) || pagination_fields.includes(key)));
   let remaining_headers = remaining_fields.map((field) => {
     let title=titleCase(field.replace("_", " "));
     return (<th key={`project_header_${field}`}>{title}</th>);
   });
     return (
       <>
+      <Paginate getNewPage={newPageCallback(setPage)} currentPage={page} numAdjacent={3} numPages={numPages}/>
       {queryMap.get("zooniverse_workflows").results.query_results.map((project) => {
         return (<div key={project.project_id}>
         <h4>{project.display_name}</h4>
@@ -186,24 +205,24 @@ function ZooniverseWorkflowResults(queryMap){
               })}
             </tbody>
           </Table>
-          {/* <Paginate /> */}
           </div>);
         })}
+      <Paginate getNewPage={newPageCallback(setPage)} currentPage={page} numAdjacent={3} numPages={numPages}/>
       </>
     );
 }
 
 export default function ZooniverseResults({ catalog }) {
-  const { queryMap } = useContext(QueryContext);
-  if (!queryMap) return null;
-  if (queryMap.get(catalog).status === "fetched") {
-    if (queryMap.get(catalog).results.query_results.length === 0)
+  const context = useContext(QueryContext);
+  if (!context.queryMap) return null;
+  if (context.queryMap.get(catalog).status === "fetched") {
+    if (context.queryMap.get(catalog).results.query_results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
     else if (catalog === "zooniverse_projects"){
-      return ZooniverseProjectResults(queryMap);
+      return ZooniverseProjectResults(context);
     }
     else if (catalog === "zooniverse_workflows"){
-      return ZooniverseWorkflowResults(queryMap);
+      return ZooniverseWorkflowResults(context);
     }
     else {
       return <Alert variant="warning">Unrecognised Zooniverse Catalog!</Alert>;

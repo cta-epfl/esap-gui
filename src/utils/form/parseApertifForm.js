@@ -1,12 +1,11 @@
-export default function ParseADEXForm(formData) {
-  let catalogs = ["apertif", "astron_vo"];
+export default function ParseApertifForm(formData) {
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
   //  "esapquery": "querystring"}
   let query = "";
   let formInput = Object.entries(formData);
-  console.log(formInput);
+  console.log("formInput:", formInput);
 
   for (let [key, value] of formInput) {
     console.log(`${key}: ${value}`);
@@ -20,25 +19,11 @@ export default function ParseADEXForm(formData) {
   //  "status": "null|fetching|fetched",
   //  "results": null}
   let catalog = formInput.find(([key]) => key === "catalog")[1];
-  if (catalog === "all") {
-    console.log("Catalogs:", catalogs);
-    catalogs.map((catalog) => {
-      let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
-
-      queries.push({
-        catalog: catalog,
-        esapquery: esapquery,
-      });
-      return null;
-    });
-  } else {
-    let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
-
-    queries.push({
-      catalog: catalog,
-      esapquery: esapquery,
-    });
-  }
+  let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
+  queries.push({
+    catalog: catalog,
+    esapquery: esapquery,
+  });
   console.log("Queries:", queries);
   return queries;
 }

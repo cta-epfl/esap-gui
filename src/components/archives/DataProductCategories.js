@@ -1,12 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import {
-  ListGroup,
-  Card,
-  Button,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { ListGroup, Card, Button, Row, Col } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import axios from "axios";
 
@@ -37,13 +31,15 @@ export default function DataProductCategories({ archive }) {
           {categories
             .filter((category) => archive.datasets.includes(category.uri))
             .map((category) => {
-              console.log(category);
+              console.log("category:", category);
               let button;
               let extra_info;
               let documentation;
               if (category.service_connector) {
+                let query_url = `${category.archive_uri_derived}/query`;
+                console.log("query_url:", query_url);
                 button = (
-                  <Button as={NavLink} variant="outline-info" to="/query">
+                  <Button as={NavLink} variant="outline-info" to={query_url}>
                     Browse Catalog & Run Queries
                   </Button>
                 );

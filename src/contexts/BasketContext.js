@@ -3,18 +3,18 @@ import Databasket from "../components/basket/databasket";
 import Addtobasket from "../components/basket/addtobasket";
 import BasketContext from "../contexts/BasketContext";
 
-const BasketContext = createContext();
-const initialDatasets = ["First Dataset 1", "Just another dataset"];
+export const BasketContext = createContext();
 
-function mydatasets() {
-  const [datasets, setDatasets] = useState(initialDatasets);
+export function BasketContextProvider({ children }) {
+  const [datasets, setDatasets] = useState([]);
 
-  function handleAddDataset(Dataset) {
-    setDatasets([...datasets, Dataset]);
+  function handleAddDataset(dataset) {
+    setDatasets([...datasets, dataset]);
   }
 
-  function handleRemoveDataset(index) {
+  function handleRemoveDataset(dataset) {
     const copy = [...datasets];
+    const index = copy.findIndex((ds) => ds === dataset);
     copy.splice(index, 1);
     setDatasets(copy);
   }
@@ -22,15 +22,7 @@ function mydatasets() {
     <BasketContext.Provider
       value={{ datasets, add: handleAddDataset, remove: handleRemoveDataset }}
     >
-      <div className="App">
-        <header className="App-header">
-          <h2>DataBasket App</h2>
-          <Addtobasket />
-          <Databasket />
-        </header>
-      </div>
+      {children}
     </BasketContext.Provider>
   );
 }
-
-export default BasketContext;

@@ -1,23 +1,23 @@
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import Form from "react-jsonschema-form";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { QueryContext } from "../../contexts/QueryContext";
 import QueryResults from "./QueryResults";
 import parseQueryForm from "../../utils/form/parseQueryForm";
 
-export default function QueryCatalogs() {
+export default function QueryIVOARegistry() {
   // queryMap is a map of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { queryMap, formData, setFormData, page } = useContext(QueryContext);
+  const { queryMap, formData, setFormData } = useContext(QueryContext);
   const { config, api_host, setConfigName } = useContext(GlobalContext);
   const { uri } = useParams();
-  console.log(uri);
+  console.log("uri:", uri);
 
   // set ConfigName for archive
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function QueryCatalogs() {
         setConfigName("esap_ivoa");
     }
     return () => {
-      console.log("cleaned up");
+      console.log("Set configuration back to default!");
       setConfigName("esap_ivoa");
     };
   }, [uri]);
@@ -49,8 +49,9 @@ export default function QueryCatalogs() {
   useEffect(() => {
     console.log(config.query_schema);
     if (!formData) return;
-    const gui = config.query_schema.name;
-    const queries = parseQueryForm(gui, formData, page);
+    console.log("formData:", formData);
+    let gui = config.query_schema.name;
+    const queries = parseQueryForm(gui, formData);
 
     // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
     // This is under development in the backend at the moment
@@ -62,7 +63,7 @@ export default function QueryCatalogs() {
         status: "fetching",
         results: null,
       });
-      const url = api_host + "query/query/?" + query.esapquery;
+      let url = api_host + "query/" + query.esapquery;
       axios
         .get(url)
         .then((queryResponse) => {
@@ -82,7 +83,7 @@ export default function QueryCatalogs() {
           });
         });
     });
-  }, [formData, page]);
+  }, [formData]);
 
   function formTemplate({ TitleField, properties, title, description }) {
     return (
@@ -103,9 +104,11 @@ export default function QueryCatalogs() {
     );
   }
 
-  console.log("queryMap", Array.from(queryMap.values()));
+  console.log("queryMap:", Array.from(queryMap.values()));
 
   const uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
+  console.log("UI Schema props:", uiSchemaProp);
+
   return (
     <Container fluid>
       <Form
@@ -114,7 +117,11 @@ export default function QueryCatalogs() {
         formData={formData}
         onSubmit={({ formData }) => setFormData(formData)}
         {...uiSchemaProp}
-      ></Form>
+      >
+        <div>
+          <Button type="submit">Get Registry Services</Button>
+        </div>
+      </Form>
       {Array.from(queryMap.keys()).map((catalog) => {
         console.log("catalog:", catalog);
         const details = queryMap.get(catalog);
@@ -128,7 +135,7 @@ export default function QueryCatalogs() {
           ];
         return (
           <div key={catalog} className="mt-3">
-            <h4>Query results for {catalogName}</h4>
+            <h4>List of registries</h4>
             <QueryResults catalog={catalog} />
           </div>
         );
