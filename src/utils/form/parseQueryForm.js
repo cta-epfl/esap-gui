@@ -5,12 +5,12 @@ import parseIVOAForm from "./parseIVOAForm";
 import parseApertifForm from "./parseApertifForm";
 import parseASTRONVOForm from "./parseASTRONVOForm";
 
-export default function parseQueryForm(gui, formData) {
+export default function parseQueryForm(gui, formData, page) {
   switch (gui) {
     case "adex":
       return parseADEXForm(formData);
     case "zooniverse":
-      return parseZooniverseForm(formData);
+      return parseZooniverseForm(formData, page);
     case "lofar":
       return parseLOFARForm(formData);
     case "apertif":

@@ -14,7 +14,7 @@ export default function QueryCatalogs() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { queryMap, formData, setFormData } = useContext(QueryContext);
+  const { queryMap, formData, setFormData, page } = useContext(QueryContext);
   const { config, api_host, setConfigName } = useContext(GlobalContext);
   const { uri } = useParams();
   console.log(uri);
@@ -49,8 +49,8 @@ export default function QueryCatalogs() {
   useEffect(() => {
     console.log(config.query_schema);
     if (!formData) return;
-    let gui = config.query_schema.name;
-    const queries = parseQueryForm(gui, formData);
+    const gui = config.query_schema.name;
+    const queries = parseQueryForm(gui, formData, page);
 
     // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
     // This is under development in the backend at the moment
@@ -62,7 +62,7 @@ export default function QueryCatalogs() {
         status: "fetching",
         results: null,
       });
-      let url = api_host + "query/query/?" + query.esapquery;
+      const url = api_host + "query/query/?" + query.esapquery;
       axios
         .get(url)
         .then((queryResponse) => {
@@ -82,7 +82,7 @@ export default function QueryCatalogs() {
           });
         });
     });
-  }, [formData]);
+  }, [formData, page]);
 
   function formTemplate({ TitleField, properties, title, description }) {
     return (
