@@ -8,12 +8,9 @@ export default function ApertifResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
-    if (queryMap.get(catalog).results.query_results.length === 0)
+    if (queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
-    console.log(
-      "Query results:",
-      queryMap.get(catalog).results.query_results["query_results"]
-    );
+    console.log("Query results:", queryMap.get(catalog).results.results);
     return (
       <>
         <Table className="mt-3" responsive>
@@ -35,7 +32,7 @@ export default function ApertifResults({ catalog }) {
             </tr>
           </thead>
           <tbody>
-            {queryMap.get(catalog).results.query_results.map((result) => {
+            {queryMap.get(catalog).results.results.map((result) => {
               return (
                 <tr key={result.PID}>
                   {/* <th>

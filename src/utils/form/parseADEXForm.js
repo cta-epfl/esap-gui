@@ -6,7 +6,7 @@ export default function ParseADEXForm(formData) {
   //  "esapquery": "querystring"}
   let query = "";
   let formInput = Object.entries(formData);
-  console.log(formInput);
+  console.log("formInput:", formInput);
 
   for (let [key, value] of formInput) {
     console.log(`${key}: ${value}`);

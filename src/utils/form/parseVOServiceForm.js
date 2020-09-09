@@ -12,14 +12,16 @@ export default function ParseVOServiceForm(formData, access_url) {
 
   for (let [key, value] of formInput) {
     console.log(`${key}: ${value}`);
-    if (value && value !== "all" && key !== "catalog") {
+    // Ignore value of keyword from get-services query, in this step keyword will not be used.
+    if (value && value !== "all" && key !== "catalog" && key !== "keyword") {
       query += `${`${query}` ? "&" : ""}` + key + "=" + value;
     }
   }
   query += `${`${query}` ? "&" : ""}` + "access_url=" + access_url;
 
   console.log("Query:", query);
-  // If catalog is set to "all", query for each catalog needs to be generated {"catalog": "catalogname",
+  // If catalog is set to "all", query for each catalog needs to be generated
+  // {"catalog": "catalogname",
   //  "catalogquery": "querystring",
   //  "status": "null|fetching|fetched",
   //  "results": null}
@@ -27,7 +29,7 @@ export default function ParseVOServiceForm(formData, access_url) {
   let service_type = formInput.find(([key]) => key === "service_type")[1];
 
   let esapquery =
-    "run-query/?" + query + `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
+    "query/?" + query + `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
 
   queries.push({
     catalog: access_url,

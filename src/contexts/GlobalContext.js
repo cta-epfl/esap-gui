@@ -5,7 +5,7 @@ import getCookie from "../utils/getCookie";
 export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
-  console.log("ASTRON ESAP version 14 aug 2020");
+  console.log("ASTRON ESAP version ", Date());
   const api_host =
     process.env.NODE_ENV === "development"
       ? "http://sdc.astron.nl:5555/esap-api/"

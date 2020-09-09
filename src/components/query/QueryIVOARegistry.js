@@ -157,7 +157,11 @@ export default function QueryIVOARegistry() {
         {selectedRegistry.map((registry) => {
           const details = queryMap.get(registry);
           console.log("Details:", details);
-          return <VOServiceResults catalog={registry} />;
+          return (
+            <div className="mt-3">
+              <VOServiceResults catalog={registry} />
+            </div>
+          );
         })}
       </Container>
     );
@@ -207,7 +211,9 @@ export default function QueryIVOARegistry() {
                   )}
                 </Col>
               </Row>
-              <QueryResults catalog={catalog} />
+              <div className="mt-3">
+                <QueryResults catalog={catalog} />
+              </div>
             </div>
           );
         })}
