@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Alert, Table } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 
 export default function VORegistryResults({ catalog }) {
-  const { queryMap, page, setPage } = useContext(QueryContext);
+  const { queryMap, page, setPage, newPageCallback } = useContext(QueryContext);
 
   if (!queryMap.get(catalog)) return null;
   console.log("VO service queryMap:", queryMap.get(catalog));
@@ -19,13 +19,7 @@ export default function VORegistryResults({ catalog }) {
       return <Alert variant="warning">No matching results found!</Alert>;
 
     const numPages = queryMap.get(catalog).results.pages;
-    function newPageCallback(setPage) {
-      return (args) => {
-        if (args.target) {
-          setPage(parseFloat(args.target.text));
-        }
-      };
-    }
+
     return (
       <div>
         <h1>Results from {catalog}</h1>

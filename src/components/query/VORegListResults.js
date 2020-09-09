@@ -5,14 +5,16 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import { IVOAContext } from "../../contexts/IVOAContext";
 
-export default function VORegistryResults({ catalog }) {
-  const { queryMap, page, setPage } = useContext(QueryContext);
+export default function VORegListResults({ catalog }) {
+  const { queryMap } = useContext(QueryContext);
   const {
     selectedRegistry,
     addRegistry,
     removeRegistry,
     registryList,
     setRegistryList,
+    regPage,
+    setRegPage,
   } = useContext(IVOAContext);
   // const [checkAll, setCheckAll] = useState("");
 
@@ -36,10 +38,10 @@ export default function VORegistryResults({ catalog }) {
     console.log("Registry List:", registryList);
 
     const numPages = queryMap.get(catalog).results.pages;
-    function newPageCallback(setPage) {
+    function newRegPageCallback(setRegPage) {
       return (args) => {
         if (args.target) {
-          setPage(parseFloat(args.target.text));
+          setRegPage(parseFloat(args.target.text));
         }
       };
     }
@@ -47,8 +49,8 @@ export default function VORegistryResults({ catalog }) {
     return (
       <>
         <Paginate
-          getNewPage={newPageCallback(setPage)}
-          currentPage={page}
+          getNewPage={newRegPageCallback(setRegPage)}
+          currentPage={regPage}
           numAdjacent={3}
           numPages={numPages}
         />

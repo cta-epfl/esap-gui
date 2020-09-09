@@ -5,14 +5,24 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 
 export default function ApertifResults({ catalog }) {
-  const { queryMap } = useContext(QueryContext);
+  const { queryMap, page, setPage, newPageCallback } = useContext(QueryContext);
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
+    if (!("results" in queryMap.get(catalog).results))
+      return <Alert variant="warning">{queryMap.get(catalog).results}</Alert>;
     if (queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
+
+    const numPages = queryMap.get(catalog).results.pages;
     console.log("Query results:", queryMap.get(catalog).results.results);
     return (
       <>
+        <Paginate
+          getNewPage={newPageCallback(setPage)}
+          currentPage={page}
+          numAdjacent={3}
+          numPages={numPages}
+        />
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">

@@ -2,7 +2,7 @@ import React from "react";
 import ApertifResults from "./ApertifResults";
 import ASTRONVOResults from "./ASTRONVOResults";
 import ZooniverseResults from "./ZooniverseResults";
-import VORegistryResults from "./VORegistryResults";
+import VORegListResults from "./VORegListResults";
 
 export default function QueryResults({ catalog }) {
   switch (catalog) {
@@ -15,7 +15,7 @@ export default function QueryResults({ catalog }) {
     case "zooniverse_workflows":
       return <ZooniverseResults catalog={catalog} />;
     case "vo_reg":
-      return <VORegistryResults catalog={catalog} />;
+      return <VORegListResults catalog={catalog} />;
     default:
       return null;
   }

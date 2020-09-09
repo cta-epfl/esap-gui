@@ -19,7 +19,9 @@ export default function QueryIVOARegistry() {
   //  "results": null}
   const { queryMap, formData, setFormData, page } = useContext(QueryContext);
   const { config, api_host, setConfigName } = useContext(GlobalContext);
-  const { selectedRegistry, queryStep, setQueryStep } = useContext(IVOAContext);
+  const { selectedRegistry, queryStep, setQueryStep, regPage } = useContext(
+    IVOAContext
+  );
   const { uri } = useParams();
   console.log("uri:", uri);
 
@@ -65,7 +67,7 @@ export default function QueryIVOARegistry() {
         ];
       });
     } else {
-      queries = parseQueryForm(gui, formData, page);
+      queries = parseQueryForm(gui, formData, regPage);
     }
 
     console.log("queries:", queries);
@@ -101,7 +103,7 @@ export default function QueryIVOARegistry() {
           });
         });
     });
-  }, [formData, page]);
+  }, [formData, page, regPage]);
 
   function formTemplate({ TitleField, properties, title, description }) {
     return (
