@@ -1,17 +1,13 @@
 import React from "react";
-import { Alert } from "react-bootstrap";
 
 export default function Rucio() {
   return (
-    <Alert variant="warning">
-      <p>You will leave ESAP GUI and be redirected to</p>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://escape-dios-dl.cern.ch/ui/"
-      >
-        Rucio Web UI
-      </a>
-    </Alert>
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe
+        class="embed-responsive-item"
+        src="https://escape-rucio.cern.ch"
+        allowfullscreen
+      ></iframe>
+    </div>
   );
 }

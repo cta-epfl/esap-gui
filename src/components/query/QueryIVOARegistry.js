@@ -17,7 +17,7 @@ export default function QueryIVOARegistry() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { queryMap, formData, setFormData } = useContext(QueryContext);
+  const { queryMap, formData, setFormData, page } = useContext(QueryContext);
   const { config, api_host, setConfigName } = useContext(GlobalContext);
   const { selectedRegistry, queryStep, setQueryStep } = useContext(IVOAContext);
   const { uri } = useParams();
@@ -59,16 +59,17 @@ export default function QueryIVOARegistry() {
 
     if (queryStep === "run-query") {
       selectedRegistry.forEach((access_url) => {
-        queries = [...queries, ...parseVOServiceForm(formData, access_url)];
+        queries = [
+          ...queries,
+          ...parseVOServiceForm(formData, access_url, page),
+        ];
       });
     } else {
-      queries = parseQueryForm(gui, formData);
+      queries = parseQueryForm(gui, formData, page);
     }
 
     console.log("queries:", queries);
 
-    // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
-    // This is under development in the backend at the moment
     queryMap.clear();
     queries.forEach((query) => {
       queryMap.set(query.catalog, {
@@ -100,7 +101,7 @@ export default function QueryIVOARegistry() {
           });
         });
     });
-  }, [formData]);
+  }, [formData, page]);
 
   function formTemplate({ TitleField, properties, title, description }) {
     return (

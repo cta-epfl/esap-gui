@@ -6,7 +6,7 @@ import Paginate from "../Paginate";
 import { IVOAContext } from "../../contexts/IVOAContext";
 
 export default function VORegistryResults({ catalog }) {
-  const { queryMap } = useContext(QueryContext);
+  const { queryMap, page, setPage } = useContext(QueryContext);
   const {
     selectedRegistry,
     addRegistry,
@@ -35,8 +35,23 @@ export default function VORegistryResults({ catalog }) {
     setRegistryList(queryMap.get(catalog).results.results);
     console.log("Registry List:", registryList);
 
+    const numPages = queryMap.get(catalog).results.pages;
+    function newPageCallback(setPage) {
+      return (args) => {
+        if (args.target) {
+          setPage(parseFloat(args.target.text));
+        }
+      };
+    }
+
     return (
       <>
+        <Paginate
+          getNewPage={newPageCallback(setPage)}
+          currentPage={page}
+          numAdjacent={3}
+          numPages={numPages}
+        />
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
@@ -96,7 +111,6 @@ export default function VORegistryResults({ catalog }) {
             })}
           </tbody>
         </Table>
-        {/* <Paginate /> */}
       </>
     );
   } else {

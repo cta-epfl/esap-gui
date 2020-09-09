@@ -1,4 +1,4 @@
-export default function ParseLOFARForm(formData) {
+export default function ParseLOFARForm(formData, page) {
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
@@ -19,7 +19,8 @@ export default function ParseLOFARForm(formData) {
   //  "status": "null|fetching|fetched",
   //  "results": null}
   let catalog = formInput.find(([key]) => key === "catalog")[1];
-  let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
+  let esapquery =
+    query + `${`${query}` ? "&" : ""}archive_uri=` + catalog + `&page=${page}`;
   queries.push({
     catalog: catalog,
     esapquery: esapquery,

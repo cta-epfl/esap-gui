@@ -1,4 +1,4 @@
-export default function ParseADEXForm(formData) {
+export default function ParseADEXForm(formData, page) {
   let catalogs = ["apertif", "astron_vo"];
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
@@ -32,7 +32,11 @@ export default function ParseADEXForm(formData) {
       return null;
     });
   } else {
-    let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
+    let esapquery =
+      query +
+      `${`${query}` ? "&" : ""}archive_uri=` +
+      catalog +
+      `&page=${page}`;
 
     queries.push({
       catalog: catalog,

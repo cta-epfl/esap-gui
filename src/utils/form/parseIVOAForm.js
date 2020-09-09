@@ -1,4 +1,4 @@
-export default function ParseIVOAForm(formData) {
+export default function ParseIVOAForm(formData, page) {
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
@@ -25,7 +25,11 @@ export default function ParseIVOAForm(formData) {
   let service_type = formInput.find(([key]) => key === "service_type")[1];
 
   let esapquery =
-    "get-services/?" + query + `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
+    "get-services/?" +
+    query +
+    `${`${query}` ? "&" : ""}dataset_uri=` +
+    catalog +
+    `&page=${page}`;
 
   queries.push({
     catalog: catalog,
