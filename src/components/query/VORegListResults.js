@@ -38,18 +38,15 @@ export default function VORegListResults({ catalog }) {
     console.log("Registry List:", registryList);
 
     const numPages = queryMap.get(catalog).results.pages;
-    function newRegPageCallback(setRegPage) {
-      return (args) => {
-        if (args.target) {
-          setRegPage(parseFloat(args.target.text));
-        }
-      };
-    }
 
     return (
       <>
         <Paginate
-          getNewPage={newRegPageCallback(setRegPage)}
+          getNewPage={(args) => {
+            return args.target
+              ? setRegPage(parseFloat(args.target.text))
+              : null;
+          }}
           currentPage={regPage}
           numAdjacent={3}
           numPages={numPages}

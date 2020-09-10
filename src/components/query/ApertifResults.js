@@ -5,7 +5,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 
 export default function ApertifResults({ catalog }) {
-  const { queryMap, page, setPage, newPageCallback } = useContext(QueryContext);
+  const { queryMap, page, setPage } = useContext(QueryContext);
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
     if (!("results" in queryMap.get(catalog).results))
@@ -18,7 +18,9 @@ export default function ApertifResults({ catalog }) {
     return (
       <>
         <Paginate
-          getNewPage={newPageCallback(setPage)}
+          getNewPage={(args) => {
+            return args.target ? setPage(parseFloat(args.target.text)) : null;
+          }}
           currentPage={page}
           numAdjacent={3}
           numPages={numPages}

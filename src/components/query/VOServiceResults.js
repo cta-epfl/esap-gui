@@ -5,7 +5,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 
 export default function VORegistryResults({ catalog }) {
-  const { queryMap, page, setPage, newPageCallback } = useContext(QueryContext);
+  const { queryMap, page, setPage } = useContext(QueryContext);
 
   if (!queryMap.get(catalog)) return null;
   console.log("VO service queryMap:", queryMap.get(catalog));
@@ -24,7 +24,9 @@ export default function VORegistryResults({ catalog }) {
       <div>
         <h1>Results from {catalog}</h1>
         <Paginate
-          getNewPage={newPageCallback(setPage)}
+          getNewPage={(args) => {
+            return args.target ? setPage(parseFloat(args.target.text)) : null;
+          }}
           currentPage={page}
           numAdjacent={3}
           numPages={numPages}
