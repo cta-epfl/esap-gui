@@ -3,6 +3,7 @@ import ApertifResults from "./ApertifResults";
 import ASTRONVOResults from "./ASTRONVOResults";
 import ZooniverseResults from "./ZooniverseResults";
 import VORegListResults from "./VORegListResults";
+import LOFARResults from "./LOFARResults";
 
 export default function QueryResults({ catalog }) {
   switch (catalog) {
@@ -16,6 +17,8 @@ export default function QueryResults({ catalog }) {
       return <ZooniverseResults catalog={catalog} />;
     case "vo_reg":
       return <VORegListResults catalog={catalog} />;
+    case "lofar":
+      return <LOFARResults catalog={catalog} />;
     default:
       return null;
   }

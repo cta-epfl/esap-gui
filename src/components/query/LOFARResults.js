@@ -4,7 +4,7 @@ import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 
-export default function ApertifResults({ catalog }) {
+export default function LOFARResults({ catalog }) {
   const { queryMap, page, setPage } = useContext(QueryContext);
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
@@ -33,14 +33,17 @@ export default function ApertifResults({ catalog }) {
                 <InputGroup.Checkbox />
               </InputGroup>
             </th> */}
-              <th>Name</th>
+              <th>Project</th>
+              <th>SAS ID</th>
+              <th>Target Name</th>
               <th>RA</th>
               <th>Dec</th>
-              <th>fov</th>
-              <th>Dataset ID</th>
-              <th>Data Product Type</th>
-              <th>Data Product Subtype</th>
-              <th>Link to data</th>
+              <th>Release Date</th>
+              <th>Start Time</th>
+              <th>Duration</th>
+              <th>Pipeline</th>
+              <th>Antenna Set</th>
+              <th>Instrument Filter</th>
             </tr>
           </thead>
           <tbody>
@@ -52,14 +55,18 @@ export default function ApertifResults({ catalog }) {
                     <InputGroup.Checkbox />
                   </InputGroup>
                 </th> */}
-                  <td>{result.name}</td>
-                  <td>{Number(result.RA).toFixed(1)}</td>
+                  <td>{result.project}</td>
+                  <td>{result.sas_id}</td>
+                  <td>{result.target}</td>
+                  <td>{Number(result.ra).toFixed(1)}</td>
                   <td>{Number(result.dec).toFixed(1)}</td>
-                  <td>{Number(result.fov).toFixed(1)}</td>
-                  <td>{result.datasetID}</td>
-                  <td>{result.dataProductType}</td>
-                  <td>{result.dataProductSubType}</td>
-                  <td>
+                  <td>{result.releaseDate}</td>
+                  <td>{result.startTime}</td>
+                  <td>{result.duration}</td>
+                  <td>{result.pipeline}</td>
+                  <td>{result.antennaSet}</td>
+                  <td>{result.instrumentFilter}</td>
+                  {/* <td>
                     <a
                       href={result.url}
                       target="_blank"
@@ -77,7 +84,7 @@ export default function ApertifResults({ catalog }) {
                         Thumbnail
                       </a>
                     ) : null}
-                  </td>
+                  </td> */}
                 </tr>
               );
             })}
