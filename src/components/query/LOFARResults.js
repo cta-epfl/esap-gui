@@ -17,14 +17,14 @@ export default function LOFARResults({ catalog }) {
     console.log("Query results:", queryMap.get(catalog).results.results);
     return (
       <>
-        <Paginate
+        {/* <Paginate
           getNewPage={(args) => {
             return args.target ? setPage(parseFloat(args.target.text)) : null;
           }}
           currentPage={page}
           numAdjacent={3}
           numPages={numPages}
-        />
+        /> */}
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">

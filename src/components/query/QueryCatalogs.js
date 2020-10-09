@@ -15,9 +15,12 @@ export default function QueryCatalogs() {
   //  "status": "fetching|fechted",
   //  "results": null}
   const { queryMap, formData, setFormData, page } = useContext(QueryContext);
-  const { config, api_host, setConfigName } = useContext(GlobalContext);
+  const { config, api_host, setConfigName, defaultConf } = useContext(
+    GlobalContext
+  );
   const { uri } = useParams();
-  console.log(uri);
+  console.log("uri:", uri);
+  console.log("default conf:", defaultConf);
 
   // set ConfigName for archive
   useEffect(() => {
@@ -38,11 +41,11 @@ export default function QueryCatalogs() {
         setConfigName("lofar");
         break;
       default:
-        setConfigName("esap_ivoa");
+        setConfigName(defaultConf);
     }
     return () => {
       console.log("cleaned up");
-      setConfigName("esap_ivoa");
+      setConfigName(defaultConf);
     };
   }, [uri]);
 

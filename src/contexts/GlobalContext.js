@@ -5,6 +5,7 @@ import getCookie from "../utils/getCookie";
 export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
+  const defaultConf = "adex";
   console.log("ASTRON ESAP version ", Date());
   const api_host =
     process.env.NODE_ENV === "development"
@@ -12,7 +13,7 @@ export function GlobalContextProvider({ children }) {
       : "/esap-api/";
 
   const [config, setConfig] = useState();
-  const [configName, setConfigName] = useState("esap_ivoa");
+  const [configName, setConfigName] = useState(defaultConf);
 
   useEffect(() => {
     let configNameString = "";
@@ -63,6 +64,7 @@ export function GlobalContextProvider({ children }) {
         handleLogin,
         handleLogout,
         setConfigName,
+        defaultConf,
       }}
     >
       {children}
