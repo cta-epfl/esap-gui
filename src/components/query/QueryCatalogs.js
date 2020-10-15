@@ -44,6 +44,8 @@ export default function QueryCatalogs() {
     }
     return () => {
       console.log("cleaned up");
+      queryMap.clear();
+      setFormData();
       setConfigName(defaultConf);
     };
   }, [uri]);
