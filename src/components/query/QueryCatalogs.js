@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import Form from "react-jsonschema-form";
@@ -19,6 +19,7 @@ export default function QueryCatalogs() {
     GlobalContext
   );
   const { uri } = useParams();
+  const history = useHistory();
   console.log("uri:", uri);
   console.log("default conf:", defaultConf);
 
@@ -40,8 +41,6 @@ export default function QueryCatalogs() {
       case "lofar":
         setConfigName("lofar");
         break;
-      default:
-        setConfigName(defaultConf);
     }
     return () => {
       console.log("cleaned up");
@@ -115,6 +114,16 @@ export default function QueryCatalogs() {
         schema={config.query_schema}
         ObjectFieldTemplate={formTemplate}
         formData={formData}
+        onBlur={(field, value) => {
+          if (field == "root_catalog") {
+            console.log("Change query catalog to : ", value);
+            if (value == "adex") {
+              history.push("/query");
+            } else {
+              history.push("/archives/" + value + "/query");
+            }
+          }
+        }}
         onSubmit={({ formData }) => setFormData(formData)}
         {...uiSchemaProp}
       ></Form>

@@ -11,7 +11,8 @@ export function GlobalContextProvider({ children }) {
     process.env.NODE_ENV === "development"
       ? "http://localhost:15671/esap-api/"
       : "/esap-api/";
-
+  // "http://localhost:15671/esap-api/"
+  // "http://sdc.astron.nl:5557/esap-api/"
   const [config, setConfig] = useState();
   const [configName, setConfigName] = useState(defaultConf);
 

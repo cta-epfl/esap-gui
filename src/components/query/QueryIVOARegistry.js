@@ -138,6 +138,7 @@ export default function QueryIVOARegistry() {
       query: { "ui:widget": "textarea" },
       keyword: { "ui:widget": "hidden" },
       tap_schema: { "ui:widget": "hidden" },
+      waveband: { "ui:widget": "hidden" },
     };
     console.log("new ui schema:", uiSchemaProp);
     return (

@@ -11,10 +11,10 @@ export default function VORegistryResults({ catalog }) {
   console.log("VO service queryMap:", queryMap.get(catalog));
 
   if (queryMap.get(catalog).status === "fetched") {
-    if (queryMap.get(catalog).results[0].includes("ERROR"))
-      return (
-        <Alert variant="warning">{queryMap.get(catalog).results[0]}</Alert>
-      );
+    // if (queryMap.get(catalog).results[0].includes("ERROR"))
+    //   return (
+    //     <Alert variant="warning">{queryMap.get(catalog).results[0]}</Alert>
+    //   );
     if (queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
 
