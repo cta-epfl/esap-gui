@@ -46,7 +46,7 @@ export default function QueryCatalogs() {
       console.log("cleaned up");
       queryMap.clear();
       setFormData();
-      setConfigName(defaultConf);
+      setConfigName(uri);
     };
   }, [uri]);
 
@@ -116,6 +116,16 @@ export default function QueryCatalogs() {
         schema={config.query_schema}
         ObjectFieldTemplate={formTemplate}
         formData={formData}
+        onBlur={(field, value) => {
+          if (field == "root_catalog") {
+            console.log("Change query catalog to : ", value);
+            if (value == "adex") {
+              history.push("/query");
+            } else {
+              history.push("/archives/" + value + "/query");
+            }
+          }
+        }}
         onSubmit={({ formData }) => setFormData(formData)}
         {...uiSchemaProp}
       ></Form>

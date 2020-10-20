@@ -5,7 +5,7 @@ import getCookie from "../utils/getCookie";
 export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
-  const defaultConf = "adex";
+  const defaultConf = "esap_ivoa";
   console.log("ASTRON ESAP version ", Date());
   const api_host =
     process.env.NODE_ENV === "development"
