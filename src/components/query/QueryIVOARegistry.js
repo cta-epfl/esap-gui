@@ -17,11 +17,16 @@ export default function QueryIVOARegistry() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { queryMap, formData, setFormData } = useContext(QueryContext);
-  const { config, api_host, setConfigName } = useContext(GlobalContext);
-  const { selectedRegistry, queryStep, setQueryStep } = useContext(IVOAContext);
+  const { queryMap, formData, setFormData, page } = useContext(QueryContext);
+  const { config, api_host, setConfigName, defaultConf } = useContext(
+    GlobalContext
+  );
+  const { selectedRegistry, queryStep, setQueryStep, regPage } = useContext(
+    IVOAContext
+  );
   const { uri } = useParams();
   console.log("uri:", uri);
+  console.log("default conf: ", defaultConf);
 
   // set ConfigName for archive
   useEffect(() => {
@@ -46,7 +51,7 @@ export default function QueryIVOARegistry() {
     }
     return () => {
       console.log("Set configuration back to default!");
-      setConfigName("esap_ivoa");
+      setConfigName(defaultConf);
     };
   }, [uri]);
 
@@ -59,16 +64,17 @@ export default function QueryIVOARegistry() {
 
     if (queryStep === "run-query") {
       selectedRegistry.forEach((access_url) => {
-        queries = [...queries, ...parseVOServiceForm(formData, access_url)];
+        queries = [
+          ...queries,
+          ...parseVOServiceForm(formData, access_url, page),
+        ];
       });
     } else {
-      queries = parseQueryForm(gui, formData);
+      queries = parseQueryForm(gui, formData, regPage);
     }
 
     console.log("queries:", queries);
 
-    // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
-    // This is under development in the backend at the moment
     queryMap.clear();
     queries.forEach((query) => {
       queryMap.set(query.catalog, {
@@ -100,7 +106,7 @@ export default function QueryIVOARegistry() {
           });
         });
     });
-  }, [formData]);
+  }, [formData, page, regPage]);
 
   function formTemplate({ TitleField, properties, title, description }) {
     return (
@@ -132,6 +138,7 @@ export default function QueryIVOARegistry() {
       query: { "ui:widget": "textarea" },
       keyword: { "ui:widget": "hidden" },
       tap_schema: { "ui:widget": "hidden" },
+      waveband: { "ui:widget": "hidden" },
     };
     console.log("new ui schema:", uiSchemaProp);
     return (

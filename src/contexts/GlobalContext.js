@@ -5,14 +5,16 @@ import getCookie from "../utils/getCookie";
 export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
+  const defaultConf = "esap_ivoa";
   console.log("ASTRON ESAP version ", Date());
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "http://sdc.astron.nl:5555/esap-api/"
+      ? "http://localhost:15671/esap-api/"
       : "/esap-api/";
-
+  // "http://localhost:15671/esap-api/"
+  // "http://sdc.astron.nl:5557/esap-api/"
   const [config, setConfig] = useState();
-  const [configName, setConfigName] = useState("esap_ivoa");
+  const [configName, setConfigName] = useState(defaultConf);
 
   useEffect(() => {
     let configNameString = "";
@@ -63,6 +65,7 @@ export function GlobalContextProvider({ children }) {
         handleLogin,
         handleLogout,
         setConfigName,
+        defaultConf,
       }}
     >
       {children}

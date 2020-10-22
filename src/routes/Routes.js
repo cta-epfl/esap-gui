@@ -26,11 +26,16 @@ export default function Routes() {
         <Route exact path="/archives">
           <Archives />
         </Route>
-        <Route exact path="/query">
+        <Route exact path="/vo-query">
           <QueryContextProvider>
             <IVOAContextProvider>
               <QueryIVOARegistry />
             </IVOAContextProvider>
+          </QueryContextProvider>
+        </Route>
+        <Route exact path="/query">
+          <QueryContextProvider>
+            <QueryCatalogs />
           </QueryContextProvider>
         </Route>
         <Route exact path="/rucio">

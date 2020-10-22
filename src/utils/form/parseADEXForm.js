@@ -1,5 +1,5 @@
-export default function ParseADEXForm(formData) {
-  let catalogs = ["apertif", "astron_vo"];
+export default function ParseADEXForm(formData, page) {
+  let catalogs = ["apertif", "astron_vo", "lofar"];
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
@@ -20,10 +20,14 @@ export default function ParseADEXForm(formData) {
   //  "status": "null|fetching|fetched",
   //  "results": null}
   let catalog = formInput.find(([key]) => key === "catalog")[1];
-  if (catalog === "all") {
+  if (catalog === "adex") {
     console.log("Catalogs:", catalogs);
     catalogs.map((catalog) => {
-      let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
+      let esapquery =
+        query +
+        `${`${query}` ? "&" : ""}archive_uri=` +
+        catalog +
+        "&page_size=20";
 
       queries.push({
         catalog: catalog,
@@ -32,7 +36,11 @@ export default function ParseADEXForm(formData) {
       return null;
     });
   } else {
-    let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
+    let esapquery =
+      query +
+      `${`${query}` ? "&" : ""}archive_uri=` +
+      catalog +
+      `&page_size=30&page=${page}`;
 
     queries.push({
       catalog: catalog,

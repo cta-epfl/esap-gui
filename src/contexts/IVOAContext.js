@@ -7,6 +7,8 @@ export function IVOAContextProvider({ children }) {
   const [registryList, setRegistryList] = useState([]);
   const [selectedRegistry, setSelectedRegistry] = useState([]);
   const [queryStep, setQueryStep] = useState("get-services");
+  const [regPage, setRegPage] = useState(1);
+
   /* 
     IVOA query steps:
     1. get-services
@@ -40,6 +42,8 @@ export function IVOAContextProvider({ children }) {
         selectedRegistry,
         addRegistry: handleAddRegistry,
         removeRegistry: handleRemoveRegistry,
+        regPage,
+        setRegPage,
         registryList,
         setRegistryList,
         queryStep,
