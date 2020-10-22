@@ -87,7 +87,7 @@ function newPageCallback(setPage) {
 function ZooniverseProjectResults(context) {
   const { queryMap, page, setPage } = context;
   const date_formatter = new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
-  const result = queryMap.get("zooniverse_projects").results.query_results[0];
+  const result = queryMap.get("zooniverse_projects").results.results[0];
   const numPages = result.pages;
   const mandatory_fields = [
     "launch_date",
@@ -135,7 +135,7 @@ function ZooniverseProjectResults(context) {
         <tbody>
           {queryMap
             .get("zooniverse_projects")
-            .results.query_results.map((result) => {
+            .results.results.map((result) => {
               const launch_date = result.launch_date
                 ? date_formatter.format(new Date(result.launch_date))
                 : "Not Launched";
@@ -191,7 +191,7 @@ function ZooniverseProjectResults(context) {
 function ZooniverseWorkflowResults(context) {
   const { queryMap, page, setPage } = context;
   let date_formatter = new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
-  let result = queryMap.get("zooniverse_workflows").results.query_results[0];
+  let result = queryMap.get("zooniverse_workflows").results.results[0];
   let result_workflow = result.workflows[0];
   const numPages = result.pages;
   let mandatory_fields = [
@@ -218,7 +218,7 @@ function ZooniverseWorkflowResults(context) {
       />
       {queryMap
         .get("zooniverse_workflows")
-        .results.query_results.map((project) => {
+        .results.results.map((project) => {
           return (
             <div key={project.project_id}>
               <h4>{project.display_name}</h4>
@@ -289,7 +289,7 @@ export default function ZooniverseResults({ catalog }) {
   const context = useContext(QueryContext);
   if (!context.queryMap) return null;
   if (context.queryMap.get(catalog).status === "fetched") {
-    if (context.queryMap.get(catalog).results.query_results.length === 0)
+    if (context.queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
     else if (catalog === "zooniverse_projects") {
       return ZooniverseProjectResults(context);
