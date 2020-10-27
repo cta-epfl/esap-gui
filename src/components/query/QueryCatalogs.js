@@ -4,6 +4,7 @@ import axios from "axios";
 import { Container } from "react-bootstrap";
 import Form from "react-jsonschema-form";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { BasketContextProvider } from "../../contexts/BasketContext"
 import { QueryContext } from "../../contexts/QueryContext";
 import QueryResults from "./QueryResults";
 import parseQueryForm from "../../utils/form/parseQueryForm";
@@ -133,7 +134,9 @@ export default function QueryCatalogs() {
         return (
           <div key={catalog} className="mt-3">
             <h4>Query results for {catalogName}</h4>
-            <QueryResults catalog={catalog} />
+            <BasketContextProvider>
+              <QueryResults catalog={catalog} />
+            </BasketContextProvider>
           </div>
         );
       })}
