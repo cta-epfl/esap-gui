@@ -1,8 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Table, Alert } from "react-bootstrap";
+import { Table, Alert, Form, Button } from "react-bootstrap";
+import * as deepEqual from "deep-equal";
 import { QueryContext } from "../../contexts/QueryContext";
+import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate, { pagination_fields } from "../Paginate";
+import SaveBasket from "../basket/savebasket";
 
 const DATETIME_OPTIONS = {
   year: "numeric",
@@ -15,7 +18,7 @@ const DATETIME_OPTIONS = {
   timeZoneName: "short",
 };
 
-Object.isObject = function (obj) {
+Object.isObject = function(obj) {
   return (obj && obj.constructor === this) || false;
 };
 
@@ -84,7 +87,42 @@ function newPageCallback(setPage) {
   };
 }
 
-function ZooniverseProjectResults(context) {
+function isInBasket(id, basketContext, catalog, category) {
+  const testBasketItem = {
+    archive: "zooniverse",
+    catalog: catalog,
+    id: id,
+    category: category
+  };
+
+  const found = basketContext.datasets.some(basketItem => deepEqual(basketItem, testBasketItem));
+  console.log(found);
+  return found;
+}
+
+function addToBasket(id, basketContext, catalog, category) {
+  const basketItem = {
+    archive: "zooniverse",
+    catalog: catalog,
+    id: id,
+    category: category
+  };
+  basketContext.add(basketItem);
+  console.log([basketItem, basketContext]);
+}
+
+function removeFromBasket(id, basketContext, catalog, category) {
+  const basketItem = {
+    archive: "zooniverse",
+    catalog: catalog,
+    id: id,
+    category: category
+  }
+  basketContext.remove(basketItem);
+  console.log([basketItem, basketContext]);
+}
+
+function ZooniverseProjectResults(context, basketContext) {
   const { queryMap, page, setPage } = context;
   const date_formatter = new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
   const result = queryMap.get("zooniverse_projects").results.results[0];
@@ -114,70 +152,87 @@ function ZooniverseProjectResults(context) {
         numAdjacent={3}
         numPages={numPages}
       />
-      <Table className="mt-3" responsive>
-        <thead>
-          <tr className="bg-light">
-            {/* <th>
+      <Form>
+        <SaveBasket />
+        <Table className="mt-3" responsive>
+          <thead>
+            <tr className="bg-light">
+              {/* <th>
               <InputGroup>
                 <InputGroup.Checkbox />
               </InputGroup>
             </th> */}
-            <th>ID</th>
-            <th>Display Name</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Launched</th>
-            <th>Live</th>
-            <th>View</th>
-            {remaining_headers}
-          </tr>
-        </thead>
-        <tbody>
-          {queryMap
-            .get("zooniverse_projects")
-            .results.results.map((result) => {
-              const launch_date = result.launch_date
-                ? date_formatter.format(new Date(result.launch_date))
-                : "Not Launched";
-              const created_at = date_formatter.format(
-                new Date(result.created_at)
-              );
-              const updated_at = date_formatter.format(
-                new Date(result.updated_at)
-              );
-              const live = result.live ? "Yes" : "No";
-              const remaining_cells = remaining_fields.map((field) => {
-                const reactKey = `project_${result.project_id}_${field}`;
-                return (
-                  <td key={reactKey}>
-                    {renderIfCompound(result[field], reactKey)}
-                  </td>
+              <th>Select Classification Data</th>
+              <th>Select Subject Data</th>
+              <th>ID</th>
+              <th>Display Name</th>
+              <th>Created</th>
+              <th>Updated</th>
+              <th>Launched</th>
+              <th>Live</th>
+              <th>View</th>
+              {remaining_headers}
+            </tr>
+          </thead>
+          <tbody>
+            {queryMap
+              .get("zooniverse_projects")
+              .results.results.map((result) => {
+                const launch_date = result.launch_date
+                  ? date_formatter.format(new Date(result.launch_date))
+                  : "Not Launched";
+                const created_at = date_formatter.format(
+                  new Date(result.created_at)
                 );
-              });
-              return (
-                <tr key={`project_${result.project_id}`}>
-                  {/* <th>
+                const updated_at = date_formatter.format(
+                  new Date(result.updated_at)
+                );
+                const live = result.live ? "Yes" : "No";
+                const remaining_cells = remaining_fields.map((field) => {
+                  const reactKey = `project_${result.project_id}_${field}`;
+                  return (
+                    <td key={reactKey}>
+                      {renderIfCompound(result[field], reactKey)}
+                    </td>
+                  );
+                });
+                return (
+                  <tr key={`project_${result.project_id}`}>
+                    {/* <th>
                   <InputGroup>
                     <InputGroup.Checkbox />
                   </InputGroup>
                 </th> */}
-                  <td>{result.project_id}</td>
-                  <td>{result.display_name}</td>
-                  <td>{created_at}</td>
-                  <td>{updated_at}</td>
-                  <td>{launch_date}</td>
-                  <td>{live}</td>
-                  <td>
-                    <a href={`https://zooniverse.org/projects/${result.slug}`}>
-                      Link
+                    <td>
+                      <Form.Check id={`selectClassifications_${result.project_id}`} type="checkbox" onChange={(event) => {
+                        const action = event.target.checked ? addToBasket : removeFromBasket;
+                        action(result.project_id, basketContext, "project", "classifications");
+                      }} checked={isInBasket(result.project_id, basketContext, "project", "classifications") ? "checked" : ""} />
+                    </td>
+                    <td>
+                      <Form.Check id={`selectSubjects_${result.project_id}`} type="checkbox" onChange={(event) => {
+                        const action = event.target.checked ? addToBasket : removeFromBasket;
+                        action(result.project_id, basketContext, "project", "subjects");
+                      }} checked={isInBasket(result.project_id, basketContext, "project", "subjects") ? "checked" : ""} />
+                    </td>
+                    <td>{result.project_id}</td>
+                    <td>{result.display_name}</td>
+                    <td>{created_at}</td>
+                    <td>{updated_at}</td>
+                    <td>{launch_date}</td>
+                    <td>{live}</td>
+                    <td>
+                      <a href={`https://zooniverse.org/projects/${result.slug}`}>
+                        Link
                     </a>
-                  </td>
-                  {remaining_cells}
-                </tr>
-              );
-            })}
-        </tbody>
-      </Table>
+                    </td>
+                    {remaining_cells}
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+      </Form>
       <Paginate
         getNewPage={newPageCallback(setPage)}
         currentPage={page}
@@ -188,7 +243,7 @@ function ZooniverseProjectResults(context) {
   );
 }
 
-function ZooniverseWorkflowResults(context) {
+function ZooniverseWorkflowResults(context, basketContext) {
   const { queryMap, page, setPage } = context;
   let date_formatter = new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
   let result = queryMap.get("zooniverse_workflows").results.results[0];
@@ -230,6 +285,8 @@ function ZooniverseWorkflowResults(context) {
                 <InputGroup.Checkbox />
               </InputGroup>
             </th> */}
+                    <th>Select Classification Data</th>
+                    <th>Select Subject Data</th>
                     <th>ID</th>
                     <th>Display Name</th>
                     <th>Created</th>
@@ -261,6 +318,18 @@ function ZooniverseWorkflowResults(context) {
                       <InputGroup.Checkbox />
                     </InputGroup>
                   </th> */}
+                        <td>
+                          <Form.Check id={`selectClassifications_${result.workflow_id}`} type="checkbox" onChange={(event) => {
+                            const action = event.target.checked ? addToBasket : removeFromBasket;
+                            action(result.workflow_id, basketContext, "workflow", "classifications");
+                          }} checked={isInBasket(result.project_id, basketContext, "workflow", "classifications") ? "checked" : ""} />
+                        </td>
+                        <td>
+                          <Form.Check id={`selectSubjects_${result.workflow_id}`} type="checkbox" onChange={(event) => {
+                            const action = event.target.checked ? addToBasket : removeFromBasket;
+                            action(result.workflow_id, basketContext, "workflow", "subjects");
+                          }} checked={isInBasket(result.project_id, basketContext, "workflow", "subjects") ? "checked" : ""} />
+                        </td>
                         <td>{workflow.workflow_id}</td>
                         <td>{workflow.display_name}</td>
                         <td>{created_at}</td>
@@ -287,14 +356,17 @@ function ZooniverseWorkflowResults(context) {
 
 export default function ZooniverseResults({ catalog }) {
   const context = useContext(QueryContext);
+  const basketContext = useContext(BasketContext);
   if (!context.queryMap) return null;
   if (context.queryMap.get(catalog).status === "fetched") {
     if (context.queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
     else if (catalog === "zooniverse_projects") {
-      return ZooniverseProjectResults(context);
+      console.log(`basketContext -> ${basketContext}`);
+      console.log(basketContext);
+      return ZooniverseProjectResults(context, basketContext);
     } else if (catalog === "zooniverse_workflows") {
-      return ZooniverseWorkflowResults(context);
+      return ZooniverseWorkflowResults(context, basketContext);
     } else {
       return <Alert variant="warning">Unrecognised Zooniverse Catalog!</Alert>;
     }
