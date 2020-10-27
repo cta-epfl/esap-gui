@@ -36,6 +36,9 @@ export default function QueryCatalogs() {
       case "zooniverse":
         setConfigName("zooniverse");
         break;
+      case "esap_rucio":
+        setConfigName("esap_rucio");
+        break;
       case "astron_vo":
         setConfigName("astron_vo");
         break;
