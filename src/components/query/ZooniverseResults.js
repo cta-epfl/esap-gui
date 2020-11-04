@@ -6,6 +6,7 @@ import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate, { pagination_fields } from "../Paginate";
 import SaveBasket from "../basket/savebasket";
+import AddToBasket from "../basket/addtobasket";
 
 const DATETIME_OPTIONS = {
   year: "numeric",
@@ -87,42 +88,27 @@ function newPageCallback(setPage) {
   };
 }
 
-function isInBasket(id, basketContext, catalog, category) {
-  const testBasketItem = {
+function projectBasketItem(projectId, category){
+  return {
     archive: "zooniverse",
-    catalog: catalog,
-    id: id,
+    catalog: "project",
+    project_id: projectId,
     category: category
   };
-
-  const found = basketContext.datasets.some(basketItem => deepEqual(basketItem, testBasketItem));
-  console.log(found);
-  return found;
 }
 
-function addToBasket(id, basketContext, catalog, category) {
-  const basketItem = {
+function workflowBasketItem(projectId, workflowId, category){
+  return {
     archive: "zooniverse",
-    catalog: catalog,
-    id: id,
+    catalog: "workflow",
+    project_id: projectId,
+    workflow_id: workflowId,
     category: category
   };
-  basketContext.add(basketItem);
-  console.log([basketItem, basketContext]);
 }
 
-function removeFromBasket(id, basketContext, catalog, category) {
-  const basketItem = {
-    archive: "zooniverse",
-    catalog: catalog,
-    id: id,
-    category: category
-  }
-  basketContext.remove(basketItem);
-  console.log([basketItem, basketContext]);
-}
 
-function ZooniverseProjectResults(context, basketContext) {
+function ZooniverseProjectResults(context) {
   const { queryMap, page, setPage } = context;
   const date_formatter = new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
   const result = queryMap.get("zooniverse_projects").results.results[0];
@@ -204,16 +190,10 @@ function ZooniverseProjectResults(context, basketContext) {
                   </InputGroup>
                 </th> */}
                     <td>
-                      <Form.Check id={`selectClassifications_${result.project_id}`} type="checkbox" onChange={(event) => {
-                        const action = event.target.checked ? addToBasket : removeFromBasket;
-                        action(result.project_id, basketContext, "project", "classifications");
-                      }} checked={isInBasket(result.project_id, basketContext, "project", "classifications") ? "checked" : ""} />
+                      <AddToBasket id={`selectClassifications_${result.project_id}`}  item={projectBasketItem(result.project_id, "classifications")} />
                     </td>
                     <td>
-                      <Form.Check id={`selectSubjects_${result.project_id}`} type="checkbox" onChange={(event) => {
-                        const action = event.target.checked ? addToBasket : removeFromBasket;
-                        action(result.project_id, basketContext, "project", "subjects");
-                      }} checked={isInBasket(result.project_id, basketContext, "project", "subjects") ? "checked" : ""} />
+                      <AddToBasket id={`selectSubjects_${result.project_id}`}  item={projectBasketItem(result.project_id, "subjects")} />
                     </td>
                     <td>{result.project_id}</td>
                     <td>{result.display_name}</td>
@@ -243,7 +223,7 @@ function ZooniverseProjectResults(context, basketContext) {
   );
 }
 
-function ZooniverseWorkflowResults(context, basketContext) {
+function ZooniverseWorkflowResults(context) {
   const { queryMap, page, setPage } = context;
   let date_formatter = new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
   let result = queryMap.get("zooniverse_workflows").results.results[0];
@@ -263,6 +243,7 @@ function ZooniverseWorkflowResults(context, basketContext) {
     let title = titleCase(field.replace("_", " "));
     return <th key={`project_header_${field}`}>{title}</th>;
   });
+  const saveBasketStyle = { marginBottom : "10px"} ;
   return (
     <>
       <Paginate
@@ -271,6 +252,8 @@ function ZooniverseWorkflowResults(context, basketContext) {
         numAdjacent={3}
         numPages={numPages}
       />
+      <Form>
+      <SaveBasket style={saveBasketStyle} />
       {queryMap
         .get("zooniverse_workflows")
         .results.results.map((project) => {
@@ -319,16 +302,10 @@ function ZooniverseWorkflowResults(context, basketContext) {
                     </InputGroup>
                   </th> */}
                         <td>
-                          <Form.Check id={`selectClassifications_${result.workflow_id}`} type="checkbox" onChange={(event) => {
-                            const action = event.target.checked ? addToBasket : removeFromBasket;
-                            action(result.workflow_id, basketContext, "workflow", "classifications");
-                          }} checked={isInBasket(result.project_id, basketContext, "workflow", "classifications") ? "checked" : ""} />
+                          <AddToBasket id={`selectClassifications_${workflow.workflow_id}`}  item={workflowBasketItem(result.project_id, workflow.workflow_id, "classifications")} />
                         </td>
                         <td>
-                          <Form.Check id={`selectSubjects_${result.workflow_id}`} type="checkbox" onChange={(event) => {
-                            const action = event.target.checked ? addToBasket : removeFromBasket;
-                            action(result.workflow_id, basketContext, "workflow", "subjects");
-                          }} checked={isInBasket(result.project_id, basketContext, "workflow", "subjects") ? "checked" : ""} />
+                          <AddToBasket id={`selectSubjects_${workflow.workflow_id}`}  item={workflowBasketItem(result.project_id, workflow.workflow_id, "subjects")} />
                         </td>
                         <td>{workflow.workflow_id}</td>
                         <td>{workflow.display_name}</td>
@@ -344,6 +321,7 @@ function ZooniverseWorkflowResults(context, basketContext) {
             </div>
           );
         })}
+      </Form>
       <Paginate
         getNewPage={newPageCallback(setPage)}
         currentPage={page}

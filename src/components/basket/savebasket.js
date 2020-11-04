@@ -1,36 +1,32 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import { Button } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
 import axios from "axios";
 
 
-export default function SaveBasket({ add }) {
-  const [info, setInfo] = useState("");
-  const { api_host } = useContext(GlobalContext);
+export default function SaveBasket(props) {
+  const { api_host, isAuthenticated, sessionid } = useContext(GlobalContext);
   const basketContext = useContext(BasketContext);
 
   function saveBasket(basketData){
-
     const payload = {shopping_cart: basketData};
     console.log(payload);
-    // basketData.map((basketDatum) => {
-    //   const url = api_host + "accounts/user_profiles/hughdickinson";
-    //   axios
-    //     .patch(url, {item_data: basketData})
-    //     .then((response) => {
-    //       console.log(response);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // });
-    const profileUrl = api_host + "accounts/user-profiles/hughdickinson/";
-    console.log(profileUrl);
+
+    const profileUrl = api_host + "accounts/user-profiles/";
     axios
-      .patch(profileUrl, payload)
+      .get(profileUrl, {withCredentials: true})
       .then((response) => {
-        console.log(response);
+        const userProfileUrl = profileUrl + userName + "/";
+
+        axios
+          .patch(userProfileUrl, payload, {withCredentials: true})
+          .then((response) => {
+            console.log("patch", response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -38,13 +34,22 @@ export default function SaveBasket({ add }) {
   }
 
 
-  return (
-    // input field is only here for testing
-    // this will be replaced by real dataset later.
-      <Button
-        type="button"
-        variant="primary"
-        onClick={() => saveBasket(basketContext.datasets)}
-      >Save Basket Contents</Button>
-  );
+  if(isAuthenticated){
+    return (
+        <Button
+          type="button"
+          variant="primary"
+          onClick={() => saveBasket(basketContext.datasets)}
+          {...props}
+        >Save Data Selection</Button>
+    );
+  }
+  else{
+    return (<>
+      <Button variant="warning" disabled {...props}>
+        Log In to Enable Data Selection
+      </Button>
+    </>
+    );
+  }
 }
