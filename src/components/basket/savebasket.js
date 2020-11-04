@@ -17,7 +17,7 @@ export default function SaveBasket(props) {
     axios
       .get(profileUrl, {withCredentials: true})
       .then((response) => {
-        const userProfileUrl = profileUrl + userName + "/";
+        const userProfileUrl = profileUrl + response.data.results[0].user_name + "/";
 
         axios
           .patch(userProfileUrl, payload, {withCredentials: true})
