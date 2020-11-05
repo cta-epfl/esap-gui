@@ -4,6 +4,7 @@ import ASTRONVOResults from "./ASTRONVOResults";
 import ZooniverseResults from "./ZooniverseResults";
 import VORegListResults from "./VORegListResults";
 import LOFARResults from "./LOFARResults";
+import RucioResults from "./RucioResults";
 
 export default function QueryResults({ catalog }) {
   switch (catalog) {
@@ -19,6 +20,8 @@ export default function QueryResults({ catalog }) {
       return <VORegListResults catalog={catalog} />;
     case "lofar":
       return <LOFARResults catalog={catalog} />;
+    case "rucio":
+      return <RucioResults catalog={catalog} />;
     default:
       return null;
   }

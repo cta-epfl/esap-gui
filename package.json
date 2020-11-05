@@ -16,7 +16,8 @@
     "react-jsonschema-form-layout-grid": "^2.1.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "deep-equal": "^2.0.4"
   },
   "scripts": {
     "start": "react-scripts start",

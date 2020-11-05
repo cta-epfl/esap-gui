@@ -1,8 +1,12 @@
 import React, { useContext, useState } from "react";
-import { Table, Alert } from "react-bootstrap";
+import { Table, Alert, Form, Button } from "react-bootstrap";
+import * as deepEqual from "deep-equal";
 import { QueryContext } from "../../contexts/QueryContext";
+import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate, { pagination_fields } from "../Paginate";
+import SaveBasket from "../basket/savebasket";
+import AddToBasket from "../basket/addtobasket";
 
 const DATETIME_OPTIONS = {
   year: "numeric",
@@ -15,7 +19,7 @@ const DATETIME_OPTIONS = {
   timeZoneName: "short",
 };
 
-Object.isObject = function (obj) {
+Object.isObject = function(obj) {
   return (obj && obj.constructor === this) || false;
 };
 
@@ -84,10 +88,30 @@ function newPageCallback(setPage) {
   };
 }
 
+function projectBasketItem(projectId, category){
+  return {
+    archive: "zooniverse",
+    catalog: "project",
+    project_id: projectId,
+    category: category
+  };
+}
+
+function workflowBasketItem(projectId, workflowId, category){
+  return {
+    archive: "zooniverse",
+    catalog: "workflow",
+    project_id: projectId,
+    workflow_id: workflowId,
+    category: category
+  };
+}
+
+
 function ZooniverseProjectResults(context) {
   const { queryMap, page, setPage } = context;
   const date_formatter = new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
-  const result = queryMap.get("zooniverse_projects").results.query_results[0];
+  const result = queryMap.get("zooniverse_projects").results.results[0];
   const numPages = result.pages;
   const mandatory_fields = [
     "launch_date",
@@ -114,70 +138,81 @@ function ZooniverseProjectResults(context) {
         numAdjacent={3}
         numPages={numPages}
       />
-      <Table className="mt-3" responsive>
-        <thead>
-          <tr className="bg-light">
-            {/* <th>
+      <Form>
+        <SaveBasket />
+        <Table className="mt-3" responsive>
+          <thead>
+            <tr className="bg-light">
+              {/* <th>
               <InputGroup>
                 <InputGroup.Checkbox />
               </InputGroup>
             </th> */}
-            <th>ID</th>
-            <th>Display Name</th>
-            <th>Created</th>
-            <th>Updated</th>
-            <th>Launched</th>
-            <th>Live</th>
-            <th>View</th>
-            {remaining_headers}
-          </tr>
-        </thead>
-        <tbody>
-          {queryMap
-            .get("zooniverse_projects")
-            .results.query_results.map((result) => {
-              const launch_date = result.launch_date
-                ? date_formatter.format(new Date(result.launch_date))
-                : "Not Launched";
-              const created_at = date_formatter.format(
-                new Date(result.created_at)
-              );
-              const updated_at = date_formatter.format(
-                new Date(result.updated_at)
-              );
-              const live = result.live ? "Yes" : "No";
-              const remaining_cells = remaining_fields.map((field) => {
-                const reactKey = `project_${result.project_id}_${field}`;
-                return (
-                  <td key={reactKey}>
-                    {renderIfCompound(result[field], reactKey)}
-                  </td>
+              <th>Select Classification Data</th>
+              <th>Select Subject Data</th>
+              <th>ID</th>
+              <th>Display Name</th>
+              <th>Created</th>
+              <th>Updated</th>
+              <th>Launched</th>
+              <th>Live</th>
+              <th>View</th>
+              {remaining_headers}
+            </tr>
+          </thead>
+          <tbody>
+            {queryMap
+              .get("zooniverse_projects")
+              .results.results.map((result) => {
+                const launch_date = result.launch_date
+                  ? date_formatter.format(new Date(result.launch_date))
+                  : "Not Launched";
+                const created_at = date_formatter.format(
+                  new Date(result.created_at)
                 );
-              });
-              return (
-                <tr key={`project_${result.project_id}`}>
-                  {/* <th>
+                const updated_at = date_formatter.format(
+                  new Date(result.updated_at)
+                );
+                const live = result.live ? "Yes" : "No";
+                const remaining_cells = remaining_fields.map((field) => {
+                  const reactKey = `project_${result.project_id}_${field}`;
+                  return (
+                    <td key={reactKey}>
+                      {renderIfCompound(result[field], reactKey)}
+                    </td>
+                  );
+                });
+                return (
+                  <tr key={`project_${result.project_id}`}>
+                    {/* <th>
                   <InputGroup>
                     <InputGroup.Checkbox />
                   </InputGroup>
                 </th> */}
-                  <td>{result.project_id}</td>
-                  <td>{result.display_name}</td>
-                  <td>{created_at}</td>
-                  <td>{updated_at}</td>
-                  <td>{launch_date}</td>
-                  <td>{live}</td>
-                  <td>
-                    <a href={`https://zooniverse.org/projects/${result.slug}`}>
-                      Link
+                    <td>
+                      <AddToBasket id={`selectClassifications_${result.project_id}`}  item={projectBasketItem(result.project_id, "classifications")} />
+                    </td>
+                    <td>
+                      <AddToBasket id={`selectSubjects_${result.project_id}`}  item={projectBasketItem(result.project_id, "subjects")} />
+                    </td>
+                    <td>{result.project_id}</td>
+                    <td>{result.display_name}</td>
+                    <td>{created_at}</td>
+                    <td>{updated_at}</td>
+                    <td>{launch_date}</td>
+                    <td>{live}</td>
+                    <td>
+                      <a href={`https://zooniverse.org/projects/${result.slug}`}>
+                        Link
                     </a>
-                  </td>
-                  {remaining_cells}
-                </tr>
-              );
-            })}
-        </tbody>
-      </Table>
+                    </td>
+                    {remaining_cells}
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+      </Form>
       <Paginate
         getNewPage={newPageCallback(setPage)}
         currentPage={page}
@@ -191,7 +226,7 @@ function ZooniverseProjectResults(context) {
 function ZooniverseWorkflowResults(context) {
   const { queryMap, page, setPage } = context;
   let date_formatter = new Intl.DateTimeFormat("default", DATETIME_OPTIONS);
-  let result = queryMap.get("zooniverse_workflows").results.query_results[0];
+  let result = queryMap.get("zooniverse_workflows").results.results[0];
   let result_workflow = result.workflows[0];
   const numPages = result.pages;
   let mandatory_fields = [
@@ -208,6 +243,7 @@ function ZooniverseWorkflowResults(context) {
     let title = titleCase(field.replace("_", " "));
     return <th key={`project_header_${field}`}>{title}</th>;
   });
+  const saveBasketStyle = { marginBottom : "10px"} ;
   return (
     <>
       <Paginate
@@ -216,9 +252,11 @@ function ZooniverseWorkflowResults(context) {
         numAdjacent={3}
         numPages={numPages}
       />
+      <Form>
+      <SaveBasket style={saveBasketStyle} />
       {queryMap
         .get("zooniverse_workflows")
-        .results.query_results.map((project) => {
+        .results.results.map((project) => {
           return (
             <div key={project.project_id}>
               <h4>{project.display_name}</h4>
@@ -230,6 +268,8 @@ function ZooniverseWorkflowResults(context) {
                 <InputGroup.Checkbox />
               </InputGroup>
             </th> */}
+                    <th>Select Classification Data</th>
+                    <th>Select Subject Data</th>
                     <th>ID</th>
                     <th>Display Name</th>
                     <th>Created</th>
@@ -261,6 +301,12 @@ function ZooniverseWorkflowResults(context) {
                       <InputGroup.Checkbox />
                     </InputGroup>
                   </th> */}
+                        <td>
+                          <AddToBasket id={`selectClassifications_${workflow.workflow_id}`}  item={workflowBasketItem(result.project_id, workflow.workflow_id, "classifications")} />
+                        </td>
+                        <td>
+                          <AddToBasket id={`selectSubjects_${workflow.workflow_id}`}  item={workflowBasketItem(result.project_id, workflow.workflow_id, "subjects")} />
+                        </td>
                         <td>{workflow.workflow_id}</td>
                         <td>{workflow.display_name}</td>
                         <td>{created_at}</td>
@@ -275,6 +321,7 @@ function ZooniverseWorkflowResults(context) {
             </div>
           );
         })}
+      </Form>
       <Paginate
         getNewPage={newPageCallback(setPage)}
         currentPage={page}
@@ -287,14 +334,17 @@ function ZooniverseWorkflowResults(context) {
 
 export default function ZooniverseResults({ catalog }) {
   const context = useContext(QueryContext);
+  const basketContext = useContext(BasketContext);
   if (!context.queryMap) return null;
   if (context.queryMap.get(catalog).status === "fetched") {
-    if (context.queryMap.get(catalog).results.query_results.length === 0)
+    if (context.queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
     else if (catalog === "zooniverse_projects") {
-      return ZooniverseProjectResults(context);
+      console.log(`basketContext -> ${basketContext}`);
+      console.log(basketContext);
+      return ZooniverseProjectResults(context, basketContext);
     } else if (catalog === "zooniverse_workflows") {
-      return ZooniverseWorkflowResults(context);
+      return ZooniverseWorkflowResults(context, basketContext);
     } else {
       return <Alert variant="warning">Unrecognised Zooniverse Catalog!</Alert>;
     }
