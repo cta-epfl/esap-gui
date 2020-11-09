@@ -74,7 +74,7 @@ export default function VORegListResults({ catalog }) {
                   />
                 </InputGroup>
               </th>
-              <th>Name</th>
+              <th>Resource</th>
               <th>Access URL</th>
               <th>Waveband</th>
               <th>Title</th>

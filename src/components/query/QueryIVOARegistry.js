@@ -183,7 +183,7 @@ export default function QueryIVOARegistry() {
           {...uiSchemaProp}
         >
           <div>
-            <Button type="submit">Get Registry Services</Button>
+            <Button type="submit">Query VO Registry</Button>
           </div>
         </Form>
         {Array.from(queryMap.keys()).map((catalog) => {
@@ -201,7 +201,7 @@ export default function QueryIVOARegistry() {
             <div key={catalog} className="mt-3">
               <Row>
                 <Col>
-                  <h4>List of registries</h4>
+                  <h4>List of resources</h4>
                 </Col>
                 <Col>
                   {selectedRegistry.length === 0 ? (
@@ -213,7 +213,7 @@ export default function QueryIVOARegistry() {
                         setQueryStep("run-query");
                       }}
                     >
-                      Query selected registry
+                      Query selected resources
                     </Button>
                   )}
                 </Col>
