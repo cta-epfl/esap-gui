@@ -39,6 +39,8 @@ export default function DataProductCategories({ archive }) {
                 let query_url = `${category.archive_uri_derived}/query`;
                 console.log("query_url:", query_url);
                 button = (
+                  // need to add level (e.g raw) and category (e.g imaging) infomation to send to the form
+                  // probably need to define onSubmit instead of point to query_url
                   <Button as={NavLink} variant="outline-info" to={query_url}>
                     Browse Catalog & Run Queries
                   </Button>

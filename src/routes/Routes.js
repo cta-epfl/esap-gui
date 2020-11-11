@@ -13,7 +13,7 @@ import Interactive from "../components/Interactive";
 import { IVOAContextProvider } from "../contexts/IVOAContext";
 
 export default function Routes() {
-  const { config, handleLogin, handleLogout } = useContext(GlobalContext);
+  const { config, handleLogin, handleLogout, handleError } = useContext(GlobalContext);
   if (!config) return null;
 
   return (
@@ -25,13 +25,6 @@ export default function Routes() {
         </Route>
         <Route exact path="/archives">
           <Archives />
-        </Route>
-        <Route exact path="/vo-query">
-          <QueryContextProvider>
-            <IVOAContextProvider>
-              <QueryIVOARegistry />
-            </IVOAContextProvider>
-          </QueryContextProvider>
         </Route>
         <Route exact path="/query">
           <QueryContextProvider>
@@ -46,6 +39,7 @@ export default function Routes() {
         </Route>
         <Route exact path="/login" component={handleLogin} />
         <Route exact path="/logout" component={handleLogout} />
+        <Route exact path="/error" component={handleError} />
         <Route exact path="/archives/:uri" component={ArchiveDetails} />
         <Route exact path="/archives/ivoa/query">
           <QueryContextProvider>

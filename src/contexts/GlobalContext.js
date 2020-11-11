@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { Alert } from "react-bootstrap";
 import axios from "axios";
 import getCookie from "../utils/getCookie";
 
@@ -9,7 +10,7 @@ export function GlobalContextProvider({ children }) {
   console.log("ASTRON ESAP version ", Date());
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "http://localhost:15671/esap-api/"
+      ? "http://localhost:5555/esap-api/"
       : "/esap-api/";
   // "http://localhost:15671/esap-api/"
   // "http://sdc.astron.nl:5557/esap-api/"
@@ -54,6 +55,19 @@ export function GlobalContextProvider({ children }) {
     return null;
   };
 
+  const handleError = (event) => {
+    setIsAuthenticated(false);
+    setSessionid(null);
+
+    return (
+      <>
+      <Alert variant="warning">An error has occurred during login!</Alert>
+      <Alert variant="warning">{event.staticContext}</Alert>
+      </>
+    );
+  };
+  
+
   return (
     <GlobalContext.Provider
       value={{
@@ -64,6 +78,7 @@ export function GlobalContextProvider({ children }) {
         archives,
         handleLogin,
         handleLogout,
+        handleError,
         setConfigName,
         defaultConf,
       }}

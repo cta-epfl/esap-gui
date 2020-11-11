@@ -7,6 +7,8 @@ export function QueryContextProvider({ children }) {
   const queryMap = useMap();
   const [formData, setFormData] = useState();
   const [page, setPage] = useState(1);
+  // const [category, setCategory] = useState();
+  // const [level, setLevel] = useState();
 
   return (
     <QueryContext.Provider
