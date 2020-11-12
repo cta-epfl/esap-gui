@@ -7,14 +7,15 @@ import QueryCatalogs from "../components/query/QueryCatalogs";
 import QueryIVOARegistry from "../components/query/QueryIVOARegistry";
 import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import { QueryContextProvider } from "../contexts/QueryContext";
+import { QueryContext, QueryContextProvider } from "../contexts/QueryContext";
 import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
 import { IVOAContextProvider } from "../contexts/IVOAContext";
 import FitsViewer from "../components/FitsViewer";
 
 export default function Routes() {
-  const { config, handleLogin, handleLogout, handleError } = useContext(GlobalContext);
+  const { handleLogin, handleLogout, handleError } = useContext(GlobalContext);
+  const { config } = useContext(QueryContext);
   if (!config) return null;
 
   return (
@@ -31,25 +32,19 @@ export default function Routes() {
           <Interactive />
         </Route>
         <Route exact path="/fitsviewer">
-          <QueryContextProvider>
-            <FitsViewer />
-          </QueryContextProvider>
+          <FitsViewer />
         </Route>
         <Route exact path="/login" component={handleLogin} />
         <Route exact path="/logout" component={handleLogout} />
         <Route exact path="/error" component={handleError} />
         <Route exact path="/archives/:uri" component={ArchiveDetails} />
         <Route exact path={["/vo-query", "/archives/ivoa/query"]}>
-          <QueryContextProvider>
-            <IVOAContextProvider>
-              <QueryIVOARegistry />
-            </IVOAContextProvider>
-          </QueryContextProvider>
+          <IVOAContextProvider>
+            <QueryIVOARegistry />
+          </IVOAContextProvider>
         </Route>
         <Route exact path={["/adex-query", "/archives/:uri/query"]}>
-          <QueryContextProvider>
-            <QueryCatalogs />
-          </QueryContextProvider>
+          <QueryCatalogs />
         </Route>
       </Switch>
     </Router>

@@ -6,35 +6,13 @@ import getCookie from "../utils/getCookie";
 export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
-  const defaultConf = "esap_ivoa";
+  
   console.log("ASTRON ESAP version ", Date());
   const api_host =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5555/esap-api/"
       : "/esap-api/";
   // "http://sdc.astron.nl:5557/esap-api/"
-  const [config, setConfig] = useState();
-  const [configName, setConfigName] = useState(defaultConf);
-
-  useEffect(() => {
-    let configNameString = "";
-    if (configName) {
-      configNameString = `?name=${configName}`;
-    }
-    axios
-      .get(api_host + "query/configuration" + configNameString)
-      .then((response) => {
-        let config = response.data["configuration"];
-        let props = config.query_schema.properties;
-        console.log("config props: ", props);
-        Object.keys(props).map((key) => {
-          if (key == "collection")
-            console.log("has key collection, default value is: ", props[key]["default"]);
-        });
-        setConfig(config);
-      });
-  }, [api_host, configName]);
-  console.log("config: ", { config });
 
   const [archives, setArchives] = useState();
   useEffect(() => {
@@ -83,13 +61,10 @@ export function GlobalContextProvider({ children }) {
         api_host,
         isAuthenticated,
         sessionid,
-        config,
         archives,
         handleLogin,
         handleLogout,
         handleError,
-        setConfigName,
-        defaultConf,
       }}
     >
       {children}

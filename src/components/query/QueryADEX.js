@@ -14,8 +14,8 @@ export default function QueryCatalogs() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { queryMap, formData, setFormData, page } = useContext(QueryContext);
-  const { config, api_host, setConfigName, defaultConf } = useContext(
+  const { config, setConfigName, defaultConf, queryMap, formData, setFormData, page } = useContext(QueryContext);
+  const { api_host } = useContext(
     GlobalContext
   );
   const { uri } = useParams();

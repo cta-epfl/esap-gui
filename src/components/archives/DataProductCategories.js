@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function DataProductCategories({ archive }) {
   const { api_host } = useContext(GlobalContext);
-  const { setDPLevel, setCategory } = useContext(QueryContext);
+  const { setDPLevel, setCollection } = useContext(QueryContext);
   const [categories, setCategories] = useState([]);
   const history = useHistory();
 
@@ -45,10 +45,10 @@ export default function DataProductCategories({ archive }) {
                   // need to add level (e.g raw) and category (e.g imaging) infomation to send to the form
                   // probably need to define onSubmit instead of point to query_url
                   <Button  
-                        onClick={() => {
-                          setDPLevel(category.level);
-                          setCategory(category.category);
-                          history.push(query_url);}}
+                    onClick={() => {
+                      setDPLevel(category.level);
+                      setCollection(category.category);
+                      history.push(query_url);}}
                   >
                     Browse Catalog & Run Queries
                   </Button>
