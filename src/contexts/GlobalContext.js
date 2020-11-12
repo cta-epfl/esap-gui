@@ -12,7 +12,6 @@ export function GlobalContextProvider({ children }) {
     process.env.NODE_ENV === "development"
       ? "http://localhost:5555/esap-api/"
       : "/esap-api/";
-  // "http://localhost:15671/esap-api/"
   // "http://sdc.astron.nl:5557/esap-api/"
   const [config, setConfig] = useState();
   const [configName, setConfigName] = useState(defaultConf);
@@ -24,7 +23,16 @@ export function GlobalContextProvider({ children }) {
     }
     axios
       .get(api_host + "query/configuration" + configNameString)
-      .then((response) => setConfig(response.data["configuration"]));
+      .then((response) => {
+        let config = response.data["configuration"];
+        let props = config.query_schema.properties;
+        console.log("config props: ", props);
+        Object.keys(props).map((key) => {
+          if (key == "collection")
+            console.log("has key collection, default value is: ", props[key]["default"]);
+        });
+        setConfig(config);
+      });
   }, [api_host, configName]);
   console.log("config: ", { config });
 
@@ -35,6 +43,7 @@ export function GlobalContextProvider({ children }) {
       .then((response) => setArchives(response.data.results));
   }, [api_host]);
 
+  // !!!!! Still need to look at sessionid and stuff
   const [sessionid, setSessionid] = useState(getCookie("sessionid"));
   console.log("waah", sessionid, getCookie("sessionid"), document.cookie);
   const [isAuthenticated, setIsAuthenticated] = useState(

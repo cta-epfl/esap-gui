@@ -9,11 +9,11 @@ export default function FitsViewer() {
   console.log("fits url: ", url);
 
   return (
-    <div class="embed-responsive embed-responsive-16by9">
+    <div className="embed-responsive embed-responsive-16by9">
       <iframe
-        class="embed-responsive-item"
+        className="embed-responsive-item"
         src={url}
-        allowfullscreen
+        allowFullScreen
       ></iframe>
     </div>
   );

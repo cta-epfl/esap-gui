@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { QueryContextProvider } from "../../contexts/QueryContext";
 import {
   Container,
   Row,
@@ -76,7 +77,9 @@ export default function ArchiveDetails(props) {
             </Row>
             <Row className="pt-3">
               <Col>
-                <DataProductCategories archive={archive} />
+                <QueryContextProvider>
+                  <DataProductCategories archive={archive} />
+                </QueryContextProvider>
               </Col>
             </Row>
           </Col>

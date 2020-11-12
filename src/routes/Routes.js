@@ -21,10 +21,7 @@ export default function Routes() {
     <Router basename={config.frontend_basename}>
       <NavBar />
       <Switch>
-        <Route exact path="/">
-          <Archives />
-        </Route>
-        <Route exact path="/archives">
+        <Route exact path={["/", "/archives"]}>
           <Archives />
         </Route>
         <Route exact path="/rucio">

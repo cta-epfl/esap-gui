@@ -53,9 +53,8 @@ export default function VORegistryResults({ catalog }) {
                       display it with js9 */}
                     {(result.result.endsWith('.fits')) && 
                       <Button 
-                        value={result.result} 
-                        onClick={(event) => {
-                          setFits(event.target.value);
+                        onClick={() => {
+                          setFits(result.result);
                           history.push('/fitsviewer');
                         }}
                       >View fits</Button>}

@@ -1,12 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { ListGroup, Card, Button, Row, Col } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import { QueryContext } from "../../contexts/QueryContext";
 import axios from "axios";
 
 export default function DataProductCategories({ archive }) {
   const { api_host } = useContext(GlobalContext);
+  const { setDPLevel, setCategory } = useContext(QueryContext);
   const [categories, setCategories] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     axios
@@ -41,9 +44,15 @@ export default function DataProductCategories({ archive }) {
                 button = (
                   // need to add level (e.g raw) and category (e.g imaging) infomation to send to the form
                   // probably need to define onSubmit instead of point to query_url
-                  <Button as={NavLink} variant="outline-info" to={query_url}>
+                  <Button  
+                        onClick={() => {
+                          setDPLevel(category.level);
+                          setCategory(category.category);
+                          history.push(query_url);}}
+                  >
                     Browse Catalog & Run Queries
                   </Button>
+
                 );
               } else if (category.catalog_user_url_derived) {
                 button = (
