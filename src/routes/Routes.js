@@ -11,6 +11,7 @@ import { QueryContextProvider } from "../contexts/QueryContext";
 import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
 import { IVOAContextProvider } from "../contexts/IVOAContext";
+import FitsViewer from "../components/FitsViewer";
 
 export default function Routes() {
   const { config, handleLogin, handleLogout, handleError } = useContext(GlobalContext);
@@ -26,29 +27,29 @@ export default function Routes() {
         <Route exact path="/archives">
           <Archives />
         </Route>
-        <Route exact path="/query">
-          <QueryContextProvider>
-            <QueryCatalogs />
-          </QueryContextProvider>
-        </Route>
         <Route exact path="/rucio">
           <Rucio />
         </Route>
         <Route exact path="/interactive">
           <Interactive />
         </Route>
+        <Route exact path="/fitsviewer">
+          <QueryContextProvider>
+            <FitsViewer />
+          </QueryContextProvider>
+        </Route>
         <Route exact path="/login" component={handleLogin} />
         <Route exact path="/logout" component={handleLogout} />
         <Route exact path="/error" component={handleError} />
         <Route exact path="/archives/:uri" component={ArchiveDetails} />
-        <Route exact path="/archives/ivoa/query">
+        <Route exact path={["/vo-query", "/archives/ivoa/query"]}>
           <QueryContextProvider>
             <IVOAContextProvider>
               <QueryIVOARegistry />
             </IVOAContextProvider>
           </QueryContextProvider>
         </Route>
-        <Route exact path="/archives/:uri/query">
+        <Route exact path={["/adex-query", "/archives/:uri/query"]}>
           <QueryContextProvider>
             <QueryCatalogs />
           </QueryContextProvider>

@@ -7,6 +7,7 @@ export function QueryContextProvider({ children }) {
   const queryMap = useMap();
   const [formData, setFormData] = useState();
   const [page, setPage] = useState(1);
+  const [fits, setFits] = useState("https://uilennest.net/astrobase/data/191231001/3836665.fits");
   // const [category, setCategory] = useState();
   // const [level, setLevel] = useState();
 
@@ -18,6 +19,8 @@ export function QueryContextProvider({ children }) {
         queryMap,
         formData,
         setFormData,
+        fits,
+        setFits,
       }}
     >
       {children}

@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
-import { Alert, Table } from "react-bootstrap";
+import { Redirect, useHistory } from "react-router-dom";
+import { Alert, Table, Button } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 
 export default function VORegistryResults({ catalog }) {
-  const { queryMap, page, setPage } = useContext(QueryContext);
+  const { queryMap, page, setPage, setFits } = useContext(QueryContext);
+  const history = useHistory();
 
   if (!queryMap.get(catalog)) return null;
   console.log("VO service queryMap:", queryMap.get(catalog));
@@ -45,6 +47,18 @@ export default function VORegistryResults({ catalog }) {
                     <a href={result.result} rel="noopener noreferrer" download>
                       {result.result}
                     </a>
+                  </td>
+                  <td>
+                    {/* if results is in .fits format
+                      display it with js9 */}
+                    {(result.result.endsWith('.fits')) && 
+                      <Button 
+                        value={result.result} 
+                        onClick={(event) => {
+                          setFits(event.target.value);
+                          history.push('/fitsviewer');
+                        }}
+                      >View fits</Button>}
                   </td>
                 </tr>
               );
