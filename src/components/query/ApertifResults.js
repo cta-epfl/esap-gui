@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
-import { Table, Alert } from "react-bootstrap";
+import { Table, Alert, Row } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
+import HandlePreview from "./HandlePreview";
+import Preview from "./Preview";
 
 export default function ApertifResults({ catalog }) {
-  const { queryMap, page, setPage } = useContext(QueryContext);
+  const { queryMap, page, setPage, preview } = useContext(QueryContext);
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
     if (!("results" in queryMap.get(catalog).results))
@@ -47,6 +49,7 @@ export default function ApertifResults({ catalog }) {
           <tbody>
             {queryMap.get(catalog).results.results.map((result) => {
               return (
+                <>
                 <tr key={result.PID}>
                   {/* <th>
                   <InputGroup>
@@ -71,18 +74,11 @@ export default function ApertifResults({ catalog }) {
                     </a>
                   </td>
                   <td>
-                    {result.thumbnail ? (
-                      <a
-                        href={result.thumbnail}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="ml-3"
-                      >
-                        View Thumbnail
-                      </a>
-                    ) : null}
+                      <HandlePreview result={result} />
                   </td>
                 </tr>
+                {preview === result.url && <tr key={result.url}><Preview /></tr>}
+                </>
               );
             })}
           </tbody>

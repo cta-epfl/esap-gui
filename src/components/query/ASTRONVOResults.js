@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import { Table, Alert, Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { Table, Alert } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
+import HandlePreview from "./HandlePreview";
+import Preview from "./Preview";
 
 export default function ASTRONVOResults({ catalog }) {
-  const { queryMap, page, setPage, setFits } = useContext(QueryContext);
-  const history = useHistory();
+  const { queryMap, page, setPage, preview } = useContext(QueryContext);
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
     if (!("results" in queryMap.get(catalog).results))
@@ -49,46 +49,31 @@ export default function ASTRONVOResults({ catalog }) {
           <tbody>
             {queryMap.get(catalog).results.results.map((result) => {
               return (
-                <tr key={result.result}>
-                  {/* <th>
-                  <InputGroup>
-                    <InputGroup.Checkbox />
-                  </InputGroup>
-                </th> */}
-                  <td>{result.obs_collection}</td>
-                  <td>{Number(result.ra).toFixed(1)}</td>
-                  <td>{Number(result.dec).toFixed(1)}</td>
-                  <td>{Number(result.fov).toFixed(1)}</td>
-                  <td>{result.dataproduct_type}</td>
-                  <td>{result.calibration_level}</td>
-                  <td>{Number((result.size / 1024).toFixed(1))} MB</td>
-                  <td>
-                    <a href={result.url} rel="noopener noreferrer" download>
-                      Download data
-                    </a>
-                  </td>
-                  <td>
-                    {/* if results is in .fits format and is smaller than 10 MB,
-                      display it with js9 */}
-                    {((result.url.includes('fits')  || (result.url.includes('FITS'))) && 
-                      Number(result.size) < 10000) ? 
-                      (<Button 
-                        onClick={() => {
-                          setFits(result.result);
-                          history.push('/fitsviewer');
-                        }}
-                      >View fits with DS9</Button>) :
-                      (result.thumbnail && (
-                        <a
-                          href={result.thumbnail}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ml-3"
-                        >
-                          View Thumbnail
-                        </a>))}
-                  </td>
-                </tr>
+                <>
+                  <tr key={result.url}>
+                    {/* <th>
+                      <InputGroup>
+                        <InputGroup.Checkbox />
+                      </InputGroup>
+                      </th> */}
+                    <td>{result.obs_collection}</td>
+                    <td>{Number(result.ra).toFixed(1)}</td>
+                    <td>{Number(result.dec).toFixed(1)}</td>
+                    <td>{Number(result.fov).toFixed(1)}</td>
+                    <td>{result.dataproduct_type}</td>
+                    <td>{result.calibration_level}</td>
+                    <td>{Number((result.size / 1024).toFixed(1))} MB</td>
+                    <td>
+                      <a href={result.url} rel="noopener noreferrer" download>
+                        Download data
+                      </a>
+                    </td>
+                    <td>
+                      <HandlePreview result={result} />
+                    </td>
+                  </tr>
+                  {preview === result.url && <tr key={result.url}><Preview /></tr>}
+                </>
               );
             })}
           </tbody>

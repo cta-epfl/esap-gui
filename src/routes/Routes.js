@@ -11,7 +11,6 @@ import { QueryContext } from "../contexts/QueryContext";
 import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
 import { IVOAContextProvider } from "../contexts/IVOAContext";
-import FitsViewer from "../components/FitsViewer";
 
 export default function Routes() {
   const { handleLogin, handleLogout, handleError } = useContext(GlobalContext);
@@ -30,9 +29,6 @@ export default function Routes() {
         </Route>
         <Route exact path="/interactive">
           <Interactive />
-        </Route>
-        <Route exact path="/fitsviewer">
-          <FitsViewer />
         </Route>
         <Route exact path="/login" component={handleLogin} />
         <Route exact path="/logout" component={handleLogout} />

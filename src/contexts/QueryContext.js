@@ -10,12 +10,14 @@ export function QueryContextProvider({ children }) {
   const queryMap = useMap();
   const [formData, setFormData] = useState();
   const [page, setPage] = useState(1);
-  const [fits, setFits] = useState("https://uilennest.net/astrobase/data/191231001/3836665.fits");
+  const [url, setURL] = useState("https://uilennest.net/astrobase/data/191231001/3836665.fits");
   const [dplevel, setDPLevel] = useState();
   const [collection, setCollection] = useState();
   const [config, setConfig] = useState();
   const [configName, setConfigName] = useState(defaultConf);
   const { api_host } = useContext(GlobalContext);
+  const [preview, setPreview] = useState(false);
+  const [ds9, setDS9] = useState(false);
 
   useEffect(() => {
     let configNameString = "";
@@ -53,8 +55,8 @@ export function QueryContextProvider({ children }) {
         queryMap,
         formData,
         setFormData,
-        fits,
-        setFits,
+        url,
+        setURL,
         dplevel,
         setDPLevel,
         collection,
@@ -62,6 +64,10 @@ export function QueryContextProvider({ children }) {
         config,
         setConfigName,
         defaultConf,
+        ds9,
+        setDS9,
+        preview,
+        setPreview,
       }}
     >
       {children}
