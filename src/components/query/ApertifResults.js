@@ -41,6 +41,7 @@ export default function ApertifResults({ catalog }) {
               <th>Data Product Type</th>
               <th>Data Product Subtype</th>
               <th>Link to data</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -64,17 +65,20 @@ export default function ApertifResults({ catalog }) {
                       href={result.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      download
                     >
-                      View data
+                      Download data
                     </a>
-                    {result.dataProductSubType === "continuumMF" ? (
+                  </td>
+                  <td>
+                    {result.thumbnail ? (
                       <a
                         href={result.thumbnail}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="ml-3"
                       >
-                        Thumbnail
+                        View Thumbnail
                       </a>
                     ) : null}
                   </td>

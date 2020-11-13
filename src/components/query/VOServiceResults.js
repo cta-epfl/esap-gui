@@ -37,6 +37,7 @@ export default function VORegistryResults({ catalog }) {
           <thead>
             <tr className="bg-light">
               <th>Link to data</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -49,15 +50,25 @@ export default function VORegistryResults({ catalog }) {
                     </a>
                   </td>
                   <td>
-                    {/* if results is in .fits format
-                      display it with js9 */}
-                    {(result.result.endsWith('.fits')) && 
-                      <Button 
+                    {/* if results is in .fits format and is smaller than 10 MB,
+                    display it with js9 */}
+                    {((result.result.includes('fits')  || (result.result.includes('FITS'))) && 
+                      Number(result.size) < 10000) ? 
+                      (<Button 
                         onClick={() => {
                           setFits(result.result);
                           history.push('/fitsviewer');
                         }}
-                      >View fits</Button>}
+                      >View fits with DS9</Button>) :
+                      (result.thumbnail && (
+                        <a
+                          href={result.thumbnail}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-3"
+                        >
+                          View Thumbnail
+                        </a>))}
                   </td>
                 </tr>
               );

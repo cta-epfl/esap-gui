@@ -46,8 +46,9 @@ export default function DataProductCategories({ archive }) {
                   // probably need to define onSubmit instead of point to query_url
                   <Button  
                     onClick={() => {
+                      console.log('onClick', category)
                       setDPLevel(category.level);
-                      setCollection(category.category);
+                      setCollection(category.collection);
                       history.push(query_url);}}
                   >
                     Browse Catalog & Run Queries

@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
-import { Table, Alert } from "react-bootstrap";
+import { Table, Alert, Button } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 
 export default function ASTRONVOResults({ catalog }) {
-  const { queryMap, page, setPage } = useContext(QueryContext);
+  const { queryMap, page, setPage, setFits } = useContext(QueryContext);
+  const history = useHistory();
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
     if (!("results" in queryMap.get(catalog).results))
@@ -41,6 +43,7 @@ export default function ASTRONVOResults({ catalog }) {
               <th>Calibration Level</th>
               <th>Size</th>
               <th>Link to data</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -61,8 +64,29 @@ export default function ASTRONVOResults({ catalog }) {
                   <td>{Number((result.size / 1024).toFixed(1))} MB</td>
                   <td>
                     <a href={result.url} rel="noopener noreferrer" download>
-                      Download
+                      Download data
                     </a>
+                  </td>
+                  <td>
+                    {/* if results is in .fits format and is smaller than 10 MB,
+                      display it with js9 */}
+                    {((result.url.includes('fits')  || (result.url.includes('FITS'))) && 
+                      Number(result.size) < 10000) ? 
+                      (<Button 
+                        onClick={() => {
+                          setFits(result.result);
+                          history.push('/fitsviewer');
+                        }}
+                      >View fits with DS9</Button>) :
+                      (result.thumbnail && (
+                        <a
+                          href={result.thumbnail}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-3"
+                        >
+                          View Thumbnail
+                        </a>))}
                   </td>
                 </tr>
               );
