@@ -12,7 +12,7 @@ export function GlobalContextProvider({ children }) {
     process.env.NODE_ENV === "development"
       ? "http://localhost:5555/esap-api/"
       : "/esap-api/";
-  // "http://sdc.astron.nl:5557/esap-api/"
+  // "https://sdc.astron.nl:5555/esap-api/"
 
   const [archives, setArchives] = useState();
   useEffect(() => {

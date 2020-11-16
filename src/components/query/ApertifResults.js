@@ -77,7 +77,15 @@ export default function ApertifResults({ catalog }) {
                       <HandlePreview result={result} />
                   </td>
                 </tr>
-                {preview === result.url && <tr key={result.url}><Preview /></tr>}
+                {preview === result.url && 
+                    <tr key={result.url}>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td colSpan="4" ><Preview /></td>
+                      <td></td>
+                    </tr>}
                 </>
               );
             })}

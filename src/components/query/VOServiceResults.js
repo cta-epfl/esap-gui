@@ -58,7 +58,7 @@ export default function VORegistryResults({ catalog }) {
                           onClick={() => {
                             preview ? setPreview("") : setPreview(result.result);
                             setURL(result.result);
-                            setDS9(true);
+                            //setDS9(true);
                           }}
                         >View fits with DS9</Button>) :
                         (result.thumbnail && (
@@ -73,7 +73,10 @@ export default function VORegistryResults({ catalog }) {
                       ))}
                     </td>
                   </tr>
-                  {preview === result.url && <tr key={result.url}><Preview /></tr>}
+                  {preview === result.result && 
+                    <tr key={result.result}>
+                      <td colSpan="2" ><Preview /></td>
+                    </tr>}
                 </>
               );
             })}
