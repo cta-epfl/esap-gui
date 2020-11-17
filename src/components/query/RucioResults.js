@@ -1,10 +1,9 @@
-import React, { useContext, useState } from "react";
-import { Table, Alert, Form, Button } from "react-bootstrap";
-import * as deepEqual from "deep-equal";
+import React, { useContext } from "react";
+import { Table, Alert, Form } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 // import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
-import Paginate, { pagination_fields } from "../Paginate";
+import Paginate from "../Paginate";
 // import SaveBasket from "../basket/savebasket";
 
 function titleCase(string) {

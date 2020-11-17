@@ -17,7 +17,7 @@ export default function ParseVOServiceForm(formData, access_url, page) {
       query += `${`${query}` ? "&" : ""}` + key + "=" + value;
     }
   }
-  query += `${`${query}` ? "&" : ""}` + "access_url=" + access_url;
+  query += `${`${query}` ? "&" : ""}access_url=${access_url}`;
 
   console.log("Query:", query);
   // If catalog is set to "all", query for each catalog needs to be generated

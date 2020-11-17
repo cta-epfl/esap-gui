@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import Form from "react-jsonschema-form";
@@ -20,7 +20,6 @@ export default function QueryCatalogs() {
     GlobalContext
   );
   const { uri } = useParams();
-  const history = useHistory();
   console.log("uri:", uri);
   console.log("default conf:", defaultConf);
 
@@ -44,6 +43,8 @@ export default function QueryCatalogs() {
         break;
       case "lofar":
         setConfigName("lofar");
+        break;
+      default:
         break;
     }
     return () => {

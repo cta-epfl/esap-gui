@@ -33,14 +33,15 @@ export function QueryContextProvider({ children }) {
         console.log("collection value: ", collection);
         console.log("dplevel value: ", dplevel);
         Object.keys(props).map((key) => {
-          if (key == "collection" && collection) {
+          if (key === "collection" && collection) {
             console.log("has key collection, default value is: ", props[key]["default"]);
             props[key]["default"] = collection;
           }
-          if (key == "level" && dplevel) {
+          if (key === "level" && dplevel) {
             console.log("has key dplevel, default value is: ", props[key]["default"]);
             props[key]["default"] = dplevel;
           }
+          return null;
         });
         setConfig(config);
       });

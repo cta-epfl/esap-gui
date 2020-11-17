@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext } from "react";
 import * as deepEqual from "deep-equal";
 import { Form } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";

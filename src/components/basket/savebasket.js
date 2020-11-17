@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext } from "react";
 import { Button } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 export default function SaveBasket(props) {
-  const { api_host, isAuthenticated, sessionid } = useContext(GlobalContext);
+  const { api_host, isAuthenticated } = useContext(GlobalContext);
   const basketContext = useContext(BasketContext);
 
   function saveBasket(basketData){

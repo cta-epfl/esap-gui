@@ -209,12 +209,12 @@ export default function QueryIVOARegistry() {
           const details = queryMap.get(catalog);
           console.log("Details:", details);
           console.log("Results:", details.results);
-          let catalogName =
-            config.query_schema.properties.catalog.enumNames[
-              config.query_schema.properties.catalog.enum.findIndex(
-                (name) => name === catalog
-              )
-            ];
+          // let catalogName =
+          //   config.query_schema.properties.catalog.enumNames[
+          //     config.query_schema.properties.catalog.enum.findIndex(
+          //       (name) => name === catalog
+          //     )
+          //   ];
           return (
             <div key={catalog} className="mt-3">
               <Row>

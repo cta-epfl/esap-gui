@@ -10,7 +10,8 @@ export default function Preview() {
         {console.log("url: ", url)}
         {(preview &&
             (ds9 ? 
-            <iframe
+            <iframe 
+                title="DS9"
                 className="embed-responsive-item"
                 height="700"
                 width="700"

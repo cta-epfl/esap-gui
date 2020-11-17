@@ -1,6 +1,4 @@
 import React, { useState, createContext } from "react";
-import Databasket from "../components/basket/databasket";
-import Addtobasket from "../components/basket/addtobasket";
 
 export const BasketContext = createContext();
 

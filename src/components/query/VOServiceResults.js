@@ -1,15 +1,12 @@
 import React, { useContext } from "react";
-import { Alert, Table, Button } from "react-bootstrap";
-import axios from "axios";  
-import { GlobalContext } from "../../contexts/GlobalContext";
+import { Alert, Table, Button } from "react-bootstrap"; 
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import Preview from "./Preview";
 
 export default function VORegistryResults({ catalog }) {
-  const { queryMap, page, setPage, preview, setPreview, setURL, setDS9 } = useContext(QueryContext);
-  const { api_host } = useContext(GlobalContext);
+  const { queryMap, page, setPage, preview, setPreview, setURL } = useContext(QueryContext);
 
   if (!queryMap.get(catalog)) return null;
   console.log("VO service queryMap:", queryMap.get(catalog));
@@ -52,6 +49,7 @@ export default function VORegistryResults({ catalog }) {
                   indice.push(index);
                   return (<th>{field.name}</th>);
                 }
+                return null;
               })}
             </tr>
           </thead>
@@ -90,6 +88,7 @@ export default function VORegistryResults({ catalog }) {
                         }
                         return (<td>{field}</td>) ;
                       }
+                      return null;
                     })}
                   </tr>
                   { 
@@ -111,5 +110,4 @@ export default function VORegistryResults({ catalog }) {
   } else {
     return <LoadingSpinner />;
   }
-  return null;
 }

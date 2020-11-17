@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Table, Alert, Row } from "react-bootstrap";
+import { Table, Alert } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";

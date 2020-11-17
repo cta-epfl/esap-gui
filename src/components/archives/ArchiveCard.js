@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Container, Row, Button, Image } from "react-bootstrap";
+import { Card, Button, Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 // display a single archive on a card

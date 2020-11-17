@@ -1,5 +1,4 @@
 import React, { createContext, useState } from "react";
-import useMap from "../hooks/useMap";
 
 export const IVOAContext = createContext();
 

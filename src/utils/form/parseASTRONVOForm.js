@@ -21,7 +21,7 @@ export default function ParseASTRONVOForm(formData, page) {
   let catalog = formInput.find(([key]) => key === "catalog")[1];
   let esapquery = query + `${`${query}` ? "&" : ""}archive_uri=` + catalog; //+ `&page=${page}`
   // testing api with page=1, failing at the backend at the moment
-  page == 1 ? console.log("Page number is 1") : (esapquery += `&page=${page}`);
+  page === 1 ? console.log("Page number is 1") : (esapquery += `&page=${page}`);
   queries.push({
     catalog: catalog,
     esapquery: esapquery,

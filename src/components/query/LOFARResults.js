@@ -2,10 +2,9 @@ import React, { useContext } from "react";
 import { Table, Alert } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
-import Paginate from "../Paginate";
 
 export default function LOFARResults({ catalog }) {
-  const { queryMap, page, setPage } = useContext(QueryContext);
+  const { queryMap } = useContext(QueryContext);
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
     if (!("results" in queryMap.get(catalog).results))
@@ -13,7 +12,7 @@ export default function LOFARResults({ catalog }) {
     if (queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
 
-    const numPages = queryMap.get(catalog).results.pages;
+    //const numPages = queryMap.get(catalog).results.pages;
     console.log("Query results:", queryMap.get(catalog).results.results);
     return (
       <>
