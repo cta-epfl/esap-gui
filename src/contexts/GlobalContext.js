@@ -10,9 +10,10 @@ export function GlobalContextProvider({ children }) {
   console.log("ASTRON ESAP version ", Date());
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "http://localhost:5555/esap-api/"
+      ? "https://sdc.astron.nl:5555/esap-api/"
       : "/esap-api/";
   // "https://sdc.astron.nl:5555/esap-api/"
+  // "http://localhost:5555/esap-api/"
 
   const [archives, setArchives] = useState();
   useEffect(() => {

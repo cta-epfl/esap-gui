@@ -3,10 +3,10 @@ import { Image } from 'react-bootstrap';
 import { QueryContext } from '../../contexts/QueryContext';
 
 export default function Preview() {
-    const { preview, ds9, url, key  } = useContext(QueryContext);
+    const { preview, ds9, url } = useContext(QueryContext);
     return (
         <>
-        {console.log("key: ", key)}
+        {console.log("preview: ", preview)}
         {console.log("url: ", url)}
         {(preview &&
             (ds9 ? 
