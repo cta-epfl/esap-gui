@@ -1,16 +1,14 @@
 import React from "react";
-import { Card, Container, Row, Button, Image } from "react-bootstrap";
+import { Card, Button, Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
 // display a single archive on a card
 export default function ArchiveCard({ archive }) {
   return (
-    <Card className="card-description">
+    <Card>
       <Card.Body>
         <Card.Title className="h2">{archive.name}</Card.Title>
-        <Container fluid>
-          <Row>
-            <Card className="card-description">
+          <Card className="card-description">
               <Card.Body>
                 <Image
                   className="mx-auto d-block"
@@ -21,19 +19,24 @@ export default function ArchiveCard({ archive }) {
                 <Card.Title className="h3 pt-3">{archive.short_description}</Card.Title>
                 <Card.Text className="text-justify">{archive.long_description}</Card.Text>
               </Card.Body>
+          </Card>
+        {/* <Container fluid>
+          <Row>
+            
             </Card>
           </Row>
           <Row className="p-2">
-            <Button
-              className="mx-auto"
+            
+          </Row>
+        </Container> */}
+        <Button
+              className="mt-3"
               as={NavLink}
               variant="outline-info"
               to={`/archives/${archive.uri}`}
             >
               Visit {archive.name} Archives
-            </Button>
-          </Row>
-        </Container>
+        </Button>
       </Card.Body>
     </Card>
   );

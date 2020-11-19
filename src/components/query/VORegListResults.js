@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Table, Alert, InputGroup } from "react-bootstrap";
 import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import { IVOAContext } from "../../contexts/IVOAContext";
 
-export default function VORegistryResults({ catalog }) {
+export default function VORegListResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);
   const {
     selectedRegistry,
@@ -13,6 +13,8 @@ export default function VORegistryResults({ catalog }) {
     removeRegistry,
     registryList,
     setRegistryList,
+    regPage,
+    setRegPage,
   } = useContext(IVOAContext);
   // const [checkAll, setCheckAll] = useState("");
 
@@ -35,8 +37,20 @@ export default function VORegistryResults({ catalog }) {
     setRegistryList(queryMap.get(catalog).results.results);
     console.log("Registry List:", registryList);
 
+    const numPages = queryMap.get(catalog).results.pages;
+
     return (
       <>
+        <Paginate
+          getNewPage={(args) => {
+            return args.target
+              ? setRegPage(parseFloat(args.target.text))
+              : null;
+          }}
+          currentPage={regPage}
+          numAdjacent={3}
+          numPages={numPages}
+        />
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
@@ -60,7 +74,7 @@ export default function VORegistryResults({ catalog }) {
                   />
                 </InputGroup>
               </th>
-              <th>Name</th>
+              <th>Resource</th>
               <th>Access URL</th>
               <th>Waveband</th>
               <th>Title</th>
@@ -96,7 +110,6 @@ export default function VORegistryResults({ catalog }) {
             })}
           </tbody>
         </Table>
-        {/* <Paginate /> */}
       </>
     );
   } else {

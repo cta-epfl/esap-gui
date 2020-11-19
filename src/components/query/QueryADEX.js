@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import Form from "react-jsonschema-form";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { BasketContextProvider } from "../../contexts/BasketContext"
 import { QueryContext } from "../../contexts/QueryContext";
 import QueryResults from "./QueryResults";
 import parseQueryForm from "../../utils/form/parseQueryForm";
@@ -20,6 +19,7 @@ export default function QueryCatalogs() {
     GlobalContext
   );
   const { uri } = useParams();
+  const history = useHistory();
   console.log("uri:", uri);
   console.log("default conf:", defaultConf);
 
@@ -35,23 +35,18 @@ export default function QueryCatalogs() {
       case "zooniverse":
         setConfigName("zooniverse");
         break;
-      case "esap_rucio":
-        setConfigName("esap_rucio");
-        break;
       case "astron_vo":
         setConfigName("astron_vo");
         break;
       case "lofar":
         setConfigName("lofar");
         break;
-      default:
-        break;
     }
     return () => {
       console.log("cleaned up");
       queryMap.clear();
       setFormData();
-      setConfigName(defaultConf);
+      setConfigName(uri);
     };
   }, [uri]);
 
@@ -121,6 +116,16 @@ export default function QueryCatalogs() {
         schema={config.query_schema}
         ObjectFieldTemplate={formTemplate}
         formData={formData}
+        onBlur={(field, value) => {
+          if (field == "root_catalog") {
+            console.log("Change query catalog to : ", value);
+            if (value == "adex") {
+              history.push("/query");
+            } else {
+              history.push("/archives/" + value + "/query");
+            }
+          }
+        }}
         onSubmit={({ formData }) => setFormData(formData)}
         {...uiSchemaProp}
       ></Form>
@@ -138,9 +143,7 @@ export default function QueryCatalogs() {
         return (
           <div key={catalog} className="mt-3">
             <h4>Query results for {catalogName}</h4>
-            <BasketContextProvider>
-              <QueryResults catalog={catalog} />
-            </BasketContextProvider>
+            <QueryResults catalog={catalog} />
           </div>
         );
       })}

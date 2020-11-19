@@ -17,11 +17,16 @@ export default function QueryIVOARegistry() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { queryMap, formData, setFormData } = useContext(QueryContext);
-  const { config, api_host, setConfigName } = useContext(GlobalContext);
-  const { selectedRegistry, queryStep, setQueryStep } = useContext(IVOAContext);
+  const { config, setConfigName, defaultConf, queryMap, formData, setFormData, page } = useContext(QueryContext);
+  const { api_host } = useContext(
+    GlobalContext
+  );
+  const { selectedRegistry, queryStep, setQueryStep, regPage } = useContext(
+    IVOAContext
+  );
   const { uri } = useParams();
   console.log("uri:", uri);
+  console.log("default conf: ", defaultConf);
 
   // set ConfigName for archive
   useEffect(() => {
@@ -46,7 +51,7 @@ export default function QueryIVOARegistry() {
     }
     return () => {
       console.log("Set configuration back to default!");
-      setConfigName("esap_ivoa");
+      setConfigName(defaultConf);
     };
   }, [uri]);
 
@@ -59,16 +64,17 @@ export default function QueryIVOARegistry() {
 
     if (queryStep === "run-query") {
       selectedRegistry.forEach((access_url) => {
-        queries = [...queries, ...parseVOServiceForm(formData, access_url)];
+        queries = [
+          ...queries,
+          ...parseVOServiceForm(formData, access_url, page),
+        ];
       });
     } else {
-      queries = parseQueryForm(gui, formData);
+      queries = parseQueryForm(gui, formData, regPage);
     }
 
     console.log("queries:", queries);
 
-    // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
-    // This is under development in the backend at the moment
     queryMap.clear();
     queries.forEach((query) => {
       queryMap.set(query.catalog, {
@@ -82,25 +88,43 @@ export default function QueryIVOARegistry() {
       axios
         .get(url)
         .then((queryResponse) => {
-          queryMap.set(query.catalog, {
-            catalog: query.catalog,
-            service_type: query.service_type,
-            esapquery: query.esapquery,
-            status: "fetched",
-            results: queryResponse.data,
-          });
+          if(queryStep === "run-query") {
+          let tf_url = api_host + "query/get-tables-fields/?dataset_uri=vo_reg&access_url=" + query.catalog;
+          console.log("table fields url: ", tf_url);
+          axios
+            .get(tf_url)
+            .then((tfResponse) => {
+              queryMap.set(query.catalog, {
+                catalog: query.catalog,
+                service_type: query.service_type,
+                vo_table_schema: tfResponse.data.results.find((item) => item.table_name === "ivoa.obscore"),
+                esapquery: query.esapquery,
+                status: "fetched",
+                results: queryResponse.data,
+              });
+            })
+          }
+          else {
+            queryMap.set(query.catalog, {
+              catalog: query.catalog,
+              service_type: query.service_type,
+              esapquery: query.esapquery,
+              status: "fetched",
+              results: queryResponse.data,
+          })};                      
         })
         .catch(() => {
           queryMap.set(query.catalog, {
             catalog: query.catalog,
             service_type: query.service_type,
+            vo_table_schema:"",
             esapquery: query.esapquery,
             status: "error",
             results: null,
           });
         });
     });
-  }, [formData]);
+  }, [formData, page, regPage]);
 
   function formTemplate({ TitleField, properties, title, description }) {
     return (
@@ -132,6 +156,7 @@ export default function QueryIVOARegistry() {
       query: { "ui:widget": "textarea" },
       keyword: { "ui:widget": "hidden" },
       tap_schema: { "ui:widget": "hidden" },
+      waveband: { "ui:widget": "hidden" },
     };
     console.log("new ui schema:", uiSchemaProp);
     return (
@@ -176,7 +201,7 @@ export default function QueryIVOARegistry() {
           {...uiSchemaProp}
         >
           <div>
-            <Button type="submit">Get Registry Services</Button>
+            <Button type="submit">Query VO Registry</Button>
           </div>
         </Form>
         {Array.from(queryMap.keys()).map((catalog) => {
@@ -184,17 +209,17 @@ export default function QueryIVOARegistry() {
           const details = queryMap.get(catalog);
           console.log("Details:", details);
           console.log("Results:", details.results);
-          let catalogName =
-            config.query_schema.properties.catalog.enumNames[
-              config.query_schema.properties.catalog.enum.findIndex(
-                (name) => name === catalog
-              )
-            ];
+          // let catalogName =
+          //   config.query_schema.properties.catalog.enumNames[
+          //     config.query_schema.properties.catalog.enum.findIndex(
+          //       (name) => name === catalog
+          //     )
+          //   ];
           return (
             <div key={catalog} className="mt-3">
               <Row>
                 <Col>
-                  <h4>List of registries</h4>
+                  <h4>List of resources</h4>
                 </Col>
                 <Col>
                   {selectedRegistry.length === 0 ? (
@@ -206,7 +231,7 @@ export default function QueryIVOARegistry() {
                         setQueryStep("run-query");
                       }}
                     >
-                      Query selected registry
+                      Query selected resources
                     </Button>
                   )}
                 </Col>

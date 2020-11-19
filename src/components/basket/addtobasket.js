@@ -1,19 +1,39 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import * as deepEqual from "deep-equal";
+import { Form } from "react-bootstrap";
+import { GlobalContext } from "../../contexts/GlobalContext";
+import { BasketContext } from "../../contexts/BasketContext";
 
-export default function Addtobasket({ add }) {
-  const [info, setInfo] = useState("");
+export default function Addtobasket(props) {
+  const { isAuthenticated } = useContext(GlobalContext);
+  const basketContext = useContext(BasketContext);
 
-  return (
-    // input field is only here for testing
-    // this will be replaced by real dataset later.
-    <div className="Item">
-      <input
-        type="text"
-        placeholder="New dataset info"
-        value={info}
-        onChange={(e) => setInfo(e.target.value)}
-      ></input>
-      <button onClick={() => add(info)}>Add to basket</button>
-    </div>
-  );
+  function isInBasket(testBasketItem) {
+    const found = basketContext.datasets.some(basketItem => deepEqual(basketItem, testBasketItem));
+    return found;
+  }
+
+  function addToBasket(addToBasketItem) {
+    basketContext.add(addToBasketItem);
+    console.log([addToBasketItem, basketContext]);
+  }
+
+  function removeFromBasket(removeFromBasketItem) {
+    basketContext.remove(removeFromBasketItem);
+    console.log([removeFromBasketItem, basketContext]);
+  }
+
+  if (isAuthenticated){
+    return (
+      <Form.Check id={props.id} type="checkbox" onChange={(event) => {
+        const action = event.target.checked ? addToBasket : removeFromBasket;
+        action(props.item);
+      }} checked={isInBasket(props.item) ? "checked" : ""} />
+    );
+  }
+  else{
+    return (
+      <Form.Check id={props.id} type="checkbox" disabled />
+    );
+  }
 }

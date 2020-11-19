@@ -1,29 +1,19 @@
 import React, { createContext, useState, useEffect } from "react";
+import { Alert } from "react-bootstrap";
 import axios from "axios";
 import getCookie from "../utils/getCookie";
 
 export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
+  
   console.log("ASTRON ESAP version ", Date());
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "http://sdc.astron.nl:5555/esap-api/"
+      ? "https://sdc.astron.nl:5555/esap-api/"
       : "/esap-api/";
-
-  const [config, setConfig] = useState();
-  const [configName, setConfigName] = useState("esap_ivoa");
-
-  useEffect(() => {
-    let configNameString = "";
-    if (configName) {
-      configNameString = `?name=${configName}`;
-    }
-    axios
-      .get(api_host + "query/configuration" + configNameString)
-      .then((response) => setConfig(response.data["configuration"]));
-  }, [api_host, configName]);
-  console.log("config: ", { config });
+  // "https://sdc.astron.nl:5555/esap-api/"
+  // "http://localhost:5555/esap-api/"
 
   const [archives, setArchives] = useState();
   useEffect(() => {
@@ -32,6 +22,7 @@ export function GlobalContextProvider({ children }) {
       .then((response) => setArchives(response.data.results));
   }, [api_host]);
 
+  // !!!!! Still need to look at sessionid and stuff
   const [sessionid, setSessionid] = useState(getCookie("sessionid"));
   console.log("waah", sessionid, getCookie("sessionid"), document.cookie);
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -52,17 +43,29 @@ export function GlobalContextProvider({ children }) {
     return null;
   };
 
+  const handleError = (event) => {
+    setIsAuthenticated(false);
+    setSessionid(null);
+
+    return (
+      <>
+      <Alert variant="warning">An error has occurred during login!</Alert>
+      <Alert variant="warning">{event.staticContext}</Alert>
+      </>
+    );
+  };
+  
+
   return (
     <GlobalContext.Provider
       value={{
         api_host,
         isAuthenticated,
         sessionid,
-        config,
         archives,
         handleLogin,
         handleLogout,
-        setConfigName,
+        handleError,
       }}
     >
       {children}

@@ -3,10 +3,10 @@ import { Navbar, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import AuthControl from "./auth/authControl";
 
-import { GlobalContext } from "../contexts/GlobalContext";
+import { QueryContext } from "../contexts/QueryContext";
 
 export default function NavBar() {
-  const { config } = useContext(GlobalContext);
+  const { config } = useContext(QueryContext);
   if (!config) return null;
   // construct the navigation bar based on the configuration
   const navlist = config.navbar;

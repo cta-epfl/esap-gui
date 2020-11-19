@@ -1,4 +1,4 @@
-export default function ParseVOServiceForm(formData, access_url) {
+export default function ParseVOServiceForm(formData, access_url, page) {
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
@@ -17,7 +17,7 @@ export default function ParseVOServiceForm(formData, access_url) {
       query += `${`${query}` ? "&" : ""}` + key + "=" + value;
     }
   }
-  query += `${`${query}` ? "&" : ""}` + "access_url=" + access_url;
+  query += `${`${query}` ? "&" : ""}access_url=${access_url}`;
 
   console.log("Query:", query);
   // If catalog is set to "all", query for each catalog needs to be generated
@@ -29,7 +29,11 @@ export default function ParseVOServiceForm(formData, access_url) {
   let service_type = formInput.find(([key]) => key === "service_type")[1];
 
   let esapquery =
-    "query/?" + query + `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
+    "query/?" +
+    query +
+    `${`${query}` ? "&" : ""}dataset_uri=` +
+    catalog +
+    `&page=${page}`;
 
   queries.push({
     catalog: access_url,
