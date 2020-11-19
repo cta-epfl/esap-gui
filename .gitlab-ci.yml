@@ -9,8 +9,8 @@ build-esap-gui:
       - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install npm -y )'
     script:
       - echo "Building deploy package"
-      - npm install
-      - npm build
+      - yarn install
+      - yarn build
       - echo "Build successful"
     artifacts:
         expire_in: 1 hour
