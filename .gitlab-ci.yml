@@ -1,7 +1,9 @@
 stages:
     - build
     - deploy
-build:
+
+build-esap-gui:
+    image: docker:latest
     stage: build
     before_script:
       - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install npm -y )'
@@ -14,7 +16,8 @@ build:
         expire_in: 1 hour
         paths:
             - build
-deploy_production:
+
+deploy-esap-gui:
     stage: deploy
     before_script:
       - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
