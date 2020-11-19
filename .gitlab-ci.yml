@@ -4,9 +4,11 @@ stages:
 
 build-esap-gui:
     stage: build
+    image: node:latest
     before_script:
-      - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install yarn npm -y )'
+      - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install npm -y )'
     script:
+      - node -v
       - npm -version
       - echo "Building deploy package"
       - npm install
