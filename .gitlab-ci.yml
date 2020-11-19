@@ -12,7 +12,7 @@ build-esap-gui:
       - npm -version
       - echo "Building deploy package"
       - npm install
-      - npm run build
+      - CI= npm run build
       - ls
       - echo "Build successful"
     artifacts:
