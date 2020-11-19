@@ -1,0 +1,40 @@
+stages:
+    - build
+    - deploy
+
+build-esap-gui:
+    stage: build
+    image: node:latest
+    before_script:
+      - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    script:
+      - node -v
+      - npm -version
+      - echo "Building deploy package"
+      - npm install
+      - CI= npm run build
+      - ls
+      - echo "Build successful"
+    artifacts:
+        expire_in: 1 hour
+        paths:
+            - build
+
+deploy-esap-gui:
+    stage: deploy
+    before_script:
+      - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+      - eval $(ssh-agent -s)
+      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+      - mkdir -p ~/.ssh
+      - chmod 700 ~/.ssh
+      - ssh-keyscan sdc.astron.nl >> ~/.ssh/known_hosts
+      - chmod 644 ~/.ssh/known_hosts
+    script:
+        - echo "Deploying to server"
+        - scp -r build/static/* vermaas@sdc.astron.nl:~/shared/static
+        - scp -r build/* vermaas@sdc.astron.nl:~/shared/public_html/esap-gui
+        - echo "Deployed"
+    when: manual
+    only:
+        - esap-gui-dev

@@ -7,11 +7,11 @@ export const GlobalContext = createContext();
 
 export function GlobalContextProvider({ children }) {
   
-  console.log("ASTRON ESAP version ", Date());
+  console.log("ASTRON ESAP version 19 nov 2020 - 16:00");
   const api_host =
     process.env.NODE_ENV === "development"
       ? "https://sdc.astron.nl:5555/esap-api/"
-      : "/esap-api/";
+      : "https://sdc.astron.nl:5555/esap-api/";
   // "https://sdc.astron.nl:5555/esap-api/"
   // "http://localhost:5555/esap-api/"
 
