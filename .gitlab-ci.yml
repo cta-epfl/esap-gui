@@ -3,11 +3,13 @@ stages:
     - deploy
 build:
     stage: build
+    before_script:
+      - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install npm -y )'
     script:
-        - echo "Building deploy package"
-        - yarn install
-        - yarn build
-        - echo "Build successful"
+      - echo "Building deploy package"
+      - npm install
+      - npm build
+      - echo "Build successful"
     artifacts:
         expire_in: 1 hour
         paths:
