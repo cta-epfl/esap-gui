@@ -13,6 +13,7 @@ build-esap-gui:
       - echo "Building deploy package"
       - npm install
       - npm build
+      - ls
       - echo "Build successful"
     artifacts:
         expire_in: 1 hour
