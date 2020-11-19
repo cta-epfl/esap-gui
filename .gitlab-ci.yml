@@ -3,14 +3,14 @@ stages:
     - deploy
 
 build-esap-gui:
-    image: docker:latest
     stage: build
     before_script:
       - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install yarn npm -y )'
     script:
+      - npm -version
       - echo "Building deploy package"
-      - yarn install
-      - yarn build
+      - npm install
+      - npm build
       - echo "Build successful"
     artifacts:
         expire_in: 1 hour
