@@ -15,7 +15,7 @@ export default function Interactive() {
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href="http://130.246.212.44/escape/"
+        href="https://srcdev.skatelescope.org/escape"
       >
         Interactive analysis platform hosted by SKAO
       </a>
