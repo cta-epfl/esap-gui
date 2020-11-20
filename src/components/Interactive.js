@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Button, Form, Container } from "react-bootstrap";
 import { IDAContext } from "../contexts/IDAContext";
-import { useHistory } from "react-router-dom";
 
 export default function Interactive() {
   const { jhubURL, setJhubURL } = useContext(IDAContext);
