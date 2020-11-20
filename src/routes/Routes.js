@@ -11,11 +11,15 @@ import { QueryContext } from "../contexts/QueryContext";
 import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
 import { IVOAContextProvider } from "../contexts/IVOAContext";
+import { IDAContext } from "../contexts/IDAContext";
 
 export default function Routes() {
   const { handleLogin, handleLogout, handleError } = useContext(GlobalContext);
   const { config } = useContext(QueryContext);
+  const { jhubURL } = useContext(IDAContext);
   if (!config) return null;
+  if (!jhubURL) return null;
+  console.log(jhubURL);
 
   return (
     <Router basename={config.frontend_basename}>
@@ -30,6 +34,7 @@ export default function Routes() {
         <Route exact path="/interactive">
           <Interactive />
         </Route>
+        <Route exact path="/jhub" render={() => (window.location = {jhubURL})} />
         <Route exact path="/login" component={handleLogin} />
         <Route exact path="/logout" component={handleLogout} />
         <Route exact path="/error" component={handleError} />
