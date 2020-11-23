@@ -20,7 +20,7 @@ export default function HandlePreview({ result }) {
                 (result.thumbnail && (
                     <Button
                         onClick={()=>{
-                            preview ? setPreview("") : setPreview(result.url);
+                            setPreview(result.url);
                             setURL(result.thumbnail);
                         }}
                     >
