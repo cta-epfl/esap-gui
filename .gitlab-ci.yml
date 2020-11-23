@@ -15,7 +15,6 @@ build-esap-gui:
       - CI= npm run build
       - ls
       - echo "Build successful"
-    when: manual
     artifacts:
         expire_in: 1 hour
         paths:
