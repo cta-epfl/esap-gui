@@ -9,16 +9,26 @@ export function GlobalContextProvider({ children }) {
   
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "https://sdc.astron.nl:5555/esap-api/"
+      ? "http://localhost:5555/esap-api/"
       : "https://sdc.astron.nl:5555/esap-api/";
   // "https://sdc.astron.nl:5555/esap-api/"
   // "http://localhost:5555/esap-api/"
 
   const [archives, setArchives] = useState();
+  const [navbar, setNavbar] = useState();
   useEffect(() => {
     axios
       .get(api_host + "query/archives-uri")
       .then((response) => setArchives(response.data.results));
+  }, [api_host]);
+
+  useEffect(() => {
+    axios
+    .get(api_host + "query/configuration?name=navbar")
+      .then((response) => {
+        console.log("navbar response", response.data.configuration);
+        setNavbar(response.data.configuration);
+      });
   }, [api_host]);
 
   // !!!!! Still need to look at sessionid and stuff
@@ -62,6 +72,7 @@ export function GlobalContextProvider({ children }) {
         isAuthenticated,
         sessionid,
         archives,
+        navbar,
         handleLogin,
         handleLogout,
         handleError,

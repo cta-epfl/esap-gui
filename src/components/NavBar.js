@@ -2,14 +2,16 @@ import React, { useContext } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import AuthControl from "./auth/authControl";
-
 import { QueryContext } from "../contexts/QueryContext";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 export default function NavBar() {
+  const { navbar } = useContext(GlobalContext);
   const { config } = useContext(QueryContext);
+  if (!navbar) return null;
   if (!config) return null;
   // construct the navigation bar based on the configuration
-  const navlist = config.navbar;
+  const navlist = navbar.navbar;
 
   return (
     <Navbar bg="dark" variant="dark">
