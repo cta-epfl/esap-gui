@@ -14,10 +14,12 @@ export default function Interactive() {
   let list_of_jhubs = [
     {"name" : "SKAO JupyterHub", "url" : "https://srcdev.skatelescope.org/escape"},
     {"name" : "ASTRON JupyterHub", "url" : "https://sdc.astron.nl/hub/"},
-    {"name" : "IFAE-PIC JupyterHub", "url" : "https://jupyter.pic.es" },]
+    {"name" : "IFAE-PIC JupyterHub", "url" : "https://jupyter.pic.es" },
+    {"name" : "CERN SWAN Service", "url" : "https://swan.cern.ch/"}]
 
   let list_of_batchsystems = [
-    {"name" : "DIRAC EGI", "url" : "https://dirac.egi.eu"},
+    {"name" : "DIRAC EGI (LOFAR, KM3Net)", "url" : "https://dirac.egi.eu"},
+    {"name" : "CTA DIRAC", "url" : "https://ccdcta-web.in2p3.fr/DIRAC/"},
   ]
   
   return (
