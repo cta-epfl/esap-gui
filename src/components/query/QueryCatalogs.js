@@ -15,7 +15,7 @@ export default function QueryCatalogs() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { config, setConfigName, defaultConf, queryMap, formData, setFormData, page } = useContext(QueryContext);
+  const { config, setConfigName, defaultConf, queryMap, formData, setFormData, page, setPage } = useContext(QueryContext);
   const { api_host } = useContext(
     GlobalContext
   );
@@ -50,6 +50,7 @@ export default function QueryCatalogs() {
     return () => {
       console.log("cleaned up");
       queryMap.clear();
+      setPage(1);
       setFormData();
       setConfigName(defaultConf);
     };
@@ -114,7 +115,16 @@ export default function QueryCatalogs() {
 
   console.log("queryMap", Array.from(queryMap.values()));
 
-  const uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
+  function renderUIschema(config) {
+    switch(config.query_schema.name) {
+      case 'apertif':
+        return config.ui_schema ? { uiSchema: config.ui_schema } : {} ;
+        // renderApertifUIschema(config.ui_schema);
+      default:
+        return config.ui_schema ? { uiSchema: config.ui_schema } : {}
+    }
+  }
+  const uiSchemaProp = renderUIschema(config);
   return (
     <Container fluid>
       <Form

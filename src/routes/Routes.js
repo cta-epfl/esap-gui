@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { Archives } from "../components/archives/Archives";
 import ArchiveDetails from "../components/archives/ArchiveDetails";
 import { GlobalContext } from "../contexts/GlobalContext";
@@ -31,12 +31,15 @@ export default function Routes() {
         <Route exact path="/interactive">
           <Interactive />
         </Route>
+        <Route exact path="/vo-query">
+          <Redirect to="/archives/ivoa/query" />
+        </Route>
         <Route exact path="/jhub" render={() => (window.location = {jhubURL})} />
         <Route exact path="/login" component={handleLogin} />
         <Route exact path="/logout" component={handleLogout} />
         <Route exact path="/error" component={handleError} />
         <Route exact path="/archives/:uri" component={ArchiveDetails} />
-        <Route exact path={["/vo-query", "/archives/ivoa/query"]}>
+        <Route exact path="/archives/ivoa/query">
           <IVOAContextProvider>
             <QueryIVOARegistry />
           </IVOAContextProvider>
