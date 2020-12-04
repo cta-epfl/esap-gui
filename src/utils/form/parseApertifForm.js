@@ -1,4 +1,4 @@
-export default function ParseApertifForm(formData, page) {
+export default function ParseApertifForm(formData) {
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
@@ -20,7 +20,7 @@ export default function ParseApertifForm(formData, page) {
   //  "results": null}
   let catalog = formInput.find(([key]) => key === "catalog")[1];
   let esapquery =
-    query + `${`${query}` ? "&" : ""}archive_uri=` + catalog + `&page=${page}`;
+    query + `${`${query}` ? "&" : ""}archive_uri=` + catalog;
   queries.push({
     catalog: catalog,
     esapquery: esapquery,

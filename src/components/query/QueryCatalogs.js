@@ -15,10 +15,8 @@ export default function QueryCatalogs() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { config, setConfigName, defaultConf, queryMap, formData, setFormData, page, setPage } = useContext(QueryContext);
-  const { api_host } = useContext(
-    GlobalContext
-  );
+  const { config, setConfigName, defaultConf, queryMap, formData, setFormData } = useContext(QueryContext);
+  const { api_host } = useContext(GlobalContext);
   const { uri } = useParams();
   console.log("uri:", uri);
   console.log("default conf:", defaultConf);
@@ -50,7 +48,6 @@ export default function QueryCatalogs() {
     return () => {
       console.log("cleaned up");
       queryMap.clear();
-      setPage(1);
       setFormData();
       setConfigName(defaultConf);
     };
@@ -59,16 +56,22 @@ export default function QueryCatalogs() {
   useEffect(() => {
     console.log(config.query_schema);
     if (!formData) return;
-    const gui = config.query_schema.name;
-    const queries = parseQueryForm(gui, formData, page);
-
-    // Ideally query for each catalog is sent to ESAP API Gateway, and query results is returned
-    // This is under development in the backend at the moment
     queryMap.clear();
+    const gui = config.query_schema.name;
+    const queries = parseQueryForm(gui, formData);
     queries.forEach((query) => {
       queryMap.set(query.catalog, {
         catalog: query.catalog,
+        page: 1,
         esapquery: query.esapquery,
+      });
+    });
+
+    queryMap.forEach((query) => {
+      queryMap.set(query.catalog, {
+        catalog: query.catalog,
+        esapquery: query.esapquery,
+        page: query.page,
         status: "fetching",
         results: null,
       });
@@ -79,6 +82,7 @@ export default function QueryCatalogs() {
           queryMap.set(query.catalog, {
             catalog: query.catalog,
             esapquery: query.esapquery,
+            page: query.page,
             status: "fetched",
             results: queryResponse.data,
           });
@@ -87,12 +91,13 @@ export default function QueryCatalogs() {
           queryMap.set(query.catalog, {
             catalog: query.catalog,
             esapquery: query.esapquery,
+            page: query.page,
             status: "error",
             results: null,
           });
         });
     });
-  }, [formData, page]);
+  }, [formData]);
 
   function formTemplate({ TitleField, properties, title, description }) {
     return (

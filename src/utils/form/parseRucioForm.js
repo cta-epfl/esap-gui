@@ -1,4 +1,4 @@
-export default function parseRucioForm(formData, page) {
+export default function parseRucioForm(formData) {
   let formInput = Object.entries(formData);
 
   let query = "";
@@ -16,6 +16,6 @@ export default function parseRucioForm(formData, page) {
   console.log("Rucio Query", query);
   return [{
     catalog: "rucio",
-    esapquery: esapquery + `&page=${page}`
+    esapquery: esapquery
   }];
 }

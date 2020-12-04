@@ -52,7 +52,6 @@ export default function QueryIVOARegistry() {
     return () => {
       console.log("cleaned up");
       queryMap.clear();
-      setPage(1);
       setFormData();
       setConfigName(defaultConf);
     };

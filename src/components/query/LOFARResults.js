@@ -1,10 +1,44 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Table, Alert } from "react-bootstrap";
+import axios from "axios";
 import { QueryContext } from "../../contexts/QueryContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 import LoadingSpinner from "../LoadingSpinner";
 
 export default function LOFARResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);
+  const { api_host } = useContext(GlobalContext);
+  const [page, setPage] = useState(queryMap.get(catalog).page);
+
+  useEffect(() => {
+    queryMap.set(catalog, {
+      catalog: catalog,
+      page: page,
+      esapquery: queryMap.get(catalog).esapquery + `&page=${page}`,
+    });
+    const url = api_host + "query/query/?" + queryMap.get(catalog).esapquery;
+    axios
+      .get(url)
+      .then((queryResponse) => {
+        queryMap.set(catalog, {
+          catalog: catalog,
+          esapquery: queryMap.get(catalog).esapquery,
+          page: page,
+          status: "fetched",
+          results: queryResponse.data,
+        });
+      })
+      .catch(() => {
+        queryMap.set(catalog, {
+          catalog: catalog,
+          esapquery: queryMap.get(catalog).esapquery,
+          page: page,
+          status: "error",
+          results: null,
+        });
+      });
+  }, [page])
+  
   if (!queryMap) return null;
   if (queryMap.get(catalog).status === "fetched") {
     if (!("results" in queryMap.get(catalog).results))
