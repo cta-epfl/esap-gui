@@ -9,8 +9,10 @@ import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
+
 import { IVOAContextProvider } from "../contexts/IVOAContext";
 import { IDAContext } from "../contexts/IDAContext";
+import SampPage from '../components/query/samp/SampPage';
 
 export default function Routes() {
   const { navbar, handleLogin, handleLogout, handleError } = useContext(GlobalContext);
@@ -47,6 +49,7 @@ export default function Routes() {
         <Route exact path={["/adex-query", "/archives/:uri/query"]}>
           <QueryCatalogs />
         </Route>
+        <Route exact path="/samp" component={SampPage} />
       </Switch>
     </Router>
   );

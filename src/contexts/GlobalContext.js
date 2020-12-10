@@ -9,7 +9,7 @@ export function GlobalContextProvider({ children }) {
   
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "https://sdc.astron.nl:5555/esap-api/"
+      ? "http://localhost:8000/esap-api/"
       : "https://sdc.astron.nl:5555/esap-api/";
   // "https://sdc.astron.nl:5555/esap-api/"
   // "http://localhost:5555/esap-api/"
