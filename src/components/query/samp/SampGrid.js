@@ -3,7 +3,6 @@ import { Table } from "react-bootstrap";
 
 export default function SampResults(props) {
 
-    //alert('SampGrid')
     let fieldnames = props.fieldnames
     let data = props.votable_in_json['data']
 
@@ -27,8 +26,13 @@ export default function SampResults(props) {
                     return (
                         <tr key={record}>
                             {record.map((col) => {
+                                let value = col.toString()
+
+                                if (value.includes('http')) {
+                                    value = <a href={value} target="_blank" rel="noopener noreferrer">{value}</a>
+                                }
                                 return (
-                                    <td key={col}>{col}</td>
+                                    <td key={value}>{value}</td>
                                 )
                             })}
                         </tr>

@@ -6,27 +6,16 @@ import SampGrid from './SampGrid'
 export default function SampPage(props) {
     const [ myVOTable, setMyVOTable] = useState([]);
 
-    const pingFunc = function (my_connection) {
-        my_connection.notifyAll([new window.samp.Message("samp.app.ping", {})])
-    }
-
+    // register to existing SAMP hub
     const register = () => {
         connector.register()
     }
+
+    // unregister from existing SAMP hub
     const unregister = () => {
         connector.unregister()
     }
 
-    const handlePingClick = () => {
-        connector.runWithConnection(pingFunc)
-    }
-
-    const handlePing = (cc, senderId, message, isCall) => {
-        alert('handle samp.app.ping')
-        if (isCall) {
-            return {text: "ping to you, " + cc.getName(senderId)};
-        }
-    }
 
     const handleLoadVOTable = (cc, senderId, message, isCall) => {
         // alert('handle table.load.votable')
@@ -75,10 +64,6 @@ export default function SampPage(props) {
     // attach eventhandlers
     var callHandler = cc.callHandler;
 
-    callHandler["samp.app.ping"] = function(senderId, message, isCall) {
-        handlePing(cc,senderId, message, isCall)
-    };
-
     callHandler["table.load.votable"] = function(senderId, message, isCall) {
         handleLoadVOTable(cc,senderId, message, isCall)
     };
@@ -87,7 +72,7 @@ export default function SampPage(props) {
     var subs = cc.calculateSubscriptions();
 
     // initialize the connector
-    var connector = new window.samp.Connector("astroview", {"samp.name": "AstroView"}, cc, subs)
+    var connector = new window.samp.Connector("ESAP", {"samp.name": "ESAP"}, cc, subs)
 
     // only render when myVOTable has a value
     var renderSampGrid
@@ -102,7 +87,6 @@ export default function SampPage(props) {
                 <h2>SAMP demo</h2>
                 <p>Start a SAMP enabled application (like Topcat), register to the hub and transmit data from Topcat.</p>
                 <button variant="outline-warning" onClick={() => register()}>register</button>&nbsp;
-                <button variant="outline-success" onClick={() => handlePingClick()}>SAMP Ping</button>&nbsp;
                 <button variant="outline-warning" onClick={() => unregister()}>unregister</button>&nbsp;
 
                 {renderSampGrid}
