@@ -28,12 +28,12 @@ deploy-esap-gui:
       - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
       - mkdir -p ~/.ssh
       - chmod 700 ~/.ssh
-      - ssh-keyscan sdc.astron.nl >> ~/.ssh/known_hosts
+      - ssh-keyscan sdc-dev.astron.nl >> ~/.ssh/known_hosts
       - chmod 644 ~/.ssh/known_hosts
     script:
         - echo "Deploying to server"
-        - scp -r build/static/* vermaas@sdc.astron.nl:~/shared/static
-        - scp -r build/* vermaas@sdc.astron.nl:~/shared/public_html/esap-gui
+        - scp -r build/static/* vermaas@sdc-dev.astron.nl:~/shared/static
+        - scp -r build/* vermaas@sdc-dev.astron.nl:~/shared/public_html/esap-gui
         - echo "Deployed"
     when: manual
     only:
