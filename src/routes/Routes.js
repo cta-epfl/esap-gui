@@ -51,6 +51,7 @@ export default function Routes() {
         </Route>
         <Route exact path="/samp" component={SampPage} />
       </Switch>
+      <footer><small> version 23 feb 2021 15:00</small></footer>
     </Router>
   );
 }
