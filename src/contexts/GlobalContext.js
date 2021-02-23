@@ -10,7 +10,7 @@ function getUserName(api_host, setLoggedInUserName){
   axios
     .get(profileUrl, {withCredentials: true})
     .then((response) => {
-      setLoggedInUserName(response.data.results[0].user_name);
+      setLoggedInUserName(response.data.results[0].full_name);
     })
 }
 
