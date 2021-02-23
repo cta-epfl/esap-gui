@@ -5,6 +5,15 @@ import getCookie from "../utils/getCookie";
 
 export const GlobalContext = createContext();
 
+function getUserName(api_host, setLoggedInUserName){
+  const profileUrl = api_host + "accounts/user-profiles/";
+  axios
+    .get(profileUrl, {withCredentials: true})
+    .then((response) => {
+      setLoggedInUserName(response.data.results[0].user_name);
+    })
+}
+
 export function GlobalContextProvider({ children }) {
   
   const api_host =
@@ -16,6 +25,8 @@ export function GlobalContextProvider({ children }) {
 
   const [archives, setArchives] = useState();
   const [navbar, setNavbar] = useState();
+  const [loggedInUserName, setLoggedInUserName] = useState();
+
   useEffect(() => {
     axios
       .get(api_host + "query/archives-uri")
@@ -42,6 +53,7 @@ export function GlobalContextProvider({ children }) {
     setIsAuthenticated(true);
     setSessionid(getCookie("sessionid"));
     history.replace("/");
+    getUserName(api_host, setLoggedInUserName);
     return null;
   };
 
@@ -49,6 +61,7 @@ export function GlobalContextProvider({ children }) {
     setIsAuthenticated(false);
     setSessionid(null);
     history.replace("/");
+    setLoggedInUserName("nobody");
     return null;
   };
 
@@ -76,6 +89,7 @@ export function GlobalContextProvider({ children }) {
         handleLogin,
         handleLogout,
         handleError,
+        loggedInUserName,
       }}
     >
       {children}
