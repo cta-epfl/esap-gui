@@ -61,7 +61,7 @@ export function GlobalContextProvider({ children }) {
     setIsAuthenticated(false);
     setSessionid(null);
     history.replace("/");
-    setLoggedInUserName("nobody");
+    setLoggedInUserName("");
     return null;
   };
 
