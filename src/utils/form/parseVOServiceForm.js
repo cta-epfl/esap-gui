@@ -1,4 +1,4 @@
-export default function ParseVOServiceForm(formData, access_url, page) {
+export default function ParseVOServiceForm(formData, access_url) {
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
@@ -31,9 +31,7 @@ export default function ParseVOServiceForm(formData, access_url, page) {
   let esapquery =
     "query/?" +
     query +
-    `${`${query}` ? "&" : ""}dataset_uri=` +
-    catalog +
-    `&page=${page}`;
+    `${`${query}` ? "&" : ""}dataset_uri=` + catalog;
 
   queries.push({
     catalog: access_url,

@@ -5,21 +5,41 @@ import getCookie from "../utils/getCookie";
 
 export const GlobalContext = createContext();
 
+function getUserName(api_host, setLoggedInUserName){
+  const profileUrl = api_host + "accounts/user-profiles/";
+  axios
+    .get(profileUrl, {withCredentials: true})
+    .then((response) => {
+      setLoggedInUserName(response.data.results[0].full_name);
+    })
+}
+
 export function GlobalContextProvider({ children }) {
   
-  console.log("ASTRON ESAP version 19 nov 2020 - 16:00");
   const api_host =
     process.env.NODE_ENV === "development"
-      ? "https://sdc.astron.nl:5555/esap-api/"
-      : "https://sdc.astron.nl:5555/esap-api/";
+      ? "http://localhost:8000/esap-api/"
+      : "https://sdc-dev.astron.nl:5555/esap-api/";
   // "https://sdc.astron.nl:5555/esap-api/"
   // "http://localhost:5555/esap-api/"
 
   const [archives, setArchives] = useState();
+  const [navbar, setNavbar] = useState();
+  const [loggedInUserName, setLoggedInUserName] = useState();
+
   useEffect(() => {
     axios
       .get(api_host + "query/archives-uri")
       .then((response) => setArchives(response.data.results));
+  }, [api_host]);
+
+  useEffect(() => {
+    axios
+    .get(api_host + "query/configuration?name=navbar")
+      .then((response) => {
+        console.log("navbar response", response.data.configuration);
+        setNavbar(response.data.configuration);
+      });
   }, [api_host]);
 
   // !!!!! Still need to look at sessionid and stuff
@@ -33,6 +53,7 @@ export function GlobalContextProvider({ children }) {
     setIsAuthenticated(true);
     setSessionid(getCookie("sessionid"));
     history.replace("/");
+    getUserName(api_host, setLoggedInUserName);
     return null;
   };
 
@@ -40,6 +61,7 @@ export function GlobalContextProvider({ children }) {
     setIsAuthenticated(false);
     setSessionid(null);
     history.replace("/");
+    setLoggedInUserName("");
     return null;
   };
 
@@ -63,9 +85,11 @@ export function GlobalContextProvider({ children }) {
         isAuthenticated,
         sessionid,
         archives,
+        navbar,
         handleLogin,
         handleLogout,
         handleError,
+        loggedInUserName,
       }}
     >
       {children}

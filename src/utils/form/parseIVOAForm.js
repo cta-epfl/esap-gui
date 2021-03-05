@@ -1,4 +1,4 @@
-export default function ParseIVOAForm(formData, page) {
+export default function ParseIVOAForm(formData) {
   let queries = [];
   // queries is an array of dictionaries, where each dictionary consists of
   // {"catalog": "catalogname",
@@ -28,8 +28,7 @@ export default function ParseIVOAForm(formData, page) {
     "get-services/?" +
     query +
     `${`${query}` ? "&" : ""}dataset_uri=` +
-    catalog +
-    `&page=${page}`;
+    catalog;
 
   queries.push({
     catalog: catalog,

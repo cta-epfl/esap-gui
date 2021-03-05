@@ -17,11 +17,11 @@ export default function QueryIVOARegistry() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { config, setConfigName, defaultConf, queryMap, formData, setFormData, page } = useContext(QueryContext);
+  const { config, setConfigName, defaultConf, queryMap, formData, setFormData, page, setPage } = useContext(QueryContext);
   const { api_host } = useContext(
     GlobalContext
   );
-  const { selectedRegistry, queryStep, setQueryStep, regPage } = useContext(
+  const { selectedRegistry, setSelectedRegistry, queryStep, setQueryStep, regPage } = useContext(
     IVOAContext
   );
   const { uri } = useParams();
@@ -50,7 +50,9 @@ export default function QueryIVOARegistry() {
         setConfigName("esap_ivoa");
     }
     return () => {
-      console.log("Set configuration back to default!");
+      console.log("cleaned up");
+      queryMap.clear();
+      setFormData();
       setConfigName(defaultConf);
     };
   }, [uri]);

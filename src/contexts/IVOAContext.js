@@ -39,6 +39,7 @@ export function IVOAContextProvider({ children }) {
     <IVOAContext.Provider
       value={{
         selectedRegistry,
+        setSelectedRegistry,
         addRegistry: handleAddRegistry,
         removeRegistry: handleRemoveRegistry,
         regPage,

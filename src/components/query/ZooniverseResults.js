@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
-import { Table, Alert, Form, Button } from "react-bootstrap";
-import * as deepEqual from "deep-equal";
+import React, { useContext, useEffect } from "react";
+import { Table, Alert, Form } from "react-bootstrap";
+import axios from "axios";
+import { GlobalContext } from "../../contexts/GlobalContext";
 import { QueryContext } from "../../contexts/QueryContext";
 import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
@@ -335,6 +336,38 @@ function ZooniverseWorkflowResults(context) {
 export default function ZooniverseResults({ catalog }) {
   const context = useContext(QueryContext);
   const basketContext = useContext(BasketContext);
+
+  const { queryMap, page } = useContext(QueryContext);
+  const { api_host } = useContext(GlobalContext);
+  useEffect(() => {
+    queryMap.set(catalog, {
+      catalog: catalog,
+      page: page,
+      esapquery: queryMap.get(catalog).esapquery + `&page=${page}`,
+    });
+    const url = api_host + "query/query/?" + queryMap.get(catalog).esapquery;
+    axios
+      .get(url)
+      .then((queryResponse) => {
+        queryMap.set(catalog, {
+          catalog: catalog,
+          esapquery: queryMap.get(catalog).esapquery,
+          page: page,
+          status: "fetched",
+          results: queryResponse.data,
+        });
+      })
+      .catch(() => {
+        queryMap.set(catalog, {
+          catalog: catalog,
+          esapquery: queryMap.get(catalog).esapquery,
+          page: page,
+          status: "error",
+          results: null,
+        });
+      });
+  }, [page])
+
   if (!context.queryMap) return null;
   if (context.queryMap.get(catalog).status === "fetched") {
     if (context.queryMap.get(catalog).results.results.length === 0)

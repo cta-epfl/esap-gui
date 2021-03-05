@@ -4,14 +4,14 @@ import { Nav } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function AuthControl() {
-  const { api_host, isAuthenticated } = useContext(GlobalContext);
+  const { api_host, isAuthenticated, loggedInUserName } = useContext(GlobalContext);
 
   console.log("loggedIn: ", isAuthenticated);
 
   if (isAuthenticated) {
     return (
       <Nav.Link as={NavLink} to="/logout">
-        Logout
+        {`Logout ${loggedInUserName}`}
       </Nav.Link>
     );
   }
