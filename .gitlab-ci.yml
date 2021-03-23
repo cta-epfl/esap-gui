@@ -38,3 +38,23 @@ deploy-esap-gui:
     when: manual
     only:
         - esap-gui-dev
+        - master
+
+deploy-esap-gui-acceptance:
+    stage: deploy
+    before_script:
+      - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+      - eval $(ssh-agent -s)
+      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+      - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan dop457.astron.nl >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    script:
+        - echo "Deploying to server"
+        - scp -r build/static/* vermaas@dop457.astron.nl:/data/shared/static
+        - scp -r build/* vermaas@dop457.astron.nl:/data/shared/public_html/esap-gui
+        - echo "Deployed"
+    when: manual
+    only:
+        - acceptance
