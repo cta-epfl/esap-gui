@@ -51,7 +51,7 @@ export default function Routes() {
         </Route>
         <Route exact path="/samp" component={SampPage} />
       </Switch>
-      <footer><small>esap-gui version 30 april 2021 11:00</small></footer>
+      <footer><small>esap-gui version 30 april 2021 11:02</small></footer>
     </Router>
   );
 }
