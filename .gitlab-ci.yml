@@ -38,6 +38,7 @@ deploy-esap-gui:
     when: manual
     only:
         - esap-gui-dev
+        - dev-nico
         - master
 
 deploy-esap-gui-acceptance:
