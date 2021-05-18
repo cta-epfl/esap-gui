@@ -17,6 +17,7 @@ export default function SaveBasket(props) {
     axios
       .get(profileUrl, {withCredentials: true})
       .then((response) => {
+        console.log(response.data)
         const userProfileUrl = profileUrl + response.data.results[0].user_name + "/";
 
         axios
@@ -33,8 +34,11 @@ export default function SaveBasket(props) {
       });
   }
 
+  // fake authentication when in 'development' mode.
+  let authenticated = isAuthenticated || (process.env.NODE_ENV === "development")
 
-  if(isAuthenticated){
+  if(authenticated) {
+
     return (
         <Button
           type="button"

@@ -1,9 +1,17 @@
-import React, {useState }  from 'react';
+import React, {useState, useContext }  from 'react';
 
 import { getVOTableAsJSON } from './ReactVOTable'
 import SampGrid from './SampGrid'
+import { GlobalContext } from "../../../contexts/GlobalContext";
+import { QueryContext } from "../../../contexts/QueryContext";
+import { BasketContext } from "../../../contexts/BasketContext";
+import SaveBasket from "../../basket/savebasket";
+
 
 export default function SampPage(props) {
+    const context = useContext(QueryContext);
+    const basketContext = useContext(BasketContext);
+
     const [ myVOTable, setMyVOTable] = useState([]);
 
     // register to existing SAMP hub
@@ -88,6 +96,7 @@ export default function SampPage(props) {
                 <p>Start a SAMP enabled application (like Topcat), register to the hub and transmit data from Topcat.</p>
                 <button variant="outline-warning" onClick={() => register()}>register</button>&nbsp;
                 <button variant="outline-warning" onClick={() => unregister()}>unregister</button>&nbsp;
+                <SaveBasket />
 
                 {renderSampGrid}
             </div>

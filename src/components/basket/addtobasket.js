@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
 
-export default function Addtobasket(props) {
+export default function AddtoBasket(props) {
   const { isAuthenticated } = useContext(GlobalContext);
   const basketContext = useContext(BasketContext);
 
@@ -23,7 +23,10 @@ export default function Addtobasket(props) {
     console.log([removeFromBasketItem, basketContext]);
   }
 
-  if (isAuthenticated){
+  // fake authentication when in 'development' mode.
+  let authenticated = isAuthenticated || (process.env.NODE_ENV === "development")
+
+  if (authenticated){
     return (
       <Form.Check id={props.id} type="checkbox" onChange={(event) => {
         const action = event.target.checked ? addToBasket : removeFromBasket;

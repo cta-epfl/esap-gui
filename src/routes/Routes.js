@@ -10,6 +10,7 @@ import NavBar from "../components/NavBar";
 import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
 
+import { BasketContextProvider } from "../contexts/BasketContext";
 import { IVOAContextProvider } from "../contexts/IVOAContext";
 import { IDAContext } from "../contexts/IDAContext";
 import SampPage from '../components/query/samp/SampPage';
@@ -49,9 +50,13 @@ export default function Routes() {
         <Route exact path={["/adex-query", "/archives/:uri/query"]}>
           <QueryCatalogs />
         </Route>
-        <Route exact path="/samp" component={SampPage} />
+        <Route exact path="/samp"  >
+          <BasketContextProvider>
+            <SampPage/>
+          </BasketContextProvider>
+        </Route>
       </Switch>
-      <footer><small>esap-gui version 30 april 2021 11:00</small></footer>
+      <footer><small>esap-gui version 18 may 2021</small></footer>
     </Router>
   );
 }
