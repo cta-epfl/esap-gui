@@ -5,6 +5,7 @@ import ZooniverseResults from "./ZooniverseResults";
 import VORegListResults from "./VORegListResults";
 import LOFARResults from "./LOFARResults";
 import RucioResults from "./RucioResults";
+import SampResults from "./SampResults";
 
 export default function QueryResults({ catalog }) {
   switch (catalog) {
@@ -22,6 +23,8 @@ export default function QueryResults({ catalog }) {
       return <LOFARResults catalog={catalog} />;
     case "rucio":
       return <RucioResults catalog={catalog} />;
+    case "samp":
+      return <SampResults catalog={catalog} />;
     default:
       return null;
   }
