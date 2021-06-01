@@ -4,6 +4,7 @@ import { ListGroup, Card, Button, Row, Col } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { QueryContext } from "../../contexts/QueryContext";
 import axios from "axios";
+import { getQueryIcon } from "../../utils/styling";
 
 export default function DataProductCategories({ archive }) {
   const { api_host } = useContext(GlobalContext);
@@ -51,7 +52,7 @@ export default function DataProductCategories({ archive }) {
                       setCollection(category.collection);
                       history.push(query_url);}}
                   >
-                    Browse Catalog & Run Queries
+                      {getQueryIcon()} Query this Dataset
                   </Button>
 
                 );

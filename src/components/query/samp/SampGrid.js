@@ -22,7 +22,7 @@ export default function SampResults(props) {
             <thead>
 
             <tr className="bg-light">
-                <th>Select</th>
+                <th>Basket</th>
                 {fieldnames.map((field) => {
                     return (
                         <th key={field}>{field}</th>

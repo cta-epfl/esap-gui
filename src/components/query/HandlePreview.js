@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { QueryContext } from '../../contexts/QueryContext';
+import { getThumbnailIcon } from "../../utils/styling";
 
 export default function HandlePreview({ result }) {
     const { preview, setPreview, setDS9, setURL } = useContext(QueryContext);
@@ -24,7 +25,7 @@ export default function HandlePreview({ result }) {
                             setURL(result.thumbnail);
                         }}
                     >
-                        View Thumbnail
+                        {getThumbnailIcon()}  View Thumbnail
                     </Button>
                 ))
             }

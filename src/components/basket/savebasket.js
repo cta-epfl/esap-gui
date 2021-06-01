@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
 import axios from "axios";
-
+import { getShoppingIcon } from "../../utils/styling";
 
 export default function SaveBasket(props) {
   const { api_host, isAuthenticated } = useContext(GlobalContext);
@@ -35,7 +35,8 @@ export default function SaveBasket(props) {
   }
 
   // fake authentication when in 'development' mode.
-  let authenticated = isAuthenticated || (process.env.NODE_ENV === "development")
+  //let authenticated = isAuthenticated || (process.env.NODE_ENV === "development")
+  let authenticated = isAuthenticated
 
   if(authenticated) {
 
@@ -44,8 +45,8 @@ export default function SaveBasket(props) {
           type="button"
           variant="primary"
           onClick={() => saveBasket(basketContext.datasets)}
-          {...props}
-        >Save Data Selection</Button>
+          {...props}>
+            {getShoppingIcon("save_cart")} Save Basket</Button>
     );
   }
   else{
