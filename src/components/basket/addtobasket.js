@@ -24,7 +24,8 @@ export default function AddtoBasket(props) {
   }
 
   // fake authentication when in 'development' mode.
-  let authenticated = isAuthenticated || (process.env.NODE_ENV === "development")
+  // let authenticated = isAuthenticated || (process.env.NODE_ENV === "development")
+  let authenticated = isAuthenticated
 
   if (authenticated){
     return (

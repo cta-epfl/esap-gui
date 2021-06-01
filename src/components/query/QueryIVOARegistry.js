@@ -10,6 +10,7 @@ import parseQueryForm from "../../utils/form/parseQueryForm";
 import { IVOAContext } from "../../contexts/IVOAContext";
 import parseVOServiceForm from "../../utils/form/parseVOServiceForm";
 import VOServiceResults from "./VOServiceResults";
+import { getQueryIcon } from "../../utils/styling";
 
 export default function QueryIVOARegistry() {
   // queryMap is a map of dictionaries, where each dictionary consists of
@@ -203,7 +204,7 @@ export default function QueryIVOARegistry() {
           {...uiSchemaProp}
         >
           <div>
-            <Button type="submit">Query VO Registry</Button>
+            <Button type="submit">{getQueryIcon()} Query VO Registry</Button>
           </div>
         </Form>
         {Array.from(queryMap.keys()).map((catalog) => {

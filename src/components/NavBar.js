@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import AuthControl from "./auth/authControl";
+import MyShoppingBasket from "./MyShoppingBasket"
 import { QueryContext } from "../contexts/QueryContext";
 import { GlobalContext } from "../contexts/GlobalContext";
 
@@ -30,7 +31,9 @@ export default function NavBar() {
           </Nav.Link>
         ))}
       </Nav>
-
+        <Nav>
+            <MyShoppingBasket />
+        </Nav>
       <Nav>
         <AuthControl />
       </Nav>
