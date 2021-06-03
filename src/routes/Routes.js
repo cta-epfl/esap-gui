@@ -56,7 +56,7 @@ export default function Routes() {
           </BasketContextProvider>
         </Route>
       </Switch>
-      <footer><small>esap-gui version 3 jun 2021</small></footer>
+      <footer><small>esap-gui version 3 jun 2021 - 11:00</small></footer>
     </Router>
   );
 }
