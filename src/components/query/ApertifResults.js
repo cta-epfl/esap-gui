@@ -3,7 +3,7 @@ import { Table, Alert } from "react-bootstrap";
 import axios from "axios";
 import { QueryContext } from "../../contexts/QueryContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { BasketContext } from "../../contexts/BasketContext";
+
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import HandlePreview from "./HandlePreview";

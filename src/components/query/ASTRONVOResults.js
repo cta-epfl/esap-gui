@@ -7,6 +7,15 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import HandlePreview from "./HandlePreview";
 import Preview from "./Preview";
+import SaveBasket from "../basket/savebasket";
+import AddToBasket from "../basket/addtobasket";
+
+function SAMPBasketItem(record){
+    return {
+        archive: "astron_vo",
+        record: record,
+    };
+}
 
 export default function ASTRONVOResults({ catalog }) {
   const { queryMap, preview } = useContext(QueryContext);
@@ -61,14 +70,11 @@ export default function ASTRONVOResults({ catalog }) {
           numAdjacent={3}
           numPages={numPages}
         />
+        <SaveBasket />
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
-              {/* <th>
-              <InputGroup>
-                <InputGroup.Checkbox />
-              </InputGroup>
-            </th> */}
+              <th>Basket</th>
               <th>Collection</th>
               <th>RA</th>
               <th>Dec</th>
@@ -85,11 +91,9 @@ export default function ASTRONVOResults({ catalog }) {
               return (
                 <>
                   <tr key={result.url}>
-                    {/* <th>
-                      <InputGroup>
-                        <InputGroup.Checkbox />
-                      </InputGroup>
-                      </th> */}
+                    <td>
+                      <AddToBasket id={result.id}  item={SAMPBasketItem(result)} />
+                    </td>
                     <td>{result.obs_collection}</td>
                     <td>{Number(result.ra).toFixed(1)}</td>
                     <td>{Number(result.dec).toFixed(1)}</td>
