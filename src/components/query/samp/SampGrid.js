@@ -37,7 +37,7 @@ export default function SampResults(props) {
                 {data.map((record, index) => {
 
                     let id = `samp${index}`
-                    if (index > 10) {
+                    if (index > 1000) {
                         return
                     }
                     return (

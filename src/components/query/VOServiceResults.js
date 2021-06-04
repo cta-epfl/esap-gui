@@ -33,6 +33,7 @@ export default function VORegistryResults({ catalog }) {
           numAdjacent={3}
           numPages={numPages}
         />
+
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
@@ -61,7 +62,9 @@ export default function VORegistryResults({ catalog }) {
               return (
                 <>
                   <tr key={queryResult[queryMap.get(catalog).vo_table_schema.fields.findIndex((item) => item.name === "access_url")]}>
+
                     {queryResult.map((field, index) => {
+
                       if (indice.includes(index)) {
                         if (queryMap.get(catalog).vo_table_schema.fields[index].name === "access_url") {
                           return (<td><a href={field} rel="noopener noreferrer" download>Download data</a></td>);

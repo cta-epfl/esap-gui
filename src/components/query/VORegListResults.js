@@ -4,15 +4,6 @@ import { QueryContext } from "../../contexts/QueryContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import { IVOAContext } from "../../contexts/IVOAContext";
-import SaveBasket from "../basket/savebasket";
-import AddToBasket from "../basket/addtobasket";
-
-function SAMPBasketItem(record){
-    return {
-        archive: "ivoa",
-        record: record,
-    };
-}
 
 export default function VORegListResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);
@@ -60,7 +51,7 @@ export default function VORegListResults({ catalog }) {
           numAdjacent={3}
           numPages={numPages}
         />
-        <SaveBasket />
+
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
@@ -110,9 +101,7 @@ export default function VORegListResults({ catalog }) {
                       />
                     </InputGroup>
                   </th>
-                  <td>
-                    <AddToBasket id={result.id}  item={SAMPBasketItem(result)} />
-                  </td>
+
                   <td>{result.short_name}</td>
                   <td>{result.access_url}</td>
                   <td>{result.waveband}</td>
