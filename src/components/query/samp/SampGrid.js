@@ -1,7 +1,7 @@
 import React, {useState, useContext }  from 'react';
 import { Table } from "react-bootstrap";
 import { BasketContext } from "../../../contexts/BasketContext";
-import AddToBasket from "../../basket/addtobasket";
+import AddToBasket from "../../basket/AddToBasket";
 
 function SAMPBasketItem(record){
     return {
