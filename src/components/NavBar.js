@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import AuthControl from "./auth/authControl";
-import MyShoppingBasket from "./MyShoppingBasket"
+import MyBasketButton from "./basket/MyBasketButton"
 import { QueryContext } from "../contexts/QueryContext";
 import { GlobalContext } from "../contexts/GlobalContext";
 
@@ -31,10 +31,11 @@ export default function NavBar() {
           </Nav.Link>
         ))}
       </Nav>
-        <Nav>
-            <MyShoppingBasket />
-        </Nav>
+        <Nav.Link key="my basket" as={NavLink} to="/basket">
+            <MyBasketButton />
+        </Nav.Link>
       <Nav>
+
         <AuthControl />
       </Nav>
     </Navbar>

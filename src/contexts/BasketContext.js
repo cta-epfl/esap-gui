@@ -18,7 +18,7 @@ export function BasketContextProvider({ children }) {
 
   return (
     <BasketContext.Provider
-      value={{ datasets, add: handleAddDataset, remove: handleRemoveDataset }}
+      value={{ datasets, setDatasets, add: handleAddDataset, remove: handleRemoveDataset }}
     >
       {children}
     </BasketContext.Provider>

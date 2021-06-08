@@ -5,7 +5,7 @@ import SampGrid from './SampGrid'
 import { GlobalContext } from "../../../contexts/GlobalContext";
 import { QueryContext } from "../../../contexts/QueryContext";
 import { BasketContext } from "../../../contexts/BasketContext";
-import SaveBasket from "../../basket/savebasket";
+import SaveBasket from "../../basket/SaveBasketButton";
 
 
 export default function SampPage(props) {

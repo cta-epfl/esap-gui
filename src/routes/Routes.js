@@ -9,6 +9,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
+import MyBasketPage from "../components/basket/MyBasketPage";
 
 import { BasketContextProvider } from "../contexts/BasketContext";
 import { IVOAContextProvider } from "../contexts/IVOAContext";
@@ -22,8 +23,12 @@ export default function Routes() {
   if (!jhubURL) return null;
 
   return (
+
     <Router basename={navbar.frontend_basename}>
-      <NavBar />
+      <BasketContextProvider>
+        <NavBar />
+      </BasketContextProvider>
+
       <Switch>
         <Route exact path={["/", "/archives"]}>
           <Archives />
@@ -50,13 +55,21 @@ export default function Routes() {
         <Route exact path={["/adex-query", "/archives/:uri/query"]}>
           <QueryCatalogs />
         </Route>
+
         <Route exact path="/samp"  >
           <BasketContextProvider>
             <SampPage/>
           </BasketContextProvider>
         </Route>
+
+        <Route exact path="/basket"  >
+          <BasketContextProvider>
+            <MyBasketPage/>
+          </BasketContextProvider>
+        </Route>
+
       </Switch>
-      <footer><small>esap-gui version 4 jun 2021 - 10:00</small></footer>
+      <footer><small>esap-gui version 8 jun 2021 - 16:55</small></footer>
     </Router>
   );
 }
