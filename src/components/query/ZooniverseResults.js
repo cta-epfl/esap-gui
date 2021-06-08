@@ -6,8 +6,8 @@ import { QueryContext } from "../../contexts/QueryContext";
 import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate, { pagination_fields } from "../Paginate";
-import SaveBasket from "../basket/SaveBasket";
-import AddToBasket from "../basket/AddToBasket";
+import SaveBasket from "../basket/SaveBasketButton";
+import AddToBasket from "../basket/AddToBasketCheckBox";
 
 const DATETIME_OPTIONS = {
   year: "numeric",

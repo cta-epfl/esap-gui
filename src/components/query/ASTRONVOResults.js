@@ -7,8 +7,8 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import HandlePreview from "./HandlePreview";
 import Preview from "./Preview";
-import SaveBasket from "../basket/SaveBasket";
-import AddToBasket from "../basket/AddToBasket";
+import SaveBasket from "../basket/SaveBasketButton";
+import AddToBasket from "../basket/AddToBasketCheckBox";
 
 function SAMPBasketItem(record){
     return {

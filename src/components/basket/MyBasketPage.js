@@ -1,34 +1,39 @@
-import React, { useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Button, Table, Container, Alert } from "react-bootstrap";
 import { IDAContext } from "../../contexts/IDAContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
-import SaveBasket from "./SaveBasket";
-import LoadBasket from "./LoadBasket";
+import SaveBasketButton from "./SaveBasketButton";
+import { LoadBasketButton, loadBasket } from "./LoadBasket";
 
 export default function MyBasketPage() {
-    const { datasets, setDatasets } = useContext(BasketContext);
+    const { api_host, isAuthenticated } = useContext(GlobalContext);
     const basketContext = useContext(BasketContext);
 
-    // when is the basket loaded from the REST API and stored into the context?
-    let items
-    try {
-        items = basketContext.datasets
-        alert(items)
-    } catch (e) {
-        return (<LoadBasket />)
+    useEffect(() => {
+        loadBasket(basketContext,api_host, isAuthenticated)
+    },[])
+
+
+    let items = basketContext.datasets
+    if (!items) {
+        return (<LoadBasketButton />)
     }
 
     // parse the items and build a line to display
     let my_list = items.map((item) => {
-        return <tr><td>item.archive</td><td>item.record</td></tr>
+        //alert(item.item_data)
+        let item_data = item.item_data
+        //let obj = JSON.parse(item_data)
+        //let archive = obj.archive
+        return <tr><td>{item.item_data.archive}</td><td>{item_data}</td></tr>
     })
 
 
     return (
         <>
         <Container fluid>
-            <LoadBasket />
-            <SaveBasket />
+            <SaveBasketButton />
 
             <Table className="mt-3" responsive>
                 <thead>
