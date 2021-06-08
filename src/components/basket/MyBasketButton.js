@@ -9,10 +9,10 @@ import { loadBasket } from "./LoadBasket";
 export default function MyBasketButton(props) {
     const { api_host, isAuthenticated } = useContext(GlobalContext);
     const basketContext = useContext(BasketContext);
-
+    const { datasets } = useContext(BasketContext);
     useEffect(() => {
         loadBasket(basketContext,api_host, isAuthenticated)
-    },[isAuthenticated])
+    },[isAuthenticated, datasets])
 
     if (isAuthenticated) {
         try {

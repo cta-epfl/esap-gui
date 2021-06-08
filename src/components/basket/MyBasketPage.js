@@ -5,6 +5,7 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
 import SaveBasketButton from "./SaveBasketButton";
 import { LoadBasketButton, loadBasket } from "./LoadBasket";
+import AddToBasket from "./AddToBasketCheckBox";
 
 export default function MyBasketPage() {
     const { api_host, isAuthenticated } = useContext(GlobalContext);
@@ -21,18 +22,30 @@ export default function MyBasketPage() {
     }
 
     // parse the items and build a line to display
-    let my_list = items.map((item) => {
-        //alert(item.item_data)
+    let my_list = items.map((item, index) => {
+        let id = `${index}`
         let item_data = item.item_data
-        //let obj = JSON.parse(item_data)
-        //let archive = obj.archive
-        return <tr><td>{item.item_data.archive}</td><td>{item_data}</td></tr>
+
+        // currently item data is not stored as proper json, but as a stringified dict.
+        // this converts all ' to "", so that it can be used by the JSON parser.
+        let j = item_data.replaceAll("'",'"')
+        let o = JSON.parse(j)
+        let archive = o.archive
+
+        return <tr>
+            <td>
+                <AddToBasket id={id}  item={item_data} />
+            </td>
+            <td>{archive}</td>
+            <td>{item_data}</td>
+        </tr>
     })
 
 
     return (
         <>
         <Container fluid>
+            <h2>Data Checkout</h2>
             <SaveBasketButton />
 
             <Table className="mt-3" responsive>
@@ -40,6 +53,7 @@ export default function MyBasketPage() {
 
                 <tr className="bg-light">
                     <th>Basket</th>
+                    <th>Source</th>
                     <th>Item</th>
 
                 </tr>

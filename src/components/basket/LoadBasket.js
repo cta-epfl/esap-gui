@@ -24,7 +24,15 @@ export function loadBasket(basketContext, api_host, isAuthenticated){
                     console.log("get", response);
                     // load the shopping_cart into the basketContext
                     //alert('loaded basket:  '+response.data.shopping_cart.length)
-                    basketContext.setDatasets(response.data.shopping_cart)
+
+                    // only update the datasets when there are changes,
+                    // because the shoppingbasket button responds to these changes
+                    let current_datasets = basketContext.datasets
+                    if (current_datasets.length !== response.data.shopping_cart.length) {
+                        //alert('loadBasket changes')
+                        basketContext.setDatasets(response.data.shopping_cart)
+                    }
+
                 })
                 .catch((error) => {
                     console.log(error);
