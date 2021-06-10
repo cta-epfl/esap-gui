@@ -5,7 +5,7 @@ import { BasketContext } from "../../contexts/BasketContext";
 import axios from "axios";
 import { getShoppingIcon } from "../../utils/styling";
 
-export default function SaveBasket(props) {
+export default function SaveBasketButton(props) {
   const { api_host, isAuthenticated } = useContext(GlobalContext);
   const basketContext = useContext(BasketContext);
 

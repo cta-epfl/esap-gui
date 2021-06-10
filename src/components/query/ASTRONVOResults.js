@@ -7,7 +7,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import HandlePreview from "./HandlePreview";
 import Preview from "./Preview";
-import SaveBasket from "../basket/SaveBasketButton";
+import SaveBasketButton from "../basket/SaveBasketButton";
 import AddToBasket from "../basket/AddToBasketCheckBox";
 
 function SAMPBasketItem(record){
@@ -70,7 +70,7 @@ export default function ASTRONVOResults({ catalog }) {
           numAdjacent={3}
           numPages={numPages}
         />
-        <SaveBasket />
+        <SaveBasketButton />
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
@@ -92,7 +92,7 @@ export default function ASTRONVOResults({ catalog }) {
                 <>
                   <tr key={result.url}>
                     <td>
-                      <AddToBasket id={result.id}  item={SAMPBasketItem(result)} />
+                      <AddToBasket id={result.id} item={SAMPBasketItem(result)} />
                     </td>
                     <td>{result.obs_collection}</td>
                     <td>{Number(result.ra).toFixed(1)}</td>

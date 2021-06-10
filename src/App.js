@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Routes from "./routes/Routes";
 import { GlobalContextProvider } from "./contexts/GlobalContext";
+import { BasketContextProvider } from "./contexts/BasketContext";
 import { QueryContextProvider } from "./contexts/QueryContext";
 import { IDAContextProvider } from "./contexts/IDAContext";
 
@@ -11,11 +12,13 @@ export default function App() {
   return (
     <div>
       <GlobalContextProvider>
-        <QueryContextProvider>
-          <IDAContextProvider>
-            <Routes />
-          </IDAContextProvider>
-        </QueryContextProvider>
+          <BasketContextProvider>
+            <QueryContextProvider>
+              <IDAContextProvider>
+                <Routes />
+              </IDAContextProvider>
+            </QueryContextProvider>
+          </BasketContextProvider>
       </GlobalContextProvider>
     </div>
   );

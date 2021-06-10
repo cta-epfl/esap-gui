@@ -6,7 +6,7 @@ import { QueryContext } from "../../contexts/QueryContext";
 import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate, { pagination_fields } from "../Paginate";
-import SaveBasket from "../basket/SaveBasketButton";
+import SaveBasketButton from "../basket/SaveBasketButton";
 import AddToBasket from "../basket/AddToBasketCheckBox";
 
 const DATETIME_OPTIONS = {
@@ -140,7 +140,7 @@ function ZooniverseProjectResults(context) {
         numPages={numPages}
       />
       <Form>
-        <SaveBasket />
+        <SaveBasketButton />
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
@@ -191,10 +191,10 @@ function ZooniverseProjectResults(context) {
                   </InputGroup>
                 </th> */}
                     <td>
-                      <AddToBasket id={`selectClassifications_${result.project_id}`}  item={projectBasketItem(result.project_id, "classifications")} />
+                      <AddToBasket id={`selectClassifications_${result.project_id}`} item={projectBasketItem(result.project_id, "classifications")} />
                     </td>
                     <td>
-                      <AddToBasket id={`selectSubjects_${result.project_id}`}  item={projectBasketItem(result.project_id, "subjects")} />
+                      <AddToBasket id={`selectSubjects_${result.project_id}`} item={projectBasketItem(result.project_id, "subjects")} />
                     </td>
                     <td>{result.project_id}</td>
                     <td>{result.display_name}</td>
@@ -254,7 +254,7 @@ function ZooniverseWorkflowResults(context) {
         numPages={numPages}
       />
       <Form>
-      <SaveBasket style={saveBasketStyle} />
+      <SaveBasketButton style={saveBasketStyle} />
       {queryMap
         .get("zooniverse_workflows")
         .results.results.map((project) => {
@@ -303,10 +303,10 @@ function ZooniverseWorkflowResults(context) {
                     </InputGroup>
                   </th> */}
                         <td>
-                          <AddToBasket id={`selectClassifications_${workflow.workflow_id}`}  item={workflowBasketItem(result.project_id, workflow.workflow_id, "classifications")} />
+                          <AddToBasket id={`selectClassifications_${workflow.workflow_id}`} item={workflowBasketItem(result.project_id, workflow.workflow_id, "classifications")} />
                         </td>
                         <td>
-                          <AddToBasket id={`selectSubjects_${workflow.workflow_id}`}  item={workflowBasketItem(result.project_id, workflow.workflow_id, "subjects")} />
+                          <AddToBasket id={`selectSubjects_${workflow.workflow_id}`} item={workflowBasketItem(result.project_id, workflow.workflow_id, "subjects")} />
                         </td>
                         <td>{workflow.workflow_id}</td>
                         <td>{workflow.display_name}</td>

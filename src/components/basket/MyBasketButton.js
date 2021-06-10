@@ -12,7 +12,7 @@ export default function MyBasketButton(props) {
     const { datasets } = useContext(BasketContext);
     useEffect(() => {
         loadBasket(basketContext,api_host, isAuthenticated)
-    },[isAuthenticated, datasets])
+    },[isAuthenticated, basketContext.datasets])
 
     if (isAuthenticated) {
         try {

@@ -5,6 +5,17 @@ import { BasketContext } from "../../contexts/BasketContext";
 import axios from "axios";
 import { getShoppingIcon } from "../../utils/styling";
 
+function ResponseToDatasets(response) {
+    // the reponse has an extra level 'item_data', because that is how the backend serializer works
+    // The BasketContext.datasets does not have that level and is simply an array of contents
+    let shopping_cart = response.data.shopping_cart
+
+    let datasets = shopping_cart.map((item) => {
+        return item.item_data
+    })
+
+    return datasets
+}
 export function loadBasket(basketContext, api_host, isAuthenticated){
     //alert('loadBasket: authenticated = '+isAuthenticated)
     if (!isAuthenticated) {
@@ -30,9 +41,8 @@ export function loadBasket(basketContext, api_host, isAuthenticated){
                     let current_datasets = basketContext.datasets
                     if (current_datasets.length !== response.data.shopping_cart.length) {
                         //alert('loadBasket changes')
-                        basketContext.setDatasets(response.data.shopping_cart)
+                        basketContext.setDatasets(ResponseToDatasets(response))
                     }
-
                 })
                 .catch((error) => {
                     console.log(error);

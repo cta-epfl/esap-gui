@@ -4,7 +4,7 @@ import { QueryContext } from "../../contexts/QueryContext";
 // import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
-// import SaveBasket from "../basket/savebasket";
+// import SaveBasketButton from "../basket/savebasket";
 
 function titleCase(string) {
   var sentence = string.toLowerCase().split(" ");
@@ -54,7 +54,7 @@ export default function RucioResults({ catalog }) {
             numPages={numPages}
           />
           <Form>
-            {/*<SaveBasket />*/}
+            {/*<SaveBasketButton />*/}
             <Table className="mt-3" responsive>
               <thead>
                 <tr className="bg-light">
