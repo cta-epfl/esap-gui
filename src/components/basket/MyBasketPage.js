@@ -23,18 +23,18 @@ export default function MyBasketPage() {
         // this converts all ' to "", so that it can be used by the JSON parser.
         // let j = item_data.replaceAll("'",'"')
 
-        let o = JSON.parse(item)
-        let archive = o.archive
+        //let o = JSON.parse(item)
+        let archive = item.archive
+        let item_as_string = JSON.stringify(item)
 
         return <tr>
             <td>
                 <AddToBasket id={id} item={item} />
             </td>
             <td>{archive}</td>
-            <td>{item}</td>
+            <td>{item_as_string}</td>
         </tr>
     })
-
 
     return (
         <>

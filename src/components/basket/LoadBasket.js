@@ -11,7 +11,14 @@ function ResponseToDatasets(response) {
     let shopping_cart = response.data.shopping_cart
 
     let datasets = shopping_cart.map((item) => {
-        return item.item_data
+        // make item_data an object instead of a string
+
+        console.log('itemdata = '+item.item_data)
+        let o = JSON.parse(item.item_data)
+        //alert(o)
+        return o
+        //return item.item_data
+
     })
 
     return datasets

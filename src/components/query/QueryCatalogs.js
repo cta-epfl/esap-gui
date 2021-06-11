@@ -153,9 +153,7 @@ export default function QueryCatalogs() {
         return (
           <div key={catalog} className="mt-3">
             <h4>Query results for {catalogName}</h4>
-            <BasketContextProvider>
-              <QueryResults catalog={catalog} />
-            </BasketContextProvider>
+            <QueryResults catalog={catalog} />
           </div>
         );
       })}
