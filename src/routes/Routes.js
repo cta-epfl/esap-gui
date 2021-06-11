@@ -11,7 +11,7 @@ import Rucio from "../components/Rucio";
 import Interactive from "../components/Interactive";
 import MyBasketPage from "../components/basket/MyBasketPage";
 
-import { BasketContextProvider } from "../contexts/BasketContext";
+
 import { IVOAContextProvider } from "../contexts/IVOAContext";
 import { IDAContext } from "../contexts/IDAContext";
 import SampPage from '../components/query/samp/SampPage';
@@ -25,51 +25,46 @@ export default function Routes() {
   return (
 
     <Router basename={navbar.frontend_basename}>
-      <BasketContextProvider>
+
         <NavBar />
-      </BasketContextProvider>
+        <Switch>
+          <Route exact path={["/", "/archives"]}>
+            <Archives />
+          </Route>
+          <Route exact path="/rucio">
+            <Rucio />
+          </Route>
+          <Route exact path="/interactive">
+            <Interactive />
+          </Route>
+          <Route exact path="/vo-query">
+            <Redirect to="/archives/ivoa/query" />
+          </Route>
+          <Route exact path="/jhub" render={() => (window.location = {jhubURL})} />
+          <Route exact path="/login" component={handleLogin} />
+          <Route exact path="/logout" component={handleLogout} />
+          <Route exact path="/error" component={handleError} />
+          <Route exact path="/archives/:uri" component={ArchiveDetails} />
+          <Route exact path="/archives/ivoa/query">
+            <IVOAContextProvider>
+              <QueryIVOARegistry />
+            </IVOAContextProvider>
+          </Route>
+          <Route exact path={["/adex-query", "/archives/:uri/query"]}>
+            <QueryCatalogs />
+          </Route>
 
-      <Switch>
-        <Route exact path={["/", "/archives"]}>
-          <Archives />
-        </Route>
-        <Route exact path="/rucio">
-          <Rucio />
-        </Route>
-        <Route exact path="/interactive">
-          <Interactive />
-        </Route>
-        <Route exact path="/vo-query">
-          <Redirect to="/archives/ivoa/query" />
-        </Route>
-        <Route exact path="/jhub" render={() => (window.location = {jhubURL})} />
-        <Route exact path="/login" component={handleLogin} />
-        <Route exact path="/logout" component={handleLogout} />
-        <Route exact path="/error" component={handleError} />
-        <Route exact path="/archives/:uri" component={ArchiveDetails} />
-        <Route exact path="/archives/ivoa/query">
-          <IVOAContextProvider>
-            <QueryIVOARegistry />
-          </IVOAContextProvider>
-        </Route>
-        <Route exact path={["/adex-query", "/archives/:uri/query"]}>
-          <QueryCatalogs />
-        </Route>
+          <Route exact path="/samp"  >
+              <SampPage/>
+          </Route>
 
-        <Route exact path="/samp"  >
-          <BasketContextProvider>
-            <SampPage/>
-          </BasketContextProvider>
-        </Route>
+          <Route exact path="/basket"  >
+              <MyBasketPage/>
+          </Route>
 
-        <Route exact path="/basket"  >
-          <BasketContextProvider>
-            <MyBasketPage/>
-          </BasketContextProvider>
-        </Route>
+        </Switch>
 
-      </Switch>
-      <footer><small>esap-gui version 8 jun 2021 - 16:55</small></footer>
+      <footer><small>esap-gui version 10 jun 2021 - 16:00</small></footer>
     </Router>
   );
 }

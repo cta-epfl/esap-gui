@@ -43,7 +43,7 @@ export default function SampResults(props) {
                     return (
                         <tr key={record}>
                             <td>
-                                <AddToBasket id={id}  item={SAMPBasketItem(record)} />
+                                <AddToBasket id={id} item={SAMPBasketItem(record)} />
                             </td>
                             {record.map((col) => {
                                 let value = col.toString()
