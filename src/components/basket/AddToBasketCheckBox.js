@@ -9,20 +9,19 @@ export default function AddToBasket(props) {
   const basketContext = useContext(BasketContext);
 
   function isInBasket(testBasketItem) {
-    let datasets_in_basket = basketContext.datasets
-    //alert(datasets_in_basket)
     const found = basketContext.datasets.some(basketItem => deepEqual(basketItem, testBasketItem));
+    console.log('found = '+found+' testBasketItem = '+testBasketItem)
     return found;
   }
 
   function addToBasket(addToBasketItem) {
     basketContext.add(addToBasketItem);
-    console.log([addToBasketItem, basketContext]);
+    console.log('addToBasket: '+[addToBasketItem, basketContext]);
   }
 
   function removeFromBasket(removeFromBasketItem) {
     basketContext.remove(removeFromBasketItem);
-    console.log([removeFromBasketItem, basketContext]);
+    console.log('removeFromBasket: '+[removeFromBasketItem, basketContext]);
   }
 
   // fake authentication when in 'development' mode.
@@ -30,6 +29,8 @@ export default function AddToBasket(props) {
   let authenticated = isAuthenticated
 
   if (authenticated){
+      //let datasets_in_basket = basketContext.datasets
+      //console.log('datasets_in_basket: '+datasets_in_basket)
     return (
       <Form.Check id={props.id} type="checkbox" onChange={(event) => {
         const action = event.target.checked ? addToBasket : removeFromBasket;
