@@ -12,7 +12,8 @@ export default function MyBasketButton(props) {
     const { datasets } = useContext(BasketContext);
     useEffect(() => {
         loadBasket(basketContext,api_host, isAuthenticated)
-    },[isAuthenticated, basketContext.datasets])
+        // todo: do not trigger on changed datasets, but on 'save' action
+    },[isAuthenticated])
 
     if (isAuthenticated) {
         try {

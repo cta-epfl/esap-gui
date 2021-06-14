@@ -29,8 +29,8 @@ export default function AddToBasket(props) {
   let authenticated = isAuthenticated
 
   if (authenticated){
-      let datasets_in_basket = basketContext.datasets
-      console.log('datasets_in_basket: '+datasets_in_basket)
+      //let datasets_in_basket = basketContext.datasets
+      //console.log('datasets_in_basket: '+datasets_in_basket)
     return (
       <Form.Check id={props.id} type="checkbox" onChange={(event) => {
         const action = event.target.checked ? addToBasket : removeFromBasket;

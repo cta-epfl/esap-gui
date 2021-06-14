@@ -39,7 +39,7 @@ export default function MyBasketPage() {
     return (
         <>
         <Container fluid>
-            <h2>Data Checkout</h2>
+            <h3>Data Checkout</h3>
             <SaveBasketButton />
 
             <Table className="mt-3" responsive>
