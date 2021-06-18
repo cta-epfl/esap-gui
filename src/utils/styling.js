@@ -25,7 +25,7 @@ export const getShoppingIcon = (type) => {
     if (type === 'must_save_cart') {
         icon = faShoppingCart
         size = "md"
-        color = "yellow"
+        color = "red"
     }
 
     if (type === 'save_cart') {
