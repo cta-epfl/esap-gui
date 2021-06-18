@@ -40,16 +40,19 @@ export default function SaveBasketButton(props) {
   //let authenticated = isAuthenticated || (process.env.NODE_ENV === "development")
   let authenticated = isAuthenticated
 
-  if(authenticated) {
-
-    return (
-        <Button
-          type="button"
-          variant="primary"
-          onClick={() => saveBasket(basketContext.datasets)}
-          {...props}>
-            {getShoppingIcon("save_cart")} Save Basket</Button>
-    );
+  if (authenticated)  {
+      if (hasChanged) {
+          return (
+              <Button
+                  type="button"
+                  variant="primary"
+                  onClick={() => saveBasket(basketContext.datasets)}
+                  {...props}>
+                  {getShoppingIcon("save_cart")} Save Basket</Button>
+          )
+      } else {
+          return null
+      }
   }
   else{
     return (<>

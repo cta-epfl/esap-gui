@@ -5,7 +5,6 @@ import { BasketContext } from "../../contexts/BasketContext";
 import { getShoppingIcon } from "../../utils/styling";
 import { loadBasket } from "./LoadBasket";
 
-
 export default function MyBasketButton(props) {
     const { api_host, isAuthenticated } = useContext(GlobalContext);
     const basketContext = useContext(BasketContext);
