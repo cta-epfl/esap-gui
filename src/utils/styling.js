@@ -22,6 +22,12 @@ export const getShoppingIcon = (type) => {
         color = "white"
     }
 
+    if (type === 'must_save_cart') {
+        icon = faShoppingCart
+        size = "md"
+        color = "yellow"
+    }
+
     if (type === 'save_cart') {
         icon = faCartArrowDown
         size = "md"

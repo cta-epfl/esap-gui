@@ -8,6 +8,7 @@ import { getShoppingIcon } from "../../utils/styling";
 export default function SaveBasketButton(props) {
   const { api_host, isAuthenticated } = useContext(GlobalContext);
   const basketContext = useContext(BasketContext);
+  const { hasChanged, setHasChanged } = useContext(BasketContext);
 
   function saveBasket(basketData){
     const payload = {shopping_cart: basketData};
@@ -24,6 +25,7 @@ export default function SaveBasketButton(props) {
           .patch(userProfileUrl, payload, {withCredentials: true})
           .then((response) => {
             console.log("patch", response);
+            basketContext.setHasChanged(false)
           })
           .catch((error) => {
             console.log(error);
