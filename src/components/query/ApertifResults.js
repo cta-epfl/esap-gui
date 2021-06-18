@@ -71,7 +71,7 @@ export default function ApertifResults({ catalog }) {
           numAdjacent={3}
           numPages={numPages}
         />
-        <SaveBasketButton />
+
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">

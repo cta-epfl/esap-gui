@@ -96,7 +96,6 @@ export default function SampPage(props) {
                 <p>Start a SAMP enabled application (like Topcat), register to the hub and transmit data from Topcat.</p>
                 <button variant="outline-warning" onClick={() => register()}>register</button>&nbsp;
                 <button variant="outline-warning" onClick={() => unregister()}>unregister</button>&nbsp;
-                <SaveBasketButton />
 
                 {renderSampGrid}
             </div>

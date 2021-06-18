@@ -3,7 +3,6 @@ import { Table, Container, Alert } from "react-bootstrap";
 import { IDAContext } from "../../contexts/IDAContext";
 
 import { BasketContext } from "../../contexts/BasketContext";
-import SaveBasketButton from "./SaveBasketButton";
 import AddToBasket from "./AddToBasketCheckBox";
 
 export default function MyBasketPage() {
@@ -40,7 +39,6 @@ export default function MyBasketPage() {
         <>
         <Container fluid>
             <h3>Data Checkout</h3>
-            <SaveBasketButton />
 
             <Table className="mt-3" responsive>
                 <thead>

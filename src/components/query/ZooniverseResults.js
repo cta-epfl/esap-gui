@@ -140,7 +140,7 @@ function ZooniverseProjectResults(context) {
         numPages={numPages}
       />
       <Form>
-        <SaveBasketButton />
+
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">
