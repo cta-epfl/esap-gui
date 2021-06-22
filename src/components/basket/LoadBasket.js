@@ -41,7 +41,6 @@ export function loadBasket(basketContext, api_host, isAuthenticated){
                 .then((response) => {
                     console.log("get", response);
                     // load the shopping_cart into the basketContext
-                    //alert('loaded basket:  '+response.data.shopping_cart.length)
 
                     // only update the datasets when there are changes,
                     // because the shoppingbasket button responds to these changes

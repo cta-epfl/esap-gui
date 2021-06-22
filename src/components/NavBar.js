@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import AuthControl from "./auth/authControl";
 import MyBasketButton from "./basket/MyBasketButton"
 import SaveBasketButton from "./basket/SaveBasketButton"
+import EmptyBasketButton from "./basket/EmptyBasketButton"
 import { QueryContext } from "../contexts/QueryContext";
 import { GlobalContext } from "../contexts/GlobalContext";
 
@@ -35,7 +36,7 @@ export default function NavBar() {
         <Nav.Link key="my basket" as={NavLink} to="/basket">
             <MyBasketButton />
         </Nav.Link>
-        <SaveBasketButton/>
+        <SaveBasketButton/>{' '}
       <Nav>
 
         <AuthControl />
