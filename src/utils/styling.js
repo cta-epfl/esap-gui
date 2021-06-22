@@ -6,7 +6,9 @@ import {
     faCartPlus,
     faImage,
     faRunning,
-    faBinoculars,
+    faTrashAlt,
+    faCheck,
+    faCog,
     faSearchPlus }
     from '@fortawesome/free-solid-svg-icons'
 
@@ -20,6 +22,12 @@ export const getShoppingIcon = (type) => {
         icon = faShoppingCart
         size = "md"
         color = "white"
+    }
+
+    if (type === 'cart_dark_large') {
+        icon = faShoppingCart
+        size = "md"
+        color = "blue"
     }
 
     if (type === 'must_save_cart') {
@@ -53,6 +61,30 @@ export const getThumbnailIcon = () => {
 
 export const getQueryIcon = () => {
     let icon = faSearchPlus
+    let color = "white"
+    let size = 'md'
+
+    return <FontAwesomeIcon size={size} icon={icon} color={color}/>
+}
+
+export const getTrashIcon = (color) => {
+    let icon = faTrashAlt
+    //let color = "white"
+    let size = 'md'
+
+    return <FontAwesomeIcon size={size} icon={icon} color={color}/>
+}
+
+export const getAPIIcon = () => {
+    let icon = faCog
+    let color = "black"
+    let size = 'md'
+
+    return <FontAwesomeIcon size={size} icon={icon} color={color}/>
+}
+
+export const getOKIcon = () => {
+    let icon = faCheck
     let color = "white"
     let size = 'md'
 

@@ -20,3 +20,13 @@
 .App-link {
   color: #1315c4;
 }
+
+.form-check2 {
+  width: 120px;
+  height: 40px;
+  background: #333;
+  margin: 20px 60px;
+
+  border-radius: 50px;
+  position: relative;
+}

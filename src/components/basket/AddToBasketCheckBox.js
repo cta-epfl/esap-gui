@@ -3,6 +3,7 @@ import * as deepEqual from "deep-equal";
 import { Form } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
+import { getTrashIcon } from "../../utils/styling";
 
 export default function AddToBasket(props) {
   const { api_host, isAuthenticated } = useContext(GlobalContext);
@@ -32,7 +33,8 @@ export default function AddToBasket(props) {
       //let datasets_in_basket = basketContext.datasets
       //console.log('datasets_in_basket: '+datasets_in_basket)
     return (
-      <Form.Check id={props.id} type="checkbox" onChange={(event) => {
+
+      <Form.Check id={props.id} type="checkbox" label={props.label} onChange={(event) => {
         const action = event.target.checked ? addToBasket : removeFromBasket;
         action(props.item);
       }} checked={isInBasket(props.item) ? "checked" : ""} />
