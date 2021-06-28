@@ -42,20 +42,27 @@ export default function QueryCatalogs() {
       case "lofar":
         setConfigName("lofar");
         break;
+      case "ivoa":
+        setConfigName("esap_ivoa");
+        break;
       default:
         break;
     }
+
     return () => {
       console.log("cleaned up");
       queryMap.clear();
       setFormData();
-      setConfigName(defaultConf);
+      //setConfigName(defaultConf);
     };
   }, [uri]);
 
   useEffect(() => {
     console.log(config.query_schema);
-    if (!formData) return;
+    if (!formData) {
+      return;
+    }
+
     queryMap.clear();
     const gui = config.query_schema.name;
     const queries = parseQueryForm(gui, formData);

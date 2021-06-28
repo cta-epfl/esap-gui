@@ -6,14 +6,6 @@ import { NavLink } from "react-router-dom";
 export default function ArchiveCard({ archive }) {
   return (
     <Card>
-        <Button
-            className="mt-3"
-            as={NavLink}
-            variant="outline-primary"
-            to={`/archives/${archive.uri}`}
-        >
-            Visit {archive.name} Archives
-        </Button>
 
       <Card.Body>
         <Card.Title className="h2">{archive.name}</Card.Title>
@@ -38,7 +30,14 @@ export default function ArchiveCard({ archive }) {
             
           </Row>
         </Container> */}
-
+          <Button
+              className="mt-3"
+              as={NavLink}
+              variant="outline-primary"
+              to={`/archives/${archive.uri}`}
+          >
+              Visit {archive.name} Archives
+          </Button>
       </Card.Body>
     </Card>
   );
