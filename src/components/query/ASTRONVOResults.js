@@ -7,7 +7,6 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import HandlePreview from "./HandlePreview";
 import Preview from "./Preview";
-import SaveBasketButton from "../basket/SaveBasketButton";
 import AddToBasket from "../basket/AddToBasketCheckBox";
 
 function SAMPBasketItem(record){
@@ -70,7 +69,7 @@ export default function ASTRONVOResults({ catalog }) {
           numAdjacent={3}
           numPages={numPages}
         />
-        <SaveBasketButton />
+
         <Table className="mt-3" responsive>
           <thead>
             <tr className="bg-light">

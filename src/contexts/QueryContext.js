@@ -27,6 +27,7 @@ export function QueryContextProvider({ children }) {
     axios
       .get(api_host + "query/configuration" + configNameString)
       .then((response) => {
+        //alert(configNameString)
         let config = response.data["configuration"];
         let props = config.query_schema.properties;
         console.log("config props: ", props);
@@ -63,6 +64,7 @@ export function QueryContextProvider({ children }) {
         collection,
         setCollection,
         config,
+        configName,
         setConfigName,
         defaultConf,
         ds9,

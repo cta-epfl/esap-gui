@@ -16,35 +16,35 @@ import {
 export const getShoppingIcon = (type) => {
     let icon = undefined
     let color = "darkgreen"
-    let size = 'md'
+    let size = 'sm'
 
     if (type === 'cart') {
         icon = faShoppingCart
-        size = "md"
+        size = "sm"
         color = "white"
     }
 
     if (type === 'cart_dark_large') {
         icon = faShoppingCart
-        size = "md"
+        size = "sm"
         color = "blue"
     }
 
     if (type === 'must_save_cart') {
         icon = faShoppingCart
-        size = "md"
+        size = "sm"
         color = "red"
     }
 
     if (type === 'save_cart') {
         icon = faCartArrowDown
-        size = "md"
+        size = "sm"
         color = "white"
     }
 
     if (type === 'plus_cart') {
         icon = faCartPlus
-        size = "md"
+        size = "sm"
         color = "white"
     }
 
@@ -54,7 +54,7 @@ export const getShoppingIcon = (type) => {
 export const getThumbnailIcon = () => {
     let icon = faImage
     let color = "white"
-    let size = 'md'
+    let size = 'sm'
 
     return <FontAwesomeIcon size={size} icon={icon} color={color}/>
 }
@@ -62,7 +62,7 @@ export const getThumbnailIcon = () => {
 export const getQueryIcon = () => {
     let icon = faSearchPlus
     let color = "white"
-    let size = 'md'
+    let size = 'sm'
 
     return <FontAwesomeIcon size={size} icon={icon} color={color}/>
 }
@@ -70,7 +70,7 @@ export const getQueryIcon = () => {
 export const getTrashIcon = (color) => {
     let icon = faTrashAlt
     //let color = "white"
-    let size = 'md'
+    let size = 'sm'
 
     return <FontAwesomeIcon size={size} icon={icon} color={color}/>
 }
