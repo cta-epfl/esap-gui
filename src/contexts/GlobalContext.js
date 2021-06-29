@@ -5,12 +5,14 @@ import getCookie from "../utils/getCookie";
 
 export const GlobalContext = createContext();
 
-function getUserName(api_host, setLoggedInUserName){
+function getUserName(api_host, setLoggedInUserName, setToken){
   const profileUrl = api_host + "accounts/user-profiles/";
   axios
     .get(profileUrl, {withCredentials: true})
     .then((response) => {
+
       setLoggedInUserName(response.data.results[0].full_name);
+      setToken(response.data.results[0].oidc_id_token)
     })
 }
 
@@ -26,6 +28,7 @@ export function GlobalContextProvider({ children }) {
   const [archives, setArchives] = useState();
   const [navbar, setNavbar] = useState();
   const [loggedInUserName, setLoggedInUserName] = useState();
+  const [token, setToken] = useState([]);
 
   useEffect(() => {
     axios
@@ -42,7 +45,7 @@ export function GlobalContextProvider({ children }) {
       });
   }, [api_host]);
 
-  // !!!!! Still need to look at sessionid and stuff
+  // Zheng: "!!!!! Still need to look at sessionid and stuff"
   const [sessionid, setSessionid] = useState(getCookie("sessionid"));
   console.log("waah", sessionid, getCookie("sessionid"), document.cookie);
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -53,7 +56,7 @@ export function GlobalContextProvider({ children }) {
     setIsAuthenticated(true);
     setSessionid(getCookie("sessionid"));
     history.replace("/");
-    getUserName(api_host, setLoggedInUserName);
+    getUserName(api_host, setLoggedInUserName, setToken);
     return null;
   };
 
@@ -90,6 +93,7 @@ export function GlobalContextProvider({ children }) {
         handleLogout,
         handleError,
         loggedInUserName,
+        token,
       }}
     >
       {children}

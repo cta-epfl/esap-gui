@@ -9,7 +9,9 @@ import {
     faTrashAlt,
     faCheck,
     faCog,
-    faSearchPlus }
+    faSearchPlus,
+    faKey,
+    faCopy}
     from '@fortawesome/free-solid-svg-icons'
 
 
@@ -85,6 +87,21 @@ export const getAPIIcon = () => {
 
 export const getOKIcon = () => {
     let icon = faCheck
+    let color = "white"
+    let size = 'md'
+
+    return <FontAwesomeIcon size={size} icon={icon} color={color}/>
+}
+
+export const getTokenIcon = (color) => {
+    let icon = faKey
+    let size = 'md'
+
+    return <FontAwesomeIcon size={size} icon={icon} color={color}/>
+}
+
+export const getCopyIcon = () => {
+    let icon = faCopy
     let color = "white"
     let size = 'md'
 
