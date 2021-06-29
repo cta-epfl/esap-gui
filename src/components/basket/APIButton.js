@@ -11,7 +11,7 @@ export default function APIButton(props) {
     if (isAuthenticated) {
 
         return <a href={profileUrl} target="_blank">
-                <Button variant="outline-primary">{getAPIIcon()}&nbsp;API
+                <Button variant="outline-primary">{getAPIIcon()}&nbsp;API (expert user)
                 </Button>
         </a>
 
