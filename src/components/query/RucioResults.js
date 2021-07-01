@@ -4,7 +4,14 @@ import { QueryContext } from "../../contexts/QueryContext";
 // import { BasketContext } from "../../contexts/BasketContext";
 import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
-// import SaveBasketButton from "../basket/savebasket";
+import AddToBasket from "../basket/AddToBasketCheckBox";
+
+function createBasketItem(record){
+    return {
+        archive: "rucio",
+        record: record,
+    };
+}
 
 function titleCase(string) {
   var sentence = string.toLowerCase().split(" ");
@@ -63,6 +70,7 @@ export default function RucioResults({ catalog }) {
                   <InputGroup.Checkbox />
                 </InputGroup>
               </th> */}
+                  <th>Basket</th>
                   {headers}
                 </tr>
               </thead>
@@ -108,6 +116,9 @@ export default function RucioResults({ catalog }) {
                           Link
                       </a>
                       </td>*/}
+                        <td>
+                          <AddToBasket id={result.id} item={createBasketItem(result)} />
+                        </td>
                         {cells}
                       </tr>
                     );
