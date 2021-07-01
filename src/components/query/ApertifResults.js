@@ -8,10 +8,9 @@ import LoadingSpinner from "../LoadingSpinner";
 import Paginate from "../Paginate";
 import HandlePreview from "./HandlePreview";
 import Preview from "./Preview";
-import SaveBasketButton from "../basket/SaveBasketButton";
 import AddToBasket from "../basket/AddToBasketCheckBox";
 
-function SAMPBasketItem(record){
+function createBasketItem(record){
     return {
         archive: "apertif",
         record: record,
@@ -93,7 +92,7 @@ export default function ApertifResults({ catalog }) {
                 <>
                 <tr key={result.PID}>
                   <td>
-                    <AddToBasket id={result.id} item={SAMPBasketItem(result)} />
+                    <AddToBasket id={result.id} item={createBasketItem(result)} />
                   </td>
                   <td>{result.name}</td>
                   <td>{Number(result.RA).toFixed(1)}</td>
