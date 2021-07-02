@@ -5,14 +5,15 @@ import getCookie from "../utils/getCookie";
 
 export const GlobalContext = createContext();
 
-function getUserName(api_host, setLoggedInUserName, setToken){
+// request the user profile (async) and on return set pieces of global state
+function setProfileState(api_host, setLoggedInUserName, setIdToken, setAccessToken){
   const profileUrl = api_host + "accounts/user-profiles/";
   axios
     .get(profileUrl, {withCredentials: true})
     .then((response) => {
-
-      setLoggedInUserName(response.data.results[0].full_name);
-      setToken(response.data.results[0].oidc_id_token)
+        setLoggedInUserName(response.data.results[0].full_name);
+        setIdToken(response.data.results[0].oidc_id_token)
+        setAccessToken(response.data.results[0].oidc_access_token)
     })
 }
 
@@ -28,7 +29,8 @@ export function GlobalContextProvider({ children }) {
   const [archives, setArchives] = useState();
   const [navbar, setNavbar] = useState();
   const [loggedInUserName, setLoggedInUserName] = useState();
-  const [token, setToken] = useState([]);
+  const [idToken, setIdToken] = useState([]);
+  const [accessToken, setAccessToken] = useState([]);
 
   useEffect(() => {
     axios
@@ -48,6 +50,7 @@ export function GlobalContextProvider({ children }) {
   // Zheng: "!!!!! Still need to look at sessionid and stuff"
   const [sessionid, setSessionid] = useState(getCookie("sessionid"));
   console.log("waah", sessionid, getCookie("sessionid"), document.cookie);
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     sessionid ? true : false
   );
@@ -56,7 +59,7 @@ export function GlobalContextProvider({ children }) {
     setIsAuthenticated(true);
     setSessionid(getCookie("sessionid"));
     history.replace("/");
-    getUserName(api_host, setLoggedInUserName, setToken);
+    setProfileState(api_host, setLoggedInUserName, setIdToken, setAccessToken);
     return null;
   };
 
@@ -93,7 +96,8 @@ export function GlobalContextProvider({ children }) {
         handleLogout,
         handleError,
         loggedInUserName,
-        token,
+        idToken,
+        accessToken
       }}
     >
       {children}
