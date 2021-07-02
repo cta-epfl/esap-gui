@@ -46,7 +46,9 @@ export function QueryContextProvider({ children }) {
         });
         setConfig(config);
       });
-  }, [api_host, configName, dplevel, collection]);
+  }, [api_host, configName]);
+  //}, [api_host, configName, dplevel, collection]);
+
   console.log("config: ", { config });
 
   return (

@@ -23,6 +23,9 @@ export default function Routes() {
 
     if (!navbar) return null;
 
+    // nv: if no jhubURL can be loaded then whole website should be blank? Isn't that overkill? commented it out for now
+    // if (!jhubURL) return null;
+
   return (
 
     <Router basename={navbar.frontend_basename}>
@@ -46,6 +49,10 @@ export default function Routes() {
           <Route exact path="/logout" component={handleLogout} />
           <Route exact path="/error" component={handleError} />
           <Route exact path="/archives/:uri" component={ArchiveDetails} />
+
+          <Route exact path={["/query", "/archives/:uri/query"]}>
+              <QueryCatalogs />
+          </Route>
           <Route exact path="/archives/ivoa/query">
             <IVOAContextProvider>
               <QueryIVOARegistry />
@@ -65,7 +72,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 2 jul 2021 - 11:00</small></footer>
+      <footer><small>esap-gui version 2 jul 2021 - 14:00</small></footer>
     </Router>
   );
 }
