@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import AuthControl from "./auth/authControl";
@@ -9,14 +10,23 @@ import { QueryContext } from "../contexts/QueryContext";
 import { GlobalContext } from "../contexts/GlobalContext";
 
 export default function NavBar() {
-  const { navbar } = useContext(GlobalContext);
-  const { config } = useContext(QueryContext);
-  if (!navbar) return null;
-  if (!config) return null;
-  // construct the navigation bar based on the configuration
-  const navlist = navbar.navbar;
+    let history = useHistory()
 
-  return (
+    const { navbar, isAuthenticated, refreshLogin } = useContext(GlobalContext);
+    const { config } = useContext(QueryContext);
+    if (!navbar) return null;
+    if (!config) return null;
+
+    refreshLogin(history)
+    //let loggedIn = localStorage.getItem('esap_logged_in')
+    //if ((!isAuthenticated) && (loggedIn)) {
+    //    history.push("/login");
+    //}
+
+    // construct the navigation bar based on the configuration
+    const navlist = navbar.navbar;
+
+    return (
     <Navbar bg="dark" variant="dark">
       <img
         alt=""
@@ -38,10 +48,9 @@ export default function NavBar() {
         </Nav.Link>
         <SaveBasketButton/>{' '}
       <Nav>
-
-          <AuthControl />
           <ShowTokenButton/>
+          <AuthControl />
       </Nav>
     </Navbar>
-  );
-}
+    );
+    }

@@ -20,7 +20,7 @@ export default function QueryCatalogs() {
   const { uri } = useParams();
   console.log("uri:", uri);
   console.log("default conf:", defaultConf);
-
+  //alert("QueryCatalogs() : "+config.query_schema.name)
   // set ConfigName for archive
   useEffect(() => {
     switch (uri) {
@@ -50,10 +50,12 @@ export default function QueryCatalogs() {
     }
 
     return () => {
+      // nv: why is this needed?
+      //alert('cleaned up')
       console.log("cleaned up");
       queryMap.clear();
       setFormData();
-      //setConfigName(defaultConf);
+      setConfigName(defaultConf);
     };
   }, [uri]);
 
@@ -120,6 +122,7 @@ export default function QueryCatalogs() {
             </div>
           ))}
         </div>
+
         {description}
       </div>
     );
