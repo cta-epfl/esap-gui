@@ -4,7 +4,7 @@ import { Nav } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function AuthControl() {
-  const { api_host, isAuthenticated, loggedInUserName, token } = useContext(GlobalContext);
+  const { api_host, isAuthenticated, loggedInUserName } = useContext(GlobalContext);
 
   console.log("loggedIn: ", isAuthenticated);
 
