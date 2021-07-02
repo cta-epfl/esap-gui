@@ -10,6 +10,10 @@ export default  function Interactive() {
     {"name" : "CTA DIRAC", "url" : "https://ccdcta-web.in2p3.fr/DIRAC/"},
   ]
 
+  if ((!list_of_jnotebooks) || (!list_of_jhubs) || (!list_of_batchsystems)) {
+    return null
+  }
+
   return (
     <Container fluid>
     <Form className="mt-5">
