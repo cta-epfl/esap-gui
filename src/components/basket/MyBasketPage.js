@@ -34,6 +34,7 @@ export default function MyBasketPage() {
     return (
         <>
         <Container fluid>
+            &nbsp;
             <h3>Data Checkout &nbsp;&nbsp; <EmptyBasketButton/> <APIButton/></h3>
 
             <Table className="mt-3" responsive>

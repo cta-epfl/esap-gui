@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+
 import { Archives } from "../components/archives/Archives";
 import ArchiveDetails from "../components/archives/ArchiveDetails";
 import { GlobalContext } from "../contexts/GlobalContext";
@@ -17,10 +18,10 @@ import { IDAContext } from "../contexts/IDAContext";
 import SampPage from '../components/query/samp/SampPage';
 
 export default function Routes() {
-  const { navbar, handleLogin, handleLogout, handleError } = useContext(GlobalContext);
-  const { jhubURL } = useContext(IDAContext);
-  if (!navbar) return null;
-  if (!jhubURL) return null;
+    const { navbar, handleLogin, handleLogout, handleError } = useContext(GlobalContext);
+    const { jhubURL } = useContext(IDAContext);
+
+    if (!navbar) return null;
 
   return (
 
@@ -64,7 +65,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 2 jul 2021 - 9:00</small></footer>
+      <footer><small>esap-gui version 2 jul 2021 - 11:00</small></footer>
     </Router>
   );
 }
