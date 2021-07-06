@@ -1,20 +1,16 @@
-
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
 import getCookie from "../utils/getCookie";
+import { GlobalContext } from "./GlobalContext";
 
 
 export const IDAContext = createContext();
 export function IDAContextProvider({ children }) {
 
-    const api_host =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:5555/esap-api/"
-        : "https://sdc-dev.astron.nl:5555/esap-api/";
-
+    const { api_host } = useContext(GlobalContext);
     const [jhubURL, setJhubURL] = useState("https://srcdev.skatelescope.org/escape");
-    const [jnotebookURL, setJnotebookURL] = useState("https://mybinder.org/v2/gh/AMIGA-IAA/hcg-16/master");
+    const [jnotebookURL, setJnotebookURL] = useState("https://github.com/AMIGA-IAA/hcg-16/master");
     const [batchsystemsURL, setBatchsystemsURL] = useState("https://dirac.egi.eu");
     const [list_of_jnotebooks, setList_of_jnotebooks] = useState();
     const [list_of_jhubs, setList_of_jhubs] = useState();
