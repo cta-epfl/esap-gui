@@ -3,13 +3,13 @@ import React, { useContext, useState, useEffect } from "react";
 export function renderHeaderAstronVO() {
 
     return (<>
-            <th>Collection</th>
-            <th>RA</th>
-            <th>Dec</th>
-            <th>fov</th>
-            <th>Data Product Type</th>
-            <th>Calibration Level</th>
-            <th>Size</th>
+        <th style={{width: '10%'}}>Collection</th>
+        <th style={{width: '5%'}}>RA</th>
+        <th style={{width: '5%'}}>Dec</th>
+        <th style={{width: '5%'}}>fov</th>
+            <th style={{width: '10%'}}>DataProduct Type</th>
+            <th style={{width: '10%'}}>Calibration Level</th>
+            <th style={{width: '5%'}}>Size</th>
         </>
     );
 }

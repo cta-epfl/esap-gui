@@ -3,13 +3,13 @@ import React, { useContext, useState, useEffect } from "react";
 export function renderHeaderApertif() {
 
     return (<>
-            <th>Name</th>
-            <th>RA</th>
-            <th>Dec</th>
-            <th>fov</th>
-            <th>Dataset ID</th>
-            <th>DataProduct Type</th>
-            <th>DataProduct SubType</th>
+            <th style={{width: '10%'}}>Name</th>
+            <th style={{width: '5%'}}>RA</th>
+            <th style={{width: '5%'}}>Dec</th>
+            <th style={{width: '5%'}}>fov</th>
+            <th style={{width: '10%'}}>DataProduct Type</th>
+            <th style={{width: '10%'}}>DataProduct SubType</th>
+            <th style={{width: '5%'}}>Dataset ID</th>
         </>
     );
 }
@@ -21,9 +21,9 @@ export function renderRowApertif(result) {
             <td>{Number(result.RA).toFixed(1)}</td>
             <td>{Number(result.dec).toFixed(1)}</td>
             <td>{Number(result.fov).toFixed(1)}</td>
-            <td>{result.datasetID}</td>
             <td>{result.dataProductType}</td>
             <td>{result.dataProductSubType}</td>
+            <td>{result.datasetID}</td>
         </>
     );
 }
