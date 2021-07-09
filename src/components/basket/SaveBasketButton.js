@@ -16,7 +16,10 @@ export default function SaveBasketButton(props) {
 
     const profileUrl = api_host + "accounts/user-profiles/";
     axios
-      .get(profileUrl, {withCredentials: true})
+      .get(profileUrl, {
+          withCredentials: true,
+          //headers : {"Access-Control-Allow-Origin": "*"}
+      })
       .then((response) => {
         console.log(response.data)
         const userProfileUrl = profileUrl + response.data.results[0].user_name + "/";
