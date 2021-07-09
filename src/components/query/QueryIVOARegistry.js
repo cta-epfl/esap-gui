@@ -5,11 +5,11 @@ import { Container, Button, Row, Col, Form as RBForm } from "react-bootstrap";
 import Form from "react-jsonschema-form";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { QueryContext } from "../../contexts/QueryContext";
-import QueryResults from "./QueryResults";
+import QueryResults from "../services/query_results/QueryResults";
 import parseQueryForm from "../../utils/form/parseQueryForm";
 import { IVOAContext } from "../../contexts/IVOAContext";
 import parseVOServiceForm from "../../utils/form/parseVOServiceForm";
-import VOServiceResults from "./VOServiceResults";
+import VOServiceResults from "../services/query_results/VOServiceResults";
 import { getQueryIcon } from "../../utils/styling";
 
 export default function QueryIVOARegistry() {

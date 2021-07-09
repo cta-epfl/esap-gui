@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Button, Form, Container, Alert } from "react-bootstrap";
-import { IDAContext } from "../contexts/IDAContext";
-import { GlobalContext } from "../contexts/GlobalContext";
+import { IDAContext } from "../../contexts/IDAContext";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 
 export default  function Interactive() {

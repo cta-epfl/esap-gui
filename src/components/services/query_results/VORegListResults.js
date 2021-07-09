@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { Table, Alert, InputGroup } from "react-bootstrap";
-import { QueryContext } from "../../contexts/QueryContext";
-import LoadingSpinner from "../LoadingSpinner";
-import Paginate from "../Paginate";
-import { IVOAContext } from "../../contexts/IVOAContext";
+import { QueryContext } from "../../../contexts/QueryContext";
+import LoadingSpinner from "../../LoadingSpinner";
+import Paginate from "../../Paginate";
+import { IVOAContext } from "../../../contexts/IVOAContext";
 
 export default function VORegListResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);
