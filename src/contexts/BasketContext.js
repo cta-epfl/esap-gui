@@ -29,6 +29,7 @@ export function BasketContextProvider({ children }) {
             setHasChanged,
             add: handleAddDataset,
             remove: handleRemoveDataset,
+            changed: setHasChanged
         }}
       >
       {children}

@@ -53,12 +53,17 @@ export default function MyBasketPage() {
     const { api_host, isAuthenticated } = useContext(GlobalContext);
     const basketContext = useContext(BasketContext);
     const { preview } = useContext(QueryContext);
+
     // work on a local copy of datasets, to be able (un)(re)select items before saving
     const [items, setItems] = useState(basketContext.datasets);
 
     if (!items) {
         return null
     }
+
+    //if (items.length === basketContext.datasets.length) {
+    //    basketContext.changed(false)
+    //}
 
     // parse the items and build a line to display
     let my_list = items.map((item, index) => {
