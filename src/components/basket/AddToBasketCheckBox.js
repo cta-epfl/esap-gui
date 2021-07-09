@@ -5,7 +5,7 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
 import { getTrashIcon } from "../../utils/styling";
 
-export default function AddToBasket(props) {
+export default function AddToCheckout(props) {
   const { api_host, isAuthenticated } = useContext(GlobalContext);
   const basketContext = useContext(BasketContext);
 

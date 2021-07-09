@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Table, Container, Alert } from "react-bootstrap";
 
 import { BasketContext } from "../../contexts/BasketContext";
@@ -11,7 +11,9 @@ export default function MyBasketPage() {
     const { api_host, isAuthenticated } = useContext(GlobalContext);
     const basketContext = useContext(BasketContext);
 
-    let items = basketContext.datasets
+    // work on a local copy of datasets, to be able (un)(re)select items before saving
+    const [items, setItems] = useState(basketContext.datasets);
+
     if (!items) {
         return null
     }
