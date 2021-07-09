@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Table, Alert } from "react-bootstrap";
 import axios from "axios";
-import { QueryContext } from "../../contexts/QueryContext";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import LoadingSpinner from "../LoadingSpinner";
+import { QueryContext } from "../../../contexts/QueryContext";
+import { GlobalContext } from "../../../contexts/GlobalContext";
+import LoadingSpinner from "../../LoadingSpinner";
 
 export default function LOFARResults({ catalog }) {
   const { queryMap } = useContext(QueryContext);

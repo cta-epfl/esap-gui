@@ -1,26 +1,26 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Table, Alert } from "react-bootstrap";
 import axios from "axios";
-import { QueryContext } from "../../contexts/QueryContext";
-import { GlobalContext } from "../../contexts/GlobalContext";
-
-import LoadingSpinner from "../LoadingSpinner";
-import Paginate from "../Paginate";
-import HandlePreview from "./HandlePreview";
-import Preview from "./Preview";
-import AddToBasket from "../basket/AddToBasketCheckBox";
+import { QueryContext } from "../../../contexts/QueryContext";
+import { GlobalContext } from "../../../contexts/GlobalContext";
+import LoadingSpinner from "../../LoadingSpinner";
+import Paginate from "../../Paginate";
+import HandlePreview from "../../query/HandlePreview";
+import Preview from "../../query/Preview";
+import AddToBasket from "../../basket/AddToBasketCheckBox";
+import { renderRowAstronVO, renderHeaderAstronVO }  from "../layout/AstronVOLayout"
 
 function createBasketItem(record){
     return {
-        archive: "apertif",
+        archive: "astron_vo",
         record: record,
     };
 }
 
-export default function ApertifResults({ catalog }) {
+export default function ASTRONVOResults({ catalog }) {
   const { queryMap, preview } = useContext(QueryContext);
   const { api_host } = useContext(GlobalContext);
-  const [page, setPage] = useState(queryMap.get(catalog).page);const { isAuthenticated } = useContext(GlobalContext);
+  const [page, setPage] = useState(queryMap.get(catalog).page);
 
   useEffect(() => {
     queryMap.set(catalog, {
@@ -59,14 +59,14 @@ export default function ApertifResults({ catalog }) {
       return <Alert variant="warning">No matching results found!</Alert>;
 
     const numPages = queryMap.get(catalog).results.pages;
-    console.log("Query results:", queryMap.get(catalog).results.results);
+    console.log(queryMap.get(catalog).results.results);
     return (
       <>
         <Paginate
           getNewPage={(args) => {
-            return args.target ? setPage(parseInt(args.target.text)) : null;
+            return args.target ? setPage(parseFloat(args.target.text)) : null;
           }}
-          currentPage={queryMap.get(catalog).page}
+          currentPage={page}
           numAdjacent={3}
           numPages={numPages}
         />
@@ -75,13 +75,7 @@ export default function ApertifResults({ catalog }) {
           <thead>
             <tr className="bg-light">
               <th>Basket</th>
-              <th>Name</th>
-              <th>RA</th>
-              <th>Dec</th>
-              <th>fov</th>
-              <th>Dataset ID</th>
-              <th>Data Product Type</th>
-              <th>Data Product Subtype</th>
+                {renderHeaderAstronVO()}
               <th>Link to data</th>
               <th></th>
             </tr>
@@ -90,32 +84,22 @@ export default function ApertifResults({ catalog }) {
             {queryMap.get(catalog).results.results.map((result) => {
               return (
                 <>
-                <tr key={result.PID}>
-                  <td>
-                    <AddToBasket id={result.id} item={createBasketItem(result)} />
-                  </td>
-                  <td>{result.name}</td>
-                  <td>{Number(result.RA).toFixed(1)}</td>
-                  <td>{Number(result.dec).toFixed(1)}</td>
-                  <td>{Number(result.fov).toFixed(1)}</td>
-                  <td>{result.datasetID}</td>
-                  <td>{result.dataProductType}</td>
-                  <td>{result.dataProductSubType}</td>
-                  <td>
-                    <a
-                      href={result.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      download
-                    >
-                      Download data
-                    </a>
-                  </td>
-                  <td>
+                  <tr key={result.url}>
+                    <td>
+                      <AddToBasket id={result.id} item={createBasketItem(result)} />
+                    </td>
+                      {renderRowAstronVO(result)}
+
+                    <td>
+                      <a href={result.url} rel="noopener noreferrer" download>
+                        Download data
+                      </a>
+                    </td>
+                    <td>
                       <HandlePreview result={result} />
-                  </td>
-                </tr>
-                {preview === result.url && 
+                    </td>
+                  </tr>
+                  {preview === result.url && 
                     <tr key={result.url}>
                       <td></td>
                       <td></td>
@@ -129,6 +113,7 @@ export default function ApertifResults({ catalog }) {
             })}
           </tbody>
         </Table>
+        {/* <Paginate /> */}
       </>
     );
   } else {

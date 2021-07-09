@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 import Form from "react-jsonschema-form";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { QueryContext } from "../../contexts/QueryContext";
-import QueryResults from "./QueryResults";
+import QueryResults from "../services/query_results/QueryResults";
 import parseQueryForm from "../../utils/form/parseQueryForm";
 
 export default function QueryCatalogs() {

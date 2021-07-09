@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { Table, Alert, Form } from "react-bootstrap";
 import axios from "axios";
-import { GlobalContext } from "../../contexts/GlobalContext";
-import { QueryContext } from "../../contexts/QueryContext";
-import { BasketContext } from "../../contexts/BasketContext";
-import LoadingSpinner from "../LoadingSpinner";
-import Paginate, { pagination_fields } from "../Paginate";
-import SaveBasketButton from "../basket/SaveBasketButton";
-import AddToBasket from "../basket/AddToBasketCheckBox";
+import { GlobalContext } from "../../../contexts/GlobalContext";
+import { QueryContext } from "../../../contexts/QueryContext";
+import { BasketContext } from "../../../contexts/BasketContext";
+import LoadingSpinner from "../../LoadingSpinner";
+import Paginate, { pagination_fields } from "../../Paginate";
+import SaveBasketButton from "../../basket/SaveBasketButton";
+import AddToBasket from "../../basket/AddToBasketCheckBox";
 
 const DATETIME_OPTIONS = {
   year: "numeric",
@@ -254,7 +254,7 @@ function ZooniverseWorkflowResults(context) {
         numPages={numPages}
       />
       <Form>
-      <SaveBasketButton style={saveBasketStyle} />
+
       {queryMap
         .get("zooniverse_workflows")
         .results.results.map((project) => {

@@ -8,14 +8,14 @@ import QueryCatalogs from "../components/query/QueryCatalogs";
 import QueryIVOARegistry from "../components/query/QueryIVOARegistry";
 import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import Rucio from "../components/Rucio";
-import Interactive from "../components/Interactive";
+import Rucio from "../components/services/Rucio";
+import Interactive from "../components/services/Interactive";
 import MyBasketPage from "../components/basket/MyBasketPage";
 
 
 import { IVOAContextProvider } from "../contexts/IVOAContext";
 import { IDAContext } from "../contexts/IDAContext";
-import SampPage from '../components/query/samp/SampPage';
+import SampPage from '../components/services/samp/SampPage';
 
 export default function Routes() {
     const { navbar, handleLogin, handleLogout, handleError } = useContext(GlobalContext);
@@ -72,7 +72,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 9 jul 2021 - 11:00</small></footer>
+      <footer><small>esap-gui version 9 jul 2021 - 15:00</small></footer>
     </Router>
   );
 }

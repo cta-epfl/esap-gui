@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Alert, Table, Button } from "react-bootstrap"; 
-import { QueryContext } from "../../contexts/QueryContext";
-import LoadingSpinner from "../LoadingSpinner";
-import Paginate from "../Paginate";
-import Preview from "./Preview";
+import { QueryContext } from "../../../contexts/QueryContext";
+import LoadingSpinner from "../../LoadingSpinner";
+import Paginate from "../../Paginate";
+import Preview from "../../query/Preview";
 
 export default function VORegistryResults({ catalog }) {
   const { queryMap, page, setPage, preview, setPreview, setURL } = useContext(QueryContext);

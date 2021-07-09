@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Table, Alert, Form } from "react-bootstrap";
-import { QueryContext } from "../../contexts/QueryContext";
+import { QueryContext } from "../../../contexts/QueryContext";
 // import { BasketContext } from "../../contexts/BasketContext";
-import LoadingSpinner from "../LoadingSpinner";
-import Paginate from "../Paginate";
-import AddToBasket from "../basket/AddToBasketCheckBox";
+import LoadingSpinner from "../../LoadingSpinner";
+import Paginate from "../../Paginate";
+import AddToBasket from "../../basket/AddToBasketCheckBox";
 
 function createBasketItem(record){
     return {
