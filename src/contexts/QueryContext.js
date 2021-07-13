@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
+import { Alert } from "react-bootstrap";
 import axios from "axios";
 import useMap from "../hooks/useMap";
 import { GlobalContext } from "./GlobalContext";
@@ -10,7 +11,7 @@ export function QueryContextProvider({ children }) {
   const queryMap = useMap();
   const [formData, setFormData] = useState();
   const [page, setPage] = useState(1);
-  const [url, setURL] = useState("https://uilennest.net/astrobase/data/191231001/3836665.fits");
+  const [url, setURL] = useState("");
   const [dplevel, setDPLevel] = useState();
   const [collection, setCollection] = useState();
   const [config, setConfig] = useState();
@@ -45,7 +46,11 @@ export function QueryContextProvider({ children }) {
           return null;
         });
         setConfig(config);
-      });
+      })
+        .catch((error) => {
+            let description = ". Configuration not loaded. Is ESAP-API online? " + api_host
+            alert(error.toString() + description)
+        });
   }, [api_host, configName]);
   //}, [api_host, configName, dplevel, collection]);
 
