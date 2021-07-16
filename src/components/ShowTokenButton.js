@@ -39,6 +39,38 @@ export default function ShowTokenButton(props) {
 
     if (isAuthenticated)  {
 
+        let renderIdToken = <div>
+            <Modal.Header closeButton>
+                <Modal.Title>{getTokenIcon('black')}{' '}oidc_id_token</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form.Control as="textarea" rows={11} ref={textAreaRef} value={idToken}>
+                    {idToken}
+                </Form.Control>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="primary" onClick={copyToClipboard}>
+                    {getCopyIcon()}{' '}Copy to Clipboard
+                </Button>
+            </Modal.Footer>
+        </div>
+
+        let renderAccessToken = <div>
+            <Modal.Header closeButton>
+                <Modal.Title>{getTokenIcon('black')}{' '}access_token</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <Form.Control as="textarea" rows={9} ref={textAreaRef2} value={accessToken}>
+                    {accessToken}
+                </Form.Control>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="primary" onClick={copyToClipboard2}>
+                    {getCopyIcon()}{' '}Copy to Clipboard
+                </Button>
+            </Modal.Footer>
+        </div>
+
         return (
             <>
             <Button
@@ -50,33 +82,7 @@ export default function ShowTokenButton(props) {
             </Button>
 
             <Modal size="lg" show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{getTokenIcon('black')}{' '}oidc_id_token</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Control as="textarea" rows={11} ref={textAreaRef} value={idToken}>
-                    {idToken}
-                    </Form.Control>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary" onClick={copyToClipboard}>
-                        {getCopyIcon()}{' '}Copy to Clipboard
-                    </Button>
-                </Modal.Footer>
-
-                <Modal.Header closeButton>
-                    <Modal.Title>{getTokenIcon('black')}{' '}access_token</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Control as="textarea" rows={9} ref={textAreaRef2} value={accessToken}>
-                        {accessToken}
-                    </Form.Control>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="primary" onClick={copyToClipboard2}>
-                        {getCopyIcon()}{' '}Copy to Clipboard
-                    </Button>
-                </Modal.Footer>
+                {renderAccessToken}
             </Modal>
             </>
         )
