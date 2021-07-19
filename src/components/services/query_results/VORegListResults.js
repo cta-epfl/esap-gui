@@ -6,7 +6,7 @@ import Paginate from "../../Paginate";
 import { IVOAContext } from "../../../contexts/IVOAContext";
 
 export default function VORegListResults({ catalog }) {
-  const { queryMap } = useContext(QueryContext);
+  const { queryMap, url } = useContext(QueryContext);
   const {
     selectedRegistry,
     addRegistry,
@@ -18,9 +18,9 @@ export default function VORegListResults({ catalog }) {
   } = useContext(IVOAContext);
   // const [checkAll, setCheckAll] = useState("");
 
-  useEffect(() => {
-    console.log("Selected Registry:", selectedRegistry);
-  }, [selectedRegistry]);
+//  useEffect(() => {
+//    console.log("Selected Registry:", selectedRegistry);
+//  }, [selectedRegistry]);
 
   // useEffect(() => {
   //   console.log("checkAll:", checkAll);

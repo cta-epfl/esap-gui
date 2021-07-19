@@ -84,7 +84,11 @@ export default function QueryCatalogs() {
         status: "fetching",
         results: null,
       });
-      const url = api_host + "query/query/?" + query.esapquery;
+
+
+     const url = renderQueryURL(uri, query)
+
+
       axios
         .get(url)
         .then((queryResponse) => {
@@ -139,6 +143,16 @@ export default function QueryCatalogs() {
         return config.ui_schema ? { uiSchema: config.ui_schema } : {}
     }
   }
+
+ function renderQueryURL(uri, query) {
+    switch(uri) {
+      case 'ivoa':
+        return api_host + "query/" + query.esapquery
+      default:
+        return api_host + "query/query/?" + query.esapquery
+    }
+  }
+
   const uiSchemaProp = renderUIschema(config);
   return (
     <Container fluid>
