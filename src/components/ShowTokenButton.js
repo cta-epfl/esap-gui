@@ -1,30 +1,20 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Button, Modal, Form, FormControl } from "react-bootstrap";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { getTokenIcon, getOKIcon, getCopyIcon } from "../utils/styling";
 
 export default function ShowTokenButton(props) {
-    const { api_host, idToken, accessToken, isAuthenticated } = useContext(GlobalContext);
+    const { accessToken, tokenExpiration, isAuthenticated } = useContext(GlobalContext);
     const [show, setShow] = useState(false);
+    const [timer, setTimer] = useState(undefined)
 
-    const [copySuccess, setCopySuccess] = useState('');
-    const textAreaRef = useRef(null);
     const textAreaRef2 = useRef(null);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    function copyToClipboard(e) {
-        textAreaRef.current.select();
-        document.execCommand('copy');
-        // This is just personal preference.
-        // I prefer to not show the the whole text area selected.
-        e.target.focus();
-
-        setShow(false)
-    };
 
     function copyToClipboard2(e) {
+
         textAreaRef2.current.select();
         document.execCommand('copy');
         // This is just personal preference.
@@ -39,25 +29,9 @@ export default function ShowTokenButton(props) {
 
     if (isAuthenticated)  {
 
-        let renderIdToken = <div>
-            <Modal.Header closeButton>
-                <Modal.Title>{getTokenIcon('black')}{' '}oidc_id_token</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form.Control as="textarea" rows={11} ref={textAreaRef} value={idToken}>
-                    {idToken}
-                </Form.Control>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={copyToClipboard}>
-                    {getCopyIcon()}{' '}Copy to Clipboard
-                </Button>
-            </Modal.Footer>
-        </div>
-
         let renderAccessToken = <div>
             <Modal.Header closeButton>
-                <Modal.Title>{getTokenIcon('black')}{' '}access_token</Modal.Title>
+                <Modal.Title>{getTokenIcon('black')}{' '}access_token expires at: {tokenExpiration}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form.Control as="textarea" rows={9} ref={textAreaRef2} value={accessToken}>
@@ -78,7 +52,7 @@ export default function ShowTokenButton(props) {
                 variant="outline-primary"
                 onClick={handleShow}
                 {...props}>
-                {getTokenIcon('white')}
+                {getTokenIcon('white')}&nbsp;
             </Button>
 
             <Modal size="lg" show={show} onHide={handleClose}>

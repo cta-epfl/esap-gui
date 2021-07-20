@@ -9,6 +9,7 @@ export default function MyBasketButton(props) {
     const { api_host, isAuthenticated } = useContext(GlobalContext);
     const basketContext = useContext(BasketContext);
     const { datasets, hasChanged } = useContext(BasketContext);
+
     useEffect(() => {
         loadBasket(basketContext, api_host, isAuthenticated)
     },[isAuthenticated])
