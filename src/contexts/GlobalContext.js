@@ -10,6 +10,8 @@ function setProfileState(api_host,
                          setLoggedInUserName,
                          setIdToken,
                          setAccessToken,
+                         setTokenExpiration,
+                         setSecondsLeft,
                          setIsAuthenticated){
     const profileUrl = api_host + "accounts/user-profiles/";
     axios
@@ -18,8 +20,14 @@ function setProfileState(api_host,
         setLoggedInUserName(response.data.results[0].full_name);
         setIdToken(response.data.results[0].oidc_id_token)
         setAccessToken(response.data.results[0].oidc_access_token)
+
+        let tokenExpiration = response.data.results[0].id_token_expiration
+        setTokenExpiration(tokenExpiration)
+
         localStorage.setItem('esap_logged_in', true)
         setIsAuthenticated(true);
+
+
     })
 
     .catch((error) => {
@@ -45,6 +53,8 @@ export function GlobalContextProvider({ children }) {
     const [loggedInUserName, setLoggedInUserName] = useState();
     const [idToken, setIdToken] = useState([]);
     const [accessToken, setAccessToken] = useState([]);
+    const [tokenExpiration, setTokenExpiration] = useState([]);
+    const [secondsLeft, setSecondsLeft] = useState(undefined)
 
     useEffect(() => {
     axios
@@ -66,7 +76,7 @@ export function GlobalContextProvider({ children }) {
     console.log("waah", sessionid, getCookie("sessionid"), document.cookie);
 
     const [isAuthenticated, setIsAuthenticated] = useState(
-    sessionid ? true : false
+        sessionid ? true : false
     );
 
     const handleLogin = ({ history }) => {
@@ -78,8 +88,9 @@ export function GlobalContextProvider({ children }) {
           setLoggedInUserName,
           setIdToken,
           setAccessToken,
+          setTokenExpiration,
+          setSecondsLeft,
           setIsAuthenticated);
-
       return null;
     };
 
@@ -129,6 +140,9 @@ export function GlobalContextProvider({ children }) {
           loggedInUserName,
           idToken,
           accessToken,
+          tokenExpiration,
+          secondsLeft,
+          setSecondsLeft,
           refreshLogin
       }}
     >

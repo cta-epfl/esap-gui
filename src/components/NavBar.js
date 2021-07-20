@@ -53,4 +53,4 @@ export default function NavBar() {
       </Nav>
     </Navbar>
     );
-    }
+}
