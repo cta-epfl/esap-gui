@@ -12,10 +12,14 @@ import Rucio from "../components/services/Rucio";
 import Interactive from "../components/services/Interactive";
 import MyBasketPage from "../components/basket/MyBasketPage";
 
-
 import { IVOAContextProvider } from "../contexts/IVOAContext";
 import { IDAContext } from "../contexts/IDAContext";
+import { AladinSimpleContextProvider } from "../contexts/AladinSimpleContext";
+import { AladinAdvancedContextProvider } from "../contexts/AladinAdvancedContext";
+
 import SampPage from '../components/services/samp/SampPage';
+import AladinSimplePage from '../components/services/aladin/AladinSimplePage';
+import AladinAdvancedPage from '../components/services/aladin/AladinAdvancedPage';
 
 export default function Routes() {
     const { navbar, handleLogin, handleLogout, handleError } = useContext(GlobalContext);
@@ -32,39 +36,50 @@ export default function Routes() {
 
         <NavBar />
         <Switch>
-          <Route exact path={["/", "/archives"]}>
-            <Archives />
-          </Route>
-          <Route exact path="/rucio">
-            <Rucio />
-          </Route>
-          <Route exact path="/interactive">
-            <Interactive />
-          </Route>
-          <Route exact path="/vo-query">
-            <Redirect to="/archives/ivoa/query" />
-          </Route>
-          <Route exact path="/jhub" render={() => (window.location = {jhubURL})} />
-          <Route exact path="/login" component={handleLogin} />
-          <Route exact path="/logout" component={handleLogout} />
-          <Route exact path="/error" component={handleError} />
-          <Route exact path="/archives/:uri" component={ArchiveDetails} />
+            <Route exact path={["/", "/archives"]}>
+                <Archives />
+            </Route>
+            <Route exact path="/rucio">
+                <Rucio />
+            </Route>
+            <Route exact path="/interactive">
+                <Interactive />
+            </Route>
+            <Route exact path="/vo-query">
+                <Redirect to="/archives/ivoa/query" />
+            </Route>
+            <Route exact path="/jhub" render={() => (window.location = {jhubURL})} />
+            <Route exact path="/login" component={handleLogin} />
+            <Route exact path="/logout" component={handleLogout} />
+            <Route exact path="/error" component={handleError} />
+            <Route exact path="/archives/:uri" component={ArchiveDetails} />
 
-          <Route exact path={["/query", "/archives/:uri/query"]}>
-              <QueryCatalogs />
-          </Route>
-          <Route exact path="/archives/ivoa/query">
-            <IVOAContextProvider>
-              <QueryIVOARegistry />
-            </IVOAContextProvider>
-          </Route>
-          <Route exact path={["/adex-query", "/archives/:uri/query"]}>
-            <QueryCatalogs />
-          </Route>
+            <Route exact path={["/query", "/archives/:uri/query"]}>
+                <QueryCatalogs />
+            </Route>
+            <Route exact path="/archives/ivoa/query">
+                <IVOAContextProvider>
+                    <QueryIVOARegistry />
+                </IVOAContextProvider>
+            </Route>
+            <Route exact path={["/adex-query", "/archives/:uri/query"]}>
+                <QueryCatalogs />
+            </Route>
 
-          <Route exact path="/samp"  >
-              <SampPage/>
-          </Route>
+            <Route exact path="/samp"  >
+                <SampPage/>
+            </Route>
+
+            <Route exact path="/aladin_simple"  >
+                <AladinSimpleContextProvider>
+                    <AladinSimplePage/>
+                </AladinSimpleContextProvider>
+            </Route>
+            <Route exact path="/aladin_advanced"  >
+                <AladinAdvancedContextProvider>
+                    <AladinAdvancedPage/>
+                </AladinAdvancedContextProvider>
+            </Route>
 
           <Route exact path="/basket"  >
               <MyBasketPage/>
@@ -72,7 +87,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 20 jul 2021 - 11:00</small></footer>
+      <footer><small>esap-gui version 23 jul 2021 - 15:00</small></footer>
     </Router>
   );
 }

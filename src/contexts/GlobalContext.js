@@ -27,12 +27,11 @@ function setProfileState(api_host,
         localStorage.setItem('esap_logged_in', true)
         setIsAuthenticated(true);
 
-
     })
 
     .catch((error) => {
         alert(error)
-        // when the token is no longer valid, getting with credentials will fail
+        // when the token is no longer valid, .get with credentials will fail
         // mark the user as being logged out
         localStorage.removeItem('esap_logged_in')
         setIsAuthenticated(false);

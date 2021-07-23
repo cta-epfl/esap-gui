@@ -11,6 +11,9 @@ import {
     faCog,
     faSearchPlus,
     faKey,
+    faBackspace,
+    faClock,
+    faArrowsAlt,
     faCopy}
     from '@fortawesome/free-solid-svg-icons'
 
@@ -106,4 +109,26 @@ export const getCopyIcon = () => {
     let size = 'md'
 
     return <FontAwesomeIcon size={size} icon={icon} color={color}/>
+}
+
+export const getBackspaceIcon = () => {
+    let icon = faBackspace
+    let color = "darkblue"
+    let size = 'sm'
+    return <FontAwesomeIcon size={size} icon={icon} color={color}  />
+}
+
+
+export const getClockIcon = () => {
+    let icon = faClock
+    let color = "darkblue"
+    let size = 'sm'
+    return <FontAwesomeIcon size={size} icon={icon} color={color}  />
+}
+
+export const getMoveIcon = () => {
+    let icon = faArrowsAlt
+    let color = "darkblue"
+    let size = 'sm'
+    return <FontAwesomeIcon size={size} icon={icon} color={color}  />
 }
