@@ -9,8 +9,8 @@ export const IDAContext = createContext();
 export function IDAContextProvider({ children }) {
 
     const { api_host } = useContext(GlobalContext);
-    const [jhubURL, setJhubURL] = useState("https://srcdev.skatelescope.org/escape");
-    const [jnotebookURL, setJnotebookURL] = useState("https://github.com/AMIGA-IAA/hcg-16/master");
+    const [jhubURL, setJhubURL] = useState();
+    const [jnotebookURL, setJnotebookURL] = useState();
     const [batchsystemsURL, setBatchsystemsURL] = useState("https://dirac.egi.eu");
     const [list_of_jnotebooks, setList_of_jnotebooks] = useState();
     const [list_of_jhubs, setList_of_jhubs] = useState();
@@ -21,6 +21,7 @@ export function IDAContextProvider({ children }) {
       .get(api_host + "ida/workflows/search")
         .then((response) => {
           setList_of_jnotebooks(response.data.results);
+          setJnotebookURL(response.data.results[0].url);
         });
     }, [api_host]);
 
@@ -31,6 +32,7 @@ export function IDAContextProvider({ children }) {
       .get(api_host + "ida/facilities/search")
         .then((response) => {
           setList_of_jhubs(response.data.results);
+          setJhubURL(response.data.results[0].url);
         });
     }, [api_host]);
 
