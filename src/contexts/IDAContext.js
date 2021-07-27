@@ -7,11 +7,11 @@ export const IDAContext = createContext();
 export function IDAContextProvider({ children }) {
 
     const { api_host } = useContext(GlobalContext);
-    const [jhubURL, setJhubURL] = useState();
+    const [idaSystemURL, setIdaSystemURL] = useState();
     const [jnotebookURL, setJnotebookURL] = useState();
     const [batchsystemsURL, setBatchsystemsURL] = useState("https://dirac.egi.eu");
     const [list_of_jnotebooks, setList_of_jnotebooks] = useState();
-    const [list_of_jhubs, setList_of_jhubs] = useState();
+    const [list_of_idaSystems, setList_of_idaSystems] = useState();
 
     // Fetch Notebooks
     useEffect(() => {
@@ -29,8 +29,8 @@ export function IDAContextProvider({ children }) {
       axios
       .get(api_host + "ida/facilities/search")
         .then((response) => {
-          setList_of_jhubs(response.data.results);
-          setJhubURL(response.data.results[0].url);
+          setList_of_idaSystems(response.data.results);
+          setIdaSystemURL(response.data.results[0].url);
         });
     }, [api_host]);
 
@@ -38,16 +38,16 @@ export function IDAContextProvider({ children }) {
     return (
         <IDAContext.Provider
             value={{
-                jhubURL,
-                setJhubURL,
+                idaSystemURL,
+                setIdaSystemURL,
                 jnotebookURL,
                 setJnotebookURL,
                 batchsystemsURL,
                 setBatchsystemsURL,
                 list_of_jnotebooks,
                 setList_of_jnotebooks,
-                list_of_jhubs,
-                setList_of_jhubs
+                list_of_idaSystems,
+                setList_of_idaSystems
             }}
         >
         {children}
