@@ -1,7 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { Alert } from "react-bootstrap";
 import axios from "axios";
-import getCookie from "../utils/getCookie";
 import { GlobalContext } from "./GlobalContext";
 
 
@@ -9,11 +7,11 @@ export const IDAContext = createContext();
 export function IDAContextProvider({ children }) {
 
     const { api_host } = useContext(GlobalContext);
-    const [jhubURL, setJhubURL] = useState("https://srcdev.skatelescope.org/escape");
-    const [jnotebookURL, setJnotebookURL] = useState("https://github.com/AMIGA-IAA/hcg-16/master");
-    const [batchsystemsURL, setBatchsystemsURL] = useState("https://dirac.egi.eu");
+    const [idaSystemURL, setIdaSystemURL] = useState();
+    const [jnotebookURL, setJnotebookURL] = useState();
+    const [batchsystemsURL, setBatchsystemsURL] = useState();
     const [list_of_jnotebooks, setList_of_jnotebooks] = useState();
-    const [list_of_jhubs, setList_of_jhubs] = useState();
+    const [list_of_idaSystems, setList_of_idaSystems] = useState();
 
     // Fetch Notebooks
     useEffect(() => {
@@ -21,6 +19,7 @@ export function IDAContextProvider({ children }) {
       .get(api_host + "ida/workflows/search")
         .then((response) => {
           setList_of_jnotebooks(response.data.results);
+          setJnotebookURL(response.data.results[0].url);
         });
     }, [api_host]);
 
@@ -30,7 +29,8 @@ export function IDAContextProvider({ children }) {
       axios
       .get(api_host + "ida/facilities/search")
         .then((response) => {
-          setList_of_jhubs(response.data.results);
+          setList_of_idaSystems(response.data.results);
+          setIdaSystemURL(response.data.results[0].url);
         });
     }, [api_host]);
 
@@ -38,16 +38,16 @@ export function IDAContextProvider({ children }) {
     return (
         <IDAContext.Provider
             value={{
-                jhubURL,
-                setJhubURL,
+                idaSystemURL,
+                setIdaSystemURL,
                 jnotebookURL,
                 setJnotebookURL,
                 batchsystemsURL,
                 setBatchsystemsURL,
                 list_of_jnotebooks,
                 setList_of_jnotebooks,
-                list_of_jhubs,
-                setList_of_jhubs
+                list_of_idaSystems,
+                setList_of_idaSystems
             }}
         >
         {children}
