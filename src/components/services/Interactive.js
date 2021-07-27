@@ -24,7 +24,7 @@ export default  function Interactive() {
         (event) => setJnotebookURL(list_of_jnotebooks.find((item) => item.name === event.target.value).url)
         }>
         <Form.Label>
-            <h3>Select ESCAPE ESFRI Jupyter Workflows (Notebooks)</h3>
+            <h3>Select an analysis workflow (Jupyter Notebook)</h3>
         </Form.Label>
         <Form.Control className="mt-1" as="select">
           {list_of_jnotebooks.map((option) => <option>{option.name}</option>)}
@@ -36,7 +36,7 @@ export default  function Interactive() {
         (event) => setIdaSystemURL(list_of_idaSystems.find((item) => item.name === event.target.value).url)
         }>
         <Form.Label>
-          <h3>Select ESCAPE Interactive Data Analysis Services</h3>
+          <h3>Select an analysis service</h3>
         </Form.Label>
         <Form.Control className="mt-1" as="select">
           {list_of_idaSystems.map((option) => <option>{option.name}</option>)}
