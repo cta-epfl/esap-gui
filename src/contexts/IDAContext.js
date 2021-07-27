@@ -9,7 +9,7 @@ export function IDAContextProvider({ children }) {
     const { api_host } = useContext(GlobalContext);
     const [idaSystemURL, setIdaSystemURL] = useState();
     const [jnotebookURL, setJnotebookURL] = useState();
-    const [batchsystemsURL, setBatchsystemsURL] = useState("https://dirac.egi.eu");
+    const [batchsystemsURL, setBatchsystemsURL] = useState();
     const [list_of_jnotebooks, setList_of_jnotebooks] = useState();
     const [list_of_idaSystems, setList_of_idaSystems] = useState();
 
