@@ -1,7 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { Alert } from "react-bootstrap";
 import axios from "axios";
-import getCookie from "../utils/getCookie";
 import { GlobalContext } from "./GlobalContext";
 
 
