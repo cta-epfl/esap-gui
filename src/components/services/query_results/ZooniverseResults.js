@@ -340,10 +340,12 @@ export default function ZooniverseResults({ catalog }) {
   const { queryMap, page } = useContext(QueryContext);
   const { api_host } = useContext(GlobalContext);
   useEffect(() => {
+    const usp = new URLSearchParams(queryMap.get(catalog).esapquery);
+    usp.set("page", page);
     queryMap.set(catalog, {
       catalog: catalog,
       page: page,
-      esapquery: queryMap.get(catalog).esapquery + `&page=${page}`,
+      esapquery: usp.toString(),
     });
     const url = api_host + "query/query/?" + queryMap.get(catalog).esapquery;
     axios
