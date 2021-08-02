@@ -92,8 +92,9 @@ export default function SampPage(props) {
     return (
         <div className="App">
             <div>
-                <h2>SAMP demo</h2>
-                <p>Start a SAMP enabled application (like Topcat), register to the hub and transmit data from Topcat.</p>
+                <h2>IVOA SAMP</h2>
+                <p>Start an application which provides a <a href="http://www.ivoa.net/documents/SAMP/">SAMP</a> hub (like <a href="http://www.star.bris.ac.uk/~mbt/topcat/">TOPCAT</a>), hit &quot;register&quot;, and transmit data into ESAP.</p>
+                <p>Be aware that SAMP <a href="https://wiki.ivoa.net/twiki/bin/view/IVOA/WebSampHttps">only works in some browsers</a>; in particular, Safari is generally incompatible.</p>
                 <button variant="outline-warning" onClick={() => register()}>register</button>&nbsp;
                 <button variant="outline-warning" onClick={() => unregister()}>unregister</button>&nbsp;
 
