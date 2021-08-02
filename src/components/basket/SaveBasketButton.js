@@ -32,10 +32,12 @@ export default function SaveBasketButton(props) {
           })
           .catch((error) => {
             console.log(error);
+            alert(error)
           });
       })
       .catch((error) => {
         console.log(error);
+        //alert(error)
       });
   }
 

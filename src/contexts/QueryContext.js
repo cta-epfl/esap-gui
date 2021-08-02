@@ -57,7 +57,7 @@ export function QueryContextProvider({ children }) {
             })
             .catch((error) => {
                 let description = ". Configuration not loaded. Is ESAP-API online? " + api_host
-                alert(error.toString() + description)
+                console.log(error.toString() + description)
             });
     }
 
