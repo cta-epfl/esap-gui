@@ -87,7 +87,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 23 jul 2021 - 15:00</small></footer>
+      <footer><small>esap-gui version 2 aug 2021 - 7:00</small></footer>
     </Router>
   );
 }
