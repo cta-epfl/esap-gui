@@ -32,8 +32,8 @@ deploy-esap-gui:
       - chmod 644 ~/.ssh/known_hosts
     script:
         - echo "Deploying to server"
-        - scp -r build/static/* vermaas@dop814.astron.nl:~/shared/static
-        - scp -r build/* vermaas@dop814.astron.nl:~/shared/public_html/esap-gui
+        - scp -r build/static/* sdc@dop814.astron.nl:~/shared/static
+        - scp -r build/* sdc@dop814.astron.nl:~/shared/public_html/esap-gui
         - echo "Deployed"
     when: manual
     only:
