@@ -34,7 +34,7 @@ export function QueryContextProvider({ children }) {
         }
 
         axios
-            .get(api_host + "query/configuration" + configNameString)
+            .get(api_host + "query/configuration" + configNameString, {withCredentials: true})
             .then((response) => {
                 //alert(configNameString)
                 let config = response.data["configuration"];
