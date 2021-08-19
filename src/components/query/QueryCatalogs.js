@@ -86,7 +86,8 @@ export default function QueryCatalogs() {
       });
       const url = api_host + "query/query/?" + query.esapquery;
       axios
-        .get(url)
+        .get(url, {withCredentials: true})
+        //.get(url)
         .then((queryResponse) => {
           queryMap.set(query.catalog, {
             catalog: query.catalog,
