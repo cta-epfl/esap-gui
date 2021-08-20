@@ -22,22 +22,59 @@ export function QueryContextProvider({ children }) {
 
     // this hook executes fetchConfiguration every time that the values between brackets are changed
     useEffect(() => {
-        if (!fetchConfiguration(configName, {withCredentials: true})) {
-            fetchConfiguration(configName)
+
+        if (!fetchConfiguration(configName)) {
+            fetchConfigurationAnonymous(configName)
         }
 
     }, [api_host, configName]);
     //}, [api_host, configName, dplevel, collection]);
 
 
-    function fetchConfiguration(configName, header) {
+    function fetchConfiguration(configName) {
         let configNameString = "";
         if (configName) {
             configNameString = `?name=${configName}`;
         }
 
         axios
-            .get(api_host + "query/configuration" + configNameString, {header})
+            .get(api_host + "query/configuration" + configNameString, {withCredentials: true})
+            .then((response) => {
+                //alert(configNameString)
+                let config = response.data["configuration"];
+                let props = config.query_schema.properties;
+
+                Object.keys(props).map((key) => {
+                    if (key === "collection" && collection) {
+                        console.log("has key collection, default value is: ", props[key]["default"]);
+                        props[key]["default"] = collection;
+                    }
+                    if (key === "level" && dplevel) {
+                        console.log("has key dplevel, default value is: ", props[key]["default"]);
+                        props[key]["default"] = dplevel;
+                    }
+                    return null;
+                });
+                setConfig(config);
+            })
+            .catch((error) => {
+                let description = ". Configuration not loaded. Is ESAP-API online? " + api_host
+                console.log(error.toString() + description)
+                //alert(description)
+            });
+
+        return true
+    }
+
+
+    function fetchConfigurationAnonymous(configName) {
+        let configNameString = "";
+        if (configName) {
+            configNameString = `?name=${configName}`;
+        }
+
+        axios
+            .get(api_host + "query/configuration" + configNameString)
             .then((response) => {
                 //alert(configNameString)
                 let config = response.data["configuration"];
