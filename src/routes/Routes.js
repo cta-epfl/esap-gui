@@ -52,17 +52,17 @@ export default function Routes() {
             <Route exact path="/login" component={handleLogin} />
             <Route exact path="/logout" component={handleLogout} />
             <Route exact path="/error" component={handleError} />
+
+
             <Route exact path="/archives/:uri" component={ArchiveDetails} />
 
-            <Route exact path={["/query", "/archives/:uri/query"]}>
-                <QueryCatalogs />
-            </Route>
             <Route exact path="/archives/ivoa/query">
                 <IVOAContextProvider>
                     <QueryIVOARegistry />
                 </IVOAContextProvider>
             </Route>
-            <Route exact path={["/adex-query", "/archives/:uri/query"]}>
+
+            <Route exact path={["/query", "/archives/:uri/query"]}>
                 <QueryCatalogs />
             </Route>
 
@@ -87,7 +87,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 20 aug 2021 - 10:00</small></footer>
+      <footer><small>esap-gui version 20 aug 2021 - 14:00</small></footer>
     </Router>
   );
 }
