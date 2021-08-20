@@ -94,9 +94,11 @@ export default function QueryIVOARegistry() {
           if(queryStep === "run-query") {
           let tf_url = api_host + "query/get-tables-fields/?dataset_uri=vo_reg&access_url=" + query.catalog;
           console.log("table fields url: ", tf_url);
+
           axios
             .get(tf_url)
             .then((tfResponse) => {
+
               queryMap.set(query.catalog, {
                 catalog: query.catalog,
                 service_type: query.service_type,

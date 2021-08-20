@@ -52,17 +52,17 @@ export default function Routes() {
             <Route exact path="/login" component={handleLogin} />
             <Route exact path="/logout" component={handleLogout} />
             <Route exact path="/error" component={handleError} />
+
+
             <Route exact path="/archives/:uri" component={ArchiveDetails} />
 
-            <Route exact path={["/query", "/archives/:uri/query"]}>
-                <QueryCatalogs />
-            </Route>
             <Route exact path="/archives/ivoa/query">
                 <IVOAContextProvider>
                     <QueryIVOARegistry />
                 </IVOAContextProvider>
             </Route>
-            <Route exact path={["/adex-query", "/archives/:uri/query"]}>
+
+            <Route exact path={["/query", "/archives/:uri/query"]}>
                 <QueryCatalogs />
             </Route>
 
