@@ -9,7 +9,7 @@ import { saveBasket } from "./SaveBasketButton"
 export default function EmptyBasketButton(props) {
     const { api_host, isAuthenticated, isTokenValid, loginAgain } = useContext(GlobalContext);
     const basketContext = useContext(BasketContext);
-    const { setHasChanged } = useContext(BasketContext);
+    const { setHasChanged, refresh, setRefresh } = useContext(BasketContext);
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -18,15 +18,16 @@ export default function EmptyBasketButton(props) {
     let history = useHistory()
 
     function emptyBasket(basketContext , api_host, isTokenValid, loginAgain, history){
-        basketContext.setDatasets([])
+        basketContext.clear()
         setHasChanged(true)
         setShow(false)
-        saveBasket(basketContext , api_host, isTokenValid, loginAgain, history)
+        setRefresh(!refresh)
     }
 
 
     if (isAuthenticated)  {
-        if (basketContext.datasets!==[]) {
+        //alert(basketContext.datasets)
+        if (basketContext.datasets.length>0) {
             return (
                 <>
                 <Button
@@ -41,16 +42,16 @@ export default function EmptyBasketButton(props) {
                     <Modal.Header closeButton>
                         <Modal.Title>{getTrashIcon('black')}{' '}Empty Basket</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Are you sure you want to empty the shopping basket?</Modal.Body>
+                    <Modal.Body><h5>Are you sure you want to empty the basket?</h5>
+                        <i>(don't forget to click 'Save Basket' afterward)</i>
+                    </Modal.Body>
                     <Modal.Footer>
                         <Button variant="success"
                                 onClick={() => emptyBasket(basketContext, api_host, isTokenValid, loginAgain, history)}
                         >
                             {getOKIcon()}{' '}OK
                         </Button>
-                        <Button variant="warning" onClick={handleClose}>
-                            Cancel
-                        </Button>
+
                     </Modal.Footer>
                 </Modal>
                 </>

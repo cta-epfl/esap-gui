@@ -6,6 +6,7 @@ export function BasketContextProvider({ children }) {
     const [datasets, setDatasets] = useState([]);
 
     const [hasChanged, setHasChanged] = useState(false);
+    const [refresh, setRefresh] = useState(false);
 
     function handleAddDataset(dataset) {
       setDatasets([...datasets, dataset]);
@@ -20,16 +21,22 @@ export function BasketContextProvider({ children }) {
       setHasChanged(true)
     }
 
+    function handleClearDatasets() {
+        const copy = []
+        setDatasets(copy);
+        setHasChanged(true)
+    }
+
     return (
       <BasketContext.Provider
         value={{
-            datasets,
-            setDatasets,
-            hasChanged,
-            setHasChanged,
+            datasets, setDatasets,
+            hasChanged, setHasChanged,
+            refresh, setRefresh,
             add: handleAddDataset,
             remove: handleRemoveDataset,
-            changed: setHasChanged
+            clear: handleClearDatasets,
+            changed: setHasChanged,
         }}
       >
       {children}
