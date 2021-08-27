@@ -1,23 +1,27 @@
 import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { BasketContext } from "../../contexts/BasketContext";
 import { getTrashIcon, getOKIcon } from "../../utils/styling";
+import { saveBasket } from "./SaveBasketButton"
 
 export default function EmptyBasketButton(props) {
-    const { api_host, isAuthenticated } = useContext(GlobalContext);
+    const { api_host, isAuthenticated, isTokenValid, loginAgain } = useContext(GlobalContext);
     const basketContext = useContext(BasketContext);
     const { setHasChanged } = useContext(BasketContext);
-
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    function emptyBasket(){
+    let history = useHistory()
+
+    function emptyBasket(basketContext , api_host, isTokenValid, loginAgain, history){
         basketContext.setDatasets([])
         setHasChanged(true)
         setShow(false)
+        saveBasket(basketContext , api_host, isTokenValid, loginAgain, history)
     }
 
 
@@ -39,7 +43,9 @@ export default function EmptyBasketButton(props) {
                     </Modal.Header>
                     <Modal.Body>Are you sure you want to empty the shopping basket?</Modal.Body>
                     <Modal.Footer>
-                        <Button variant="success" onClick={emptyBasket}>
+                        <Button variant="success"
+                                onClick={() => emptyBasket(basketContext, api_host, isTokenValid, loginAgain, history)}
+                        >
                             {getOKIcon()}{' '}OK
                         </Button>
                         <Button variant="warning" onClick={handleClose}>
