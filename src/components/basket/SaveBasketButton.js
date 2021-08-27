@@ -9,7 +9,7 @@ import { getShoppingIcon } from "../../utils/styling";
 
 export function saveBasket(basketContext, api_host, isTokenValid, loginAgain, history){
     const payload = {shopping_cart: basketContext.datasets};
-    console.log('saveBasket()')
+    console.log('saveBasket() '+payload)
     const profileUrl = api_host + "accounts/user-profiles/";
 
     // check if he token is still valid

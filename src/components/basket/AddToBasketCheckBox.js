@@ -25,11 +25,7 @@ export default function AddToCheckout(props) {
     console.log('removeFromBasket: '+[removeFromBasketItem, basketContext]);
   }
 
-  // fake authentication when in 'development' mode.
-  // let authenticated = isAuthenticated || (process.env.NODE_ENV === "development")
-  let authenticated = isAuthenticated
-
-  if (authenticated){
+  if (isAuthenticated){
       //let datasets_in_basket = basketContext.datasets
       //console.log('datasets_in_basket: '+datasets_in_basket)
     return (
