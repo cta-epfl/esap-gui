@@ -13,9 +13,8 @@ function ResponseToDatasets(response) {
     let datasets = shopping_cart.map((item) => {
         // make item_data an object instead of a string
 
-        console.log('itemdata = '+item.item_data)
+        //console.log('itemdata = '+item.item_data)
         let o = JSON.parse(item.item_data)
-        //alert(o)
         return o
         //return item.item_data
 
@@ -23,6 +22,8 @@ function ResponseToDatasets(response) {
 
     return datasets
 }
+
+
 export function loadBasket(basketContext, api_host, isAuthenticated){
     //alert('loadBasket: authenticated = '+isAuthenticated)
     if (!isAuthenticated) {

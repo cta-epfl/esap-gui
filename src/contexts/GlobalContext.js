@@ -11,8 +11,8 @@ function setProfileState(api_host,
                          setIdToken,
                          setAccessToken,
                          setTokenExpiration,
-                         setSecondsLeft,
                          setIsAuthenticated){
+
     const profileUrl = api_host + "accounts/user-profiles/";
     axios
     .get(profileUrl, {withCredentials: true})
@@ -30,12 +30,13 @@ function setProfileState(api_host,
     })
 
     .catch((error) => {
-        alert('GlobalContext.setProfileState:' + error)
+        console.log('GlobalContext.setProfileState:' + error)
         // when the token is no longer valid, .get with credentials will fail
         // mark the user as being logged out
         localStorage.removeItem('esap_logged_in')
         setIsAuthenticated(false);
         setLoggedInUserName("");
+
     });
 }
 
@@ -53,32 +54,30 @@ export function GlobalContextProvider({ children }) {
     const [idToken, setIdToken] = useState([]);
     const [accessToken, setAccessToken] = useState([]);
     const [tokenExpiration, setTokenExpiration] = useState([]);
-    const [secondsLeft, setSecondsLeft] = useState(undefined)
 
     useEffect(() => {
-    axios
-      .get(api_host + "query/archives-uri")
-      .then((response) => setArchives(response.data.results));
-    }, [api_host]);
+        axios
+          .get(api_host + "query/archives-uri")
+          .then((response) => setArchives(response.data.results));
+        }, [api_host]);
 
-    useEffect(() => {
-    axios
-    .get(api_host + "query/configuration?name=navbar")
-      .then((response) => {
-        console.log("navbar response", response.data.configuration);
-        setNavbar(response.data.configuration);
-      });
-    }, [api_host]);
+        useEffect(() => {
+        axios
+        .get(api_host + "query/configuration?name=navbar")
+          .then((response) => {
+            console.log("navbar response", response.data.configuration);
+            setNavbar(response.data.configuration);
+          });
+        }, [api_host]);
 
     // Zheng: "!!!!! Still need to look at sessionid and stuff"
     const [sessionid, setSessionid] = useState(getCookie("sessionid"));
     console.log("waah", sessionid, getCookie("sessionid"), document.cookie);
 
-    const [isAuthenticated, setIsAuthenticated] = useState(
-        sessionid ? true : false
-    );
+    const [isAuthenticated, setIsAuthenticated] = useState(sessionid ? true : false);
 
     const handleLogin = ({ history }) => {
+        console.log('handleLogin()')
       setIsAuthenticated(true);
       setSessionid(getCookie("sessionid"));
       history.replace("/");
@@ -88,17 +87,29 @@ export function GlobalContextProvider({ children }) {
           setIdToken,
           setAccessToken,
           setTokenExpiration,
-          setSecondsLeft,
           setIsAuthenticated);
       return null;
     };
 
+    // used when token expiration is detected before or during an axios fetch
+    const loginAgain = (history) => {
+        console.log('loginAgain()')
+        const loginUrl = api_host + "oidc/authenticate"
+        console.log('history = '+history)
+
+        //history.replace("/login");
+        window.location = loginUrl
+        //alert('history push')
+        //history.push("/login");
+    }
+
     const handleLogout = ({ history }) => {
-      setIsAuthenticated(false);
-      setSessionid(null);
-      history.replace("/");
-      setLoggedInUserName("");
-      localStorage.removeItem('esap_logged_in')
+        console.log('handleLogout()')
+        setIsAuthenticated(false);
+        setSessionid(null);
+        history.replace("/");
+        setLoggedInUserName("");
+        localStorage.removeItem('esap_logged_in')
     return null;
     };
 
@@ -110,6 +121,15 @@ export function GlobalContextProvider({ children }) {
         if ((!isAuthenticated) && (loggedIn)) {
             history.replace("/login");
         }
+    }
+
+    // compare the tokenExpiration timestamp with the current time
+    // to determine if the token is still valid.
+    const isTokenValid = () => {
+        let expiration = Date.parse(tokenExpiration)
+        let now = Date.parse(new Date())
+        let valid = (expiration - now) > 0
+        return (expiration - now)/1000
     }
 
   const handleError = (event) => {
@@ -140,9 +160,9 @@ export function GlobalContextProvider({ children }) {
           idToken,
           accessToken,
           tokenExpiration,
-          secondsLeft,
-          setSecondsLeft,
-          refreshLogin
+          refreshLogin,
+          isTokenValid,
+          loginAgain
       }}
     >
       {children}

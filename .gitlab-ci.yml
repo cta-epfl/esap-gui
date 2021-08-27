@@ -19,6 +19,8 @@ build-esap-gui:
         expire_in: 1 hour
         paths:
             - build
+    only:
+        - master
 
 deploy-esap-gui:
     stage: deploy

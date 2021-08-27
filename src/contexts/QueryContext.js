@@ -16,7 +16,7 @@ export function QueryContextProvider({ children }) {
     const [collection, setCollection] = useState();
     const [config, setConfig] = useState();
     const [configName, setConfigName] = useState(defaultConf);
-    const { api_host } = useContext(GlobalContext);
+    const { api_host, loginAgain } = useContext(GlobalContext);
     const [preview, setPreview] = useState(false);
     const [ds9, setDS9] = useState(false);
 
@@ -61,6 +61,11 @@ export function QueryContextProvider({ children }) {
                 let description = ". Configuration not loaded. Is ESAP-API online? " + api_host
                 console.log(error.toString() + description)
                 //alert(description)
+                // frantic attempt to solve cors errors by trying to trigger a login
+                //const loginUrl = api_host + "oidc/authenticate"
+                //alert('(QueryContext) token expired, attempting login: '+loginUrl)
+                //window.location = loginUrl
+                loginAgain()
                 return false
             });
 
@@ -95,9 +100,13 @@ export function QueryContextProvider({ children }) {
                 setConfig(config);
             })
             .catch((error) => {
+
                 let description = ". Configuration not loaded. Is ESAP-API online? " + api_host
                 console.log(error.toString() + description)
-                //alert(description)
+                alert(description)
+                //const loginUrl = api_host + "oidc/authenticate"
+                // window.location = loginUrl
+                loginAgain()
             });
 
         return true
