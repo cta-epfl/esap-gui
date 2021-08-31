@@ -36,6 +36,9 @@ export default function QueryCatalogs() {
       case "esap_rucio":
         setConfigName("esap_rucio");
         break;
+      case "esap_zenodo":
+        setConfigName("esap_zenodo");
+        break;
       case "astron_vo":
         setConfigName("astron_vo");
         break;
