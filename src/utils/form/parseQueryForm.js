@@ -5,6 +5,7 @@ import parseIVOAForm from "./parseIVOAForm";
 import parseApertifForm from "./parseApertifForm";
 import parseASTRONVOForm from "./parseASTRONVOForm";
 import parseRucioForm from "./parseRucioForm";
+import parseZenodoForm from "./parseZenodoForm";
 
 export default function parseQueryForm(gui, formData) {
   switch (gui) {
@@ -22,6 +23,8 @@ export default function parseQueryForm(gui, formData) {
       return parseIVOAForm(formData);
     case "rucio":
         return parseRucioForm(formData);
+    case "zenodo":
+        return parseZenodoForm(formData);
     default:
       return null;
   }
