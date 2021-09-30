@@ -15,7 +15,7 @@ export default function ZenodoResults({ catalog }) {
     if (context.queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
     else if (catalog === "zenodo") {
-      const zenodoResults = queryMap.get("zenodo").results.results[0]['hits']['hits'].map((hits, counter) => (
+      const zenodoResults = queryMap.get("zenodo").results.results.map((hits, counter) => (
         <>
         <br/>
         <br/>
