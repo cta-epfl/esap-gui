@@ -8,6 +8,7 @@ import AddToBasket from "../../basket/AddToBasketCheckBox";
 export default function ZenodoResults({ catalog }) {
   const context = useContext(QueryContext);
   const { queryMap, page, setPage } = context;
+  const regex = /(<([^>]+)>)/ig;
 
   if (!context.queryMap) return null;
 
@@ -19,10 +20,10 @@ export default function ZenodoResults({ catalog }) {
         <>
         <br/>
         <br/>
-        <h4><a href={hits.links.latest_html} target="_blank"> {hits.metadata.title.replaceAll("<p>","").replaceAll("</p>","")} </a></h4>
-        DOI: {hits.metadata.doi}
+        <h4><a href={hits.links.latest_html} target="_blank"> {hits.metadata.title.replaceAll(regex, '')} </a></h4>
+        <a href={hits.links.conceptdoi} target="_blank"> <img src={hits.links.badge} alt="DOI"/> </a>
         <br/>
-        {hits.metadata.description.replaceAll("<p>","").replaceAll("</p>","").substring(0,200)}...
+        {hits.metadata.description.replaceAll(regex, '').substring(0,200)}...
         </>
       ));
 
