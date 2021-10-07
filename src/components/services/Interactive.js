@@ -63,7 +63,7 @@ export default  function Interactive() {
 
 
   return (
-    <Container fluid>
+    <Container className="ida" fluid>
 
     <h1>Interactive Analysis</h1>
 

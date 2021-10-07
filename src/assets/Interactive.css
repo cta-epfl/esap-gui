@@ -1,11 +1,11 @@
-h2 {
+.ida h2 {
   color:gray;
 }
-span {
+.ida span {
   overflow-wrap: break-word;
 }
             
-ul {
+.ida ul {
   counter-reset: li; 
   list-style: none; 
   padding: 0;
@@ -20,18 +20,15 @@ ul {
    padding:15px;
 }
     
-.container-fluid {
+.ida {
   margin:50px;
 }
 
-.container-fluid ul {
-
-}
-.input-contain{
+.ida .input-contain{
     position: relative;
 }
 
-input[type=text] {
+.ida input[type=text] {
     height: 5rem;
     width: 40rem;
     border: 2px solid black;
@@ -39,21 +36,21 @@ input[type=text] {
     margin-bottom:30px;
 }
 
-input[type=text]:focus{
+.ida input[type=text]:focus{
     outline: none;
     border-color: blue;
 }
-input[type=text]:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
+.ida input[type=text]:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
     background-color: white;
     font-size: 1.1rem;
     color: black;
     transform: translate(0, -170%);
 }
-input[type=text]:focus + .placeholder-text .text{
+.ida input[type=text]:focus + .placeholder-text .text{
     border-color: blueviolet;
     color: blue;
 }
-.placeholder-text{
+.ida .placeholder-text{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -65,7 +62,7 @@ input[type=text]:focus + .placeholder-text .text{
     display: flex;
     align-items: center;
 }
-.text{
+.ida .text{
     font-size: 1.4rem;
     padding: 0 0.5rem;
     background-color: transparent;
@@ -73,12 +70,14 @@ input[type=text]:focus + .placeholder-text .text{
     color: black;
     transition: transform 0.15s ease-out, font-size 0.15s ease-out, background-color 0.2s ease-out, color 0.15s ease-out;
 }
+
 input[type=text], .placeholder-text{
     font-size: 1.4rem;
     padding: 0 1.2rem;
+
 }
 
-@media (max-width: 40rem) {
+.ida @media (max-width: 40rem) {
     input{
         width: 70vw;
     }
@@ -90,7 +89,7 @@ input[type=text], .placeholder-text{
 
 
 /* Customize the label (the container) */
-.container {
+.ida .container {
   display: block;
   position: relative;
   padding-left: 35px;
