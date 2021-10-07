@@ -55,6 +55,7 @@ export default  function Interactive() {
 
   const onClickNext = e => {
     e.preventDefault();
+    setSearchTerm("")
     setShowFacilities(true);
   };
 
