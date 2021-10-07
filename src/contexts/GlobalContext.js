@@ -41,12 +41,11 @@ function setProfileState(api_host,
 }
 
 export function GlobalContextProvider({ children }) {
-  
+
     const api_host =
     process.env.NODE_ENV === "development"
       ? "http://localhost:5555/esap-api/"
       : "https://sdc-dev.astron.nl/esap-api/";
-
 
     const [archives, setArchives] = useState();
     const [navbar, setNavbar] = useState();
