@@ -4,14 +4,18 @@ import { IDAContext } from "../../contexts/IDAContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import "../../assets/Interactive.css";
 
-
 export default  function Interactive() {
-  const { idaSystemURL, setIdaSystemURL, workflowURL, setWorkflowURL, batchsystemsURL, setBatchsystemsURL, list_of_workflows, setList_of_workflows, list_of_idaSystems, setList_of_idaSystems} = useContext(IDAContext);
-  const { api_host } = useContext(GlobalContext);
+
+  const {idaSystemURL, setIdaSystemURL, workflowURL, setWorkflowURL, batchsystemsURL, setBatchsystemsURL, list_of_workflows, setList_of_workflows, list_of_idaSystems, setList_of_idaSystems} = useContext(IDAContext);
+  const {api_host } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [showFacilities, setShowFacilities] = React.useState(false);
   const [showNext, setShowNext] = React.useState(false);
+  const [showBack, setShowBack] = React.useState(false);
+  const [showMoreButton, setShowMoreButton] = React.useState(true);
   const [showDeploy, setShowDeploy] = React.useState(false);
+  const [numberOfitemsShown, setNumberOfitemsShown] = React.useState(3)
+
 
   let list_of_batchsystems = [
     {"name" : "DIRAC EGI (LOFAR, KM3Net)", "url" : "https://dirac.egi.eu"},
@@ -24,6 +28,14 @@ export default  function Interactive() {
 
   const handleChange = event => {
     setSearchTerm(event.target.value);
+    if (event.target.value==""){
+        setNumberOfitemsShown(3);
+        setShowMoreButton(true);
+    } else {
+        setNumberOfitemsShown(list_of_workflows.length);
+        setShowMoreButton(false);
+    }
+
   };
 
   const workflow_results = !searchTerm
@@ -42,7 +54,6 @@ export default  function Interactive() {
             facility.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())
   );
 
-
   const setWorkflow = event => {
     setWorkflowURL(event.target.value);
     setShowNext(true)
@@ -57,12 +68,35 @@ export default  function Interactive() {
     e.preventDefault();
     setSearchTerm("")
     setShowFacilities(true);
+    setShowBack(true)
   };
 
+  const onClickBack = e => {
+    e.preventDefault();
+    setSearchTerm("")
+    setShowNext(false);
+    setShowFacilities(false);
+    setShowBack(true)
+    setNumberOfitemsShown(3);
+    setShowMoreButton(true);
 
+  };
 
+  const showMore = e => {
+    e.preventDefault();
+    if (numberOfitemsShown + 3 <= list_of_workflows.length) {
+      setNumberOfitemsShown(numberOfitemsShown + 3);
+    } else {
+      setNumberOfitemsShown(list_of_workflows.length);
+      setShowMoreButton(false);
+    }
+  }
+
+  const workflow_results_sliced = workflow_results.slice(0, numberOfitemsShown)
 
   return (
+
+
     <Container className="ida" fluid>
 
     <h1>Interactive Analysis</h1>
@@ -73,6 +107,8 @@ export default  function Interactive() {
     <h2>Workflows</h2>
 
     <Form className="mt-5">
+
+      <div class="search-buttons">
 
       <input
         type="text"
@@ -86,8 +122,11 @@ export default  function Interactive() {
         <Button className="next-button"  onClick={onClickNext}>Next</Button>
          : null }
 
+      </div>
+
+
       <ul class="workflow-ul">
-         {workflow_results.map(item => (
+         {workflow_results_sliced.map(item => (
           <li class="workflow-li">
              <label class="container workflow-checkbox"><input type="radio" name="workflow" onChange={setWorkflow} value={item.url} />  <span class="checkmark"></span></label><h5>{item.name}</h5><br/>
              <span><b>Description: </b> <span dangerouslySetInnerHTML={{ __html: item.description }}></span></span><br/>
@@ -99,6 +138,12 @@ export default  function Interactive() {
           </li>
         ))}
       </ul>
+
+
+      { showMoreButton ?
+         <Button className="more-button" onClick={showMore}>More</Button>
+       : null }
+
 
 
     </Form>
@@ -117,6 +162,8 @@ export default  function Interactive() {
 
     <Form className="mt-5">
 
+    <div class="search-buttons">
+
      <input
         type="text"
         placeholder="Search for Facilities"
@@ -124,10 +171,20 @@ export default  function Interactive() {
         onChange={handleChange}
       />
 
-      { showDeploy ?
-         <Button className="next-button" href={api_host + "ida/deploy?facility=" + idaSystemURL + "&workflow=" + workflowURL} target="_blank">Deploy</Button>
+      <div class="deploy-buttons">
+
+      { showBack ?
+        <Button className="back-button"  onClick={onClickBack}>&#171;</Button>
          : null }
 
+
+      { showDeploy ?
+         <Button className="deploy-button" href={api_host + "ida/deploy?facility=" + idaSystemURL + "&workflow=" + workflowURL} target="_blank">Deploy</Button>
+         : null }
+
+      </div>
+
+      </div>
 
       <ul class="facility-ul">
          {facility_results.map(item => (
