@@ -45,9 +45,11 @@ export default function Routes() {
             <Route exact path="/interactive">
                 <Interactive />
             </Route>
+            /*
             <Route exact path="/vo-query">
                 <Redirect to="/archives/ivoa/query" />
             </Route>
+            */
             <Route exact path="/jhub" render={() => (window.location = {jhubURL})} />
             <Route exact path="/login" component={handleLogin} />
             <Route exact path="/logout" component={handleLogout} />
@@ -56,6 +58,7 @@ export default function Routes() {
 
             <Route exact path="/archives/:uri" component={ArchiveDetails} />
 
+            /* nv: this shortcuts the path to QueryCatalogs... to enable 2-stage query  */
             <Route exact path="/archives/ivoa/query">
                 <IVOAContextProvider>
                     <QueryIVOARegistry />
@@ -87,7 +90,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 5 oct 2021</small></footer>
+      <footer><small>esap-gui version 8 oct 2021</small></footer>
     </Router>
   );
 }
