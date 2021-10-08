@@ -9,7 +9,7 @@ import QueryResults from "../services/query_results/QueryResults";
 import parseQueryForm from "../../utils/form/parseQueryForm";
 import { IVOAContext } from "../../contexts/IVOAContext";
 import parseVOServiceForm from "../../utils/form/parseVOServiceForm";
-import VOServiceResults from "../services/query_results/VOServiceResults";
+import VOServiceResults from "../services/query_results/IVOAResults";
 import { getQueryIcon } from "../../utils/styling";
 
 export default function QueryIVOARegistry() {
@@ -78,7 +78,6 @@ export default function QueryIVOARegistry() {
           if(queryStep === "run-query") {
           let tf_url = api_host + "query/get-tables-fields/?dataset_uri=vo_reg&access_url=" + query.catalog;
           console.log("table fields url: ", tf_url);
-
           axios
             .get(tf_url)
             .then((tfResponse) => {
@@ -208,7 +207,7 @@ export default function QueryIVOARegistry() {
             <div key={catalog} className="mt-3">
               <Row>
                 <Col>
-                  <h4>List of Services</h4>
+                  <h4>List of VO Resources</h4>
                 </Col>
                 <Col>
                   {selectedServices.length === 0 ? (
