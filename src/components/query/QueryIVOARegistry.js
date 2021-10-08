@@ -22,7 +22,7 @@ export default function QueryIVOARegistry() {
   const { api_host } = useContext(
     GlobalContext
   );
-  const { selectedRegistry, setSelectedRegistry, queryStep, setQueryStep, regPage } = useContext(
+  const { selectedServices, setSelectedServices, queryStep, setQueryStep, regPage } = useContext(
     IVOAContext
   );
   const { uri } = useParams();
@@ -50,7 +50,7 @@ export default function QueryIVOARegistry() {
     let queries = [];
 
     if (queryStep === "run-query") {
-      selectedRegistry.forEach((access_url) => {
+      selectedServices.forEach((access_url) => {
         queries = [
           ...queries,
           ...parseVOServiceForm(formData, access_url, page),
@@ -158,22 +158,22 @@ export default function QueryIVOARegistry() {
           {...uiSchemaProp}
         >
           <RBForm.Control as="select" multiple>
-            {selectedRegistry.map((registry) => {
-              return <option>{registry}</option>;
+            {selectedServices.map((service) => {
+              return <option>{service}</option>;
             })}
           </RBForm.Control>
           <div>
             <Button className="mt-3" type="submit">
-              Query Registry
+              Query VO Resource
             </Button>
           </div>
         </Form>
-        {selectedRegistry.map((registry) => {
-          const details = queryMap.get(registry);
+        {selectedServices.map((service) => {
+          const details = queryMap.get(service);
           console.log("Details:", details);
           return (
             <div className="mt-3">
-              <VOServiceResults catalog={registry} />
+              <VOServiceResults catalog={service} />
             </div>
           );
         })}
@@ -208,10 +208,10 @@ export default function QueryIVOARegistry() {
             <div key={catalog} className="mt-3">
               <Row>
                 <Col>
-                  <h4>List of resources</h4>
+                  <h4>List of Services</h4>
                 </Col>
                 <Col>
-                  {selectedRegistry.length === 0 ? (
+                  {selectedServices.length === 0 ? (
                     <></>
                   ) : (
                     <Button
@@ -220,7 +220,7 @@ export default function QueryIVOARegistry() {
                         setQueryStep("run-query");
                       }}
                     >
-                      Query selected resources
+                      Query selected VO Resources
                     </Button>
                   )}
                 </Col>

@@ -22,14 +22,14 @@ export default function DataProductCategories({ archive }) {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Data Product Categories in {archive.name}</Card.Title>
+        <Card.Title>Data in {archive.name}</Card.Title>
 
         <ListGroup variant="flush">
           <ListGroup.Item>
             <Row className="p-2">
-              <Col className="text-left">Data Product Category</Col>
-              <Col className="text-center">Catalog name</Col>
-              <Col className="text-center">Categories access</Col>
+              <Col className="text-left"><b>Dataset or Category</b></Col>
+              <Col className="text-center"><b>Catalog</b></Col>
+              <Col className="text-center"><b>Query Access</b></Col>
             </Row>
           </ListGroup.Item>
           {categories
