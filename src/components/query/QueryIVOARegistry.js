@@ -207,7 +207,7 @@ export default function QueryIVOARegistry() {
             <div key={catalog} className="mt-3">
               <Row>
                 <Col>
-                  <h4>List of Services</h4>
+                  <h4>List of VO Resources</h4>
                 </Col>
                 <Col>
                   {selectedServices.length === 0 ? (

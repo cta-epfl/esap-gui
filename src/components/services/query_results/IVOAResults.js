@@ -25,8 +25,12 @@ export default function IVOAResults({ catalog }) {
     //   return (
     //     <Alert variant="warning">{queryMap.get(catalog).results[0]}</Alert>
     //   );
-    if (queryMap.get(catalog).results.results.length === 0)
-      return <Alert variant="warning">No matching results found!</Alert>;
+      try {
+          if (queryMap.get(catalog).results.results.length === 0)
+              return <Alert variant="warning">No matching results found!</Alert>;
+      } catch (e) {
+          return <Alert variant="warning">No matching results found!</Alert>;
+      }
 
     const numPages = queryMap.get(catalog).results.pages;
     let indice = [];

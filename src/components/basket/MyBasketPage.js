@@ -10,6 +10,7 @@ import APIButton from "./APIButton"
 import EmptyBasketButton from "./EmptyBasketButton"
 import { renderRowApertif, renderHeaderApertif }  from "../services/layout/ApertifResultsLayout"
 import { renderRowAstronVO, renderHeaderAstronVO }  from "../services/layout/AstronVOLayout"
+import { renderRowIVOA, renderHeaderIVOA }  from "../services/layout/IVOALayout"
 
 function renderRow(item) {
     switch(item.archive) {
@@ -40,6 +41,21 @@ function renderRow(item) {
                     </thead>
                     <tbody>
                         {renderRowAstronVO((item.record))}
+                    </tbody>
+                </Table>
+            </div>
+
+        case 'TODO_vo_reg':
+
+            return <div>
+                <Table className="mt-3" size="sm" responsive>
+                    <thead>
+                    <tr className="bg-light">
+                        {renderHeaderIVOA()}
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {renderRowIVOA((item.record))}
                     </tbody>
                 </Table>
             </div>
