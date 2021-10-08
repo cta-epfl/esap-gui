@@ -1,0 +1,162 @@
+.ida h2 {
+  color:gray;
+}
+.ida span {
+  overflow-wrap: break-word;
+}
+            
+.ida ul {
+  counter-reset: li; 
+  list-style: none; 
+  padding: 0;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+.workflow-li, .facility-li {
+   margin-bottom:20px;
+   width:40%;
+   border: 1px solid #ccc!important;
+   border-radius: 4px;
+   padding:15px;
+}
+    
+.ida {
+  margin:50px;
+}
+
+.ida .input-contain{
+    position: relative;
+}
+
+.ida input[type=text] {
+    height: 5rem;
+    width: 40rem;
+    border: 2px solid black;
+    border-radius: 1rem;
+    margin-bottom:30px;
+}
+
+.ida input[type=text]:focus{
+    outline: none;
+    border-color: blue;
+}
+.ida input[type=text]:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
+    background-color: white;
+    font-size: 1.1rem;
+    color: black;
+    transform: translate(0, -170%);
+}
+.ida input[type=text]:focus + .placeholder-text .text{
+    border-color: blueviolet;
+    color: blue;
+}
+.ida .placeholder-text{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 3px solid transparent;
+    background-color: transparent;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+}
+.ida .text{
+    font-size: 1.4rem;
+    padding: 0 0.5rem;
+    background-color: transparent;
+    transform: translate(0);
+    color: black;
+    transition: transform 0.15s ease-out, font-size 0.15s ease-out, background-color 0.2s ease-out, color 0.15s ease-out;
+}
+
+input[type=text], .placeholder-text{
+    font-size: 1.4rem;
+    padding: 0 1.2rem;
+
+}
+
+.ida @media (max-width: 40rem) {
+    input{
+        width: 70vw;
+    }
+}
+
+.workflow-checkbox {
+  margin-right:10px;
+}
+
+
+/* Customize the label (the container) */
+.ida .container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  float:right;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  margin-left:8px;
+  margin-top:2px;
+  width: 8px;
+  height: 15px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.next-button {
+  margin-left:350px;
+  width:180px;
+  height:40px;
+}
+
