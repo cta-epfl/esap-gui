@@ -39,8 +39,8 @@ deploy-esap-gui:
         - echo "Deployed"
     when: manual
     only:
-        - esap-gui-dev
-        - dev-nico
+        - esap-gui-dev-xxx
+        - dev-nico-xxx
         - master
 
 deploy-esap-gui-acceptance:
