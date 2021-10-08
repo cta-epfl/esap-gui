@@ -20,7 +20,7 @@ export default function QueryCatalogs() {
   const { uri } = useParams();
   console.log("uri:", uri);
   console.log("default conf:", defaultConf);
-  //alert("QueryCatalogs() : "+config.query_schema.name)
+
   // set ConfigName for archive
   useEffect(() => {
     switch (uri) {
@@ -48,13 +48,12 @@ export default function QueryCatalogs() {
       case "ivoa":
         setConfigName("esap_ivoa");
         break;
+
       default:
         break;
     }
 
     return () => {
-      // nv: why is this needed?
-      //alert('cleaned up')
       console.log("cleaned up");
       queryMap.clear();
       setFormData();
@@ -62,6 +61,7 @@ export default function QueryCatalogs() {
     };
   }, [uri]);
 
+  // load the GUI for this configuration
   useEffect(() => {
     console.log(config.query_schema);
     if (!formData) {

@@ -31,37 +31,21 @@ export default function QueryIVOARegistry() {
 
   // set ConfigName for archive
   useEffect(() => {
-    switch (uri) {
-      case "adex":
-        setConfigName("adex");
-        break;
-      case "apertif":
-        setConfigName("apertif");
-        break;
-      case "zooniverse":
-        setConfigName("zooniverse");
-        break;
-      case "astron_vo":
-        setConfigName("astron_vo");
-        break;
-      case "lofar":
-        setConfigName("lofar");
-        break;
-      default:
-        setConfigName("esap_ivoa");
-    }
+      setConfigName("esap_ivoa");
     return () => {
       console.log("cleaned up");
       queryMap.clear();
       setFormData();
       setConfigName(defaultConf);
     };
-  }, [uri]);
+  }, []);
 
+  // load the GUI for this configuration
   useEffect(() => {
     console.log("query schema:", config.query_schema);
     if (!formData) return;
     console.log("formData:", formData);
+
     const gui = config.query_schema.name;
     let queries = [];
 

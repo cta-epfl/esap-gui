@@ -17,7 +17,8 @@ export function IVOAContextProvider({ children }) {
   // For testing purpose
   // start manual setup block
   //const [queryStep, setQueryStep] = useState("run-query");
-  const [selectedRegistry, setSelectedRegistry] = useState("http://astron.nl/tap");
+  // const [selectedRegistry, setSelectedRegistry] = useState("http://astron.nl/tap");
+  const [selectedRegistry, setSelectedRegistry] = useState([]);
   // end block
 
   function handleAddRegistry(access_url) {
