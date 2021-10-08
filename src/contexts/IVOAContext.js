@@ -4,7 +4,7 @@ export const IVOAContext = createContext();
 
 export function IVOAContextProvider({ children }) {
   const [registryList, setRegistryList] = useState([]);
- // const [selectedRegistry, setSelectedRegistry] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
   const [queryStep, setQueryStep] = useState("get-services");
   const [regPage, setRegPage] = useState(1);
 
@@ -17,27 +17,26 @@ export function IVOAContextProvider({ children }) {
   // For testing purpose
   // start manual setup block
   //const [queryStep, setQueryStep] = useState("run-query");
-  // const [selectedRegistry, setSelectedRegistry] = useState("http://astron.nl/tap");
-  const [selectedRegistry, setSelectedRegistry] = useState([]);
+  // const [selectedServices, setSelectedServices] = useState("http://astron.nl/tap");
   // end block
 
-  function handleAddRegistry(access_url) {
-    setSelectedRegistry([...selectedRegistry, access_url]);
+  function handleAddService(access_url) {
+    setSelectedServices([...selectedServices, access_url]);
   }
 
-  function handleRemoveRegistry(access_url) {
-    const copy = [...selectedRegistry];
+  function handleRemoveService(access_url) {
+    const copy = [...selectedServices];
     const index = copy.findIndex((url) => url === access_url);
     copy.splice(index, 1);
-    setSelectedRegistry(copy);
+    setSelectedServices(copy);
   }
   return (
     <IVOAContext.Provider
       value={{
-        selectedRegistry,
-        setSelectedRegistry,
-        addRegistry: handleAddRegistry,
-        removeRegistry: handleRemoveRegistry,
+        selectedServices,
+        setSelectedServices,
+        addRegistry: handleAddService,
+        removeService: handleRemoveService,
         regPage,
         setRegPage,
         registryList,
