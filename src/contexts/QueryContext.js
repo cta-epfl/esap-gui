@@ -20,6 +20,7 @@ export function QueryContextProvider({ children }) {
     const [preview, setPreview] = useState(false);
     const [ds9, setDS9] = useState(false);
 
+
     // this hook executes fetchConfiguration every time that the values between brackets are changed
     useEffect(() => {
 
