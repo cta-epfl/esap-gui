@@ -140,8 +140,7 @@ export default function QueryMultipleArchives() {
         console.log('status = '+status)
     }
 
-    // set ConfigName for archive
-    // load the GUI for this configuration
+    // set ConfigName for multi_archive query
 
     useEffect(() => {
         setConfigName("multiple_archives");
@@ -154,6 +153,7 @@ export default function QueryMultipleArchives() {
     }, []);
 
 
+    // execute when the form
     useEffect(() => {
 
         if (status === CREATE_QUERIES) {
@@ -164,7 +164,6 @@ export default function QueryMultipleArchives() {
             fetchRunQueries()
         }
 
-        //alert('archiveQueries: ',archiveQueries)
     }, [queryStep, formData]);
 
 
@@ -180,6 +179,14 @@ export default function QueryMultipleArchives() {
         setStatus(RUN_SELECTED_QUERIES)
         console.log('handleRunQueries: status = '+status)
         setQueryStep('run-query')
+    }
+
+    // submit the form, and create the queries based on the parameters
+    function submitFormData(formData) {
+        setFormData(formData)
+
+        setStatus(CREATE_QUERIES)
+        setQueryStep('create-query')
     }
 
     // https://react-jsonschema-form.readthedocs.io/en/latest/advanced-customization/custom-templates/#objectfieldtemplate
@@ -201,30 +208,11 @@ export default function QueryMultipleArchives() {
     // RENDER
     if (!config) return <LoadingSpinner />
 
+    // load the GUI for this configuration
     const uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
 
-    console.log("Form Data:", formData);
-    //alert('render: '+status)
-
-    if (status === CREATE_QUERIES) {
-        //fetchCreateQueries()
-    }
-
-    if (status === RUN_SELECTED_QUERIES) {
-        //fetchRunQueries()
-    }
-
-
-    let renderForm
-    if (status === QUERY_FORM) {
-        renderForm=<h1>Render Form</h1>
-    }
-
     // the logic to construct the GUI
-    let renderCreateQueryButton
-    //if (status === CREATE_QUERIES) {
-        renderCreateQueryButton = <Button type="submit" onClick={() => {handleCreateQueries();}}>{getQueryIcon()} Create Queries</Button>
-    //}
+    let renderCreateQueryButton = <Button type="submit" onClick={() => {handleCreateQueries();}}>{getQueryIcon()} Create Queries</Button>
 
     let renderRunQueryButton
     if (status === QUERIES_SELECTED) {
@@ -249,18 +237,18 @@ export default function QueryMultipleArchives() {
 
     return (
       <Container fluid>
-          <h2>Status - {status}</h2>
-          {renderForm}
+
             <Form
               schema={config.query_schema}
               ObjectFieldTemplate={myObjectFieldTemplate}
               formData={formData}
-              onSubmit={({ formData }) => setFormData(formData)}
+              onSubmit={({ formData }) => submitFormData(formData)}
               {...uiSchemaProp}
             >
-            {renderCreateQueryButton}&nbsp;
-            {renderRunQueryButton}
+
         </Form>
+          {renderCreateQueryButton}&nbsp;
+          {renderRunQueryButton}
           {renderCreateQueryResults}
           {renderQueryResults}
       </Container>

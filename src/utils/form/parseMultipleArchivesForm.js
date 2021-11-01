@@ -8,6 +8,7 @@ export default function parseMultipleArchivesForm(formData) {
     let base_query = "";
     let formInput = Object.entries(formData);
 
+
     // construct the base esap_query by iterating over all the fields in the form
     for (let [key, value] of formInput) {
         base_query += `${`${base_query}` ? "&" : ""}` + key + "=" + value;
