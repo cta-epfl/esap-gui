@@ -3,7 +3,8 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 // Multiple Archives Query (MAQ) context
 
 // statusses
-export const CREATE_QUERY_PARAMS = 'create-query-params'
+export const QUERY_FORM = 'query-form'
+export const CREATE_QUERIES = 'create-queries'
 export const FETCHING_CREATE_QUERY = 'fetching-create-query'
 export const FETCHED_CREATE_QUERY = 'fetched-create-query'
 export const QUERIES_SELECTED = 'queries-selected'

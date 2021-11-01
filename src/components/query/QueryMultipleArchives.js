@@ -7,7 +7,8 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 import { QueryContext } from "../../contexts/QueryContext";
 import parseQueryForm from "../../utils/form/parseQueryForm";
 import { MAQContext,
-    CREATE_QUERY_PARAMS,
+    QUERY_FORM,
+    CREATE_QUERIES,
     QUERIES_SELECTED,
     FETCHING_CREATE_QUERY,
     FETCHED_CREATE_QUERY,
@@ -19,7 +20,7 @@ import { MAQContext,
 import CreateMultiQueryResults from "../services/query_results/CreateMultiQueryResults";
 import RunMultiQueryResults from "../services/query_results/RunMultiQueryResults";
 import { getQueryIcon } from "../../utils/styling";
-
+import LoadingSpinner from "../LoadingSpinner";
 
 export default function QueryMultipleArchives() {
 
@@ -34,7 +35,114 @@ export default function QueryMultipleArchives() {
         status, setStatus } = useContext(MAQContext);
     const maqContext = useContext(MAQContext);
 
+
+    // call to the ESAP API 'create-query' endpoint to construct a query based on esap common parameters
+    function fetchCreateQueries() {
+
+        if (!formData) return;
+
+        const query_schema_name = config.query_schema.name;
+
+        let queries = [];
+        let archive_queries = []
+
+        // create a list of queries based on the filled in form
+        queries = parseQueryForm(query_schema_name, formData);
+
+        console.log("queries:", queries);
+
+        // iterate through the query per archive
+        queries.forEach((query) => {
+
+            let url = api_host + "query/create-query?" + query.esap_query;
+
+            setStatus(FETCHING_CREATE_QUERY)
+            console.log('status = '+status)
+
+            axios
+                .get(url)
+                .then((response) => {
+                    // the 'create-query' call will return an archive specific query for each of the
+                    // defined 'esap datasets' within that 'esap archive'
+
+                    let dataset_queries = response.data.query_input
+                    dataset_queries.forEach((dataset_query) => {
+
+                        dataset_query['archive'] = query.archive
+                        archive_queries.push(dataset_query)
+
+                    })
+                    setStatus(FETCHING_CREATE_QUERY)
+                    setStatus(FETCHED_CREATE_QUERY)
+                    // WARNING: status does not get updated here, why?
+                    //alert('fetched query: status = '+status)
+
+                    // q: how do I trigger a render after this
+
+                })
+                .catch((error) => {
+                    alert(error)
+
+                });
+        });
+
+        // push all the gathered archive_queries to the central store
+        // WARNING: this happens before the '.then' promise is solved.
+        setArchiveQueries(archive_queries)
+    }
+
+    // call to the ESAP API 'query' endpoint
+    function fetchRunQueries() {
+        let query_results = []
+
+        selectedQueries.forEach((query) => {
+
+            let dataset_query = query.result.query
+
+            // cut off the service_url and only leave the query part
+            if (dataset_query.includes('&QUERY=')) {
+                dataset_query = query.result.query.split('&QUERY=')[1]
+            }
+
+            let url = api_host + "query/query?archive_uri=" + query.result.archive + "&collection=" + query.result.collection
+
+            setStatus(FETCHING_SELECTED_QUERIES)
+            console.log('status = '+status)
+
+            axios
+                .get(url)
+                .then((response) => {
+
+                    let results = response.data.results
+
+                    results.forEach((result) => {
+                        query_results.push(result)
+
+                    })
+
+                    setStatus(FETCHED_SELECTED_QUERIES)
+                    // WARNING: status does not get updated here, why?
+                    //alert('fetched selected query: status = '+status)
+
+                    // q: how do I trigger a render after this
+
+                })
+                .catch((error) => {
+                    alert(error)
+
+                });
+        })
+
+        // push all the gathered archive_queries to the central store
+        // WARNING: this happens before the '.then' promise is solved.
+        setQueryResults(query_results)
+
+        console.log('status = '+status)
+    }
+
     // set ConfigName for archive
+    // load the GUI for this configuration
+
     useEffect(() => {
         setConfigName("multiple_archives");
       return () => {
@@ -45,121 +153,24 @@ export default function QueryMultipleArchives() {
       };
     }, []);
 
-    // load the GUI for this configuration
-    // should useEffect be used at all? Shouldn't this code just be in the body of the function?
 
     useEffect(() => {
-        console.log("query schema:", config.query_schema);
-        if (!formData) return;
-        console.log("formData:", formData);
 
-        const query_schema_name = config.query_schema.name;
-        let queries = [];
-        let archive_queries = []
-
-        if (status === CREATE_QUERY_PARAMS) {
-
-            // create a list of queries based on the filled in form
-            queries = parseQueryForm(query_schema_name, formData);
-
-            console.log("queries:", queries);
-
-            // iterate through the query per archive
-            queries.forEach((query) => {
-
-                let url = api_host + "query/create-query?" + query.esap_query;
-
-                setStatus(FETCHING_CREATE_QUERY)
-                console.log('status = '+status)
-
-                axios
-                    .get(url)
-                    .then((response) => {
-                        // the 'create-query' call will return an archive specific query for each of the
-                        // defined 'esap datasets' within that 'esap archive'
-
-                        let dataset_queries = response.data.query_input
-                        dataset_queries.forEach((dataset_query) => {
-
-                            dataset_query['archive'] = query.archive
-                            archive_queries.push(dataset_query)
-
-                        })
-
-                        setStatus(FETCHED_CREATE_QUERY)
-                        // WARNING: status does not get updated here, why?
-                        //alert('fetched query: status = '+status)
-
-                        // q: how do I trigger a render after this
-
-                    })
-                    .catch((error) => {
-                        alert(error)
-
-                    });
-            });
-
-            // push all the gathered archive_queries to the central store
-            alert('fetched all create-queries: status = '+status)
-            // WARNING: this happens before the '.then' promise is solved.
-            setArchiveQueries(archive_queries)
+        if (status === CREATE_QUERIES) {
+            fetchCreateQueries()
         }
 
-        let query_results = []
         if (status === RUN_SELECTED_QUERIES) {
-
-            selectedQueries.forEach((query) => {
-
-                let dataset_query = query.result.query
-
-                // cut off the service_url and only leave the query part
-                if (dataset_query.includes('&QUERY=')) {
-                    dataset_query = query.result.query.split('&QUERY=')[1]
-                }
-
-                let url = api_host + "query/query?archive_uri=" + query.result.archive + "&collection=" + query.result.collection
-
-                setStatus(FETCHING_SELECTED_QUERIES)
-                console.log('status = '+status)
-
-                axios
-                    .get(url)
-                    .then((response) => {
-
-                        let results = response.data.results
-
-                        results.forEach((result) => {
-                            query_results.push(result)
-
-                        })
-
-                        setStatus(FETCHED_SELECTED_QUERIES)
-                        // WARNING: status does not get updated here, why?
-                        //alert('fetched selected query: status = '+status)
-
-                        // q: how do I trigger a render after this
-
-                    })
-                    .catch((error) => {
-                        alert(error)
-
-                    });
-            })
-
-            // push all the gathered archive_queries to the central store
-            alert('ran and fetched all queries: status = '+status)
-            // WARNING: this happens before the '.then' promise is solved.
-            setQueryResults(query_results)
-
-            console.log('status = '+status)
+            fetchRunQueries()
         }
 
         //alert('archiveQueries: ',archiveQueries)
     }, [queryStep, formData]);
 
+
     // this function is executed when the 'Create Queries' button is clicked
     function handleCreateQueries() {
-        setStatus(CREATE_QUERY_PARAMS)
+        setStatus(CREATE_QUERIES)
         console.log('handleCreateQueries: status = '+status)
         setQueryStep('create-query')
     }
@@ -187,12 +198,31 @@ export default function QueryMultipleArchives() {
       </div>
     )}
 
+    // RENDER
+    if (!config) return <LoadingSpinner />
+
     const uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
+
     console.log("Form Data:", formData);
+    //alert('render: '+status)
+
+    if (status === CREATE_QUERIES) {
+        //fetchCreateQueries()
+    }
+
+    if (status === RUN_SELECTED_QUERIES) {
+        //fetchRunQueries()
+    }
+
+
+    let renderForm
+    if (status === QUERY_FORM) {
+        renderForm=<h1>Render Form</h1>
+    }
 
     // the logic to construct the GUI
     let renderCreateQueryButton
-    //if (status === CREATE_QUERY_PARAMS) {
+    //if (status === CREATE_QUERIES) {
         renderCreateQueryButton = <Button type="submit" onClick={() => {handleCreateQueries();}}>{getQueryIcon()} Create Queries</Button>
     //}
 
@@ -202,11 +232,17 @@ export default function QueryMultipleArchives() {
     }
 
     let renderCreateQueryResults
+    if (status === FETCHING_CREATE_QUERY) {
+        renderCreateQueryResults = <LoadingSpinner />;
+    }
     if (status === FETCHED_CREATE_QUERY || status === QUERIES_SELECTED) {
         renderCreateQueryResults = <CreateMultiQueryResults results={archiveQueries} />
     }
 
     let renderQueryResults
+    if (status === FETCHING_SELECTED_QUERIES) {
+        renderQueryResults = <LoadingSpinner />;
+    }
     if (status === FETCHED_SELECTED_QUERIES) {
         renderQueryResults = <RunMultiQueryResults results={queryResults} />
     }
@@ -214,6 +250,7 @@ export default function QueryMultipleArchives() {
     return (
       <Container fluid>
           <h2>Status - {status}</h2>
+          {renderForm}
             <Form
               schema={config.query_schema}
               ObjectFieldTemplate={myObjectFieldTemplate}
