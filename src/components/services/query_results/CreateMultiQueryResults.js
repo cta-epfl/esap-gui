@@ -9,7 +9,7 @@ function createItem(result){
     };
 }
 
-export default function CreateQueryResults(props) {
+export default function CreateMultiQueryResults(props) {
     return (
         <Container fluid>
         <Card>

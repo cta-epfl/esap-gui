@@ -16,7 +16,8 @@ import { MAQContext,
     FETCHED_SELECTED_QUERIES,
     ERROR_FETCHING_QUERY } from "../../contexts/MAQContext";
 
-import CreateQueryResults from "../services/query_results/CreateQueryResults";
+import CreateMultiQueryResults from "../services/query_results/CreateMultiQueryResults";
+import RunMultiQueryResults from "../services/query_results/RunMultiQueryResults";
 import { getQueryIcon } from "../../utils/styling";
 
 
@@ -29,6 +30,7 @@ export default function QueryMultipleArchives() {
         queryStep, setQueryStep,
         archiveQueries, setArchiveQueries,
         selectedQueries,
+        queryResults, setQueryResults,
         status, setStatus } = useContext(MAQContext);
     const maqContext = useContext(MAQContext);
 
@@ -44,6 +46,8 @@ export default function QueryMultipleArchives() {
     }, []);
 
     // load the GUI for this configuration
+    // should useEffect be used at all? Shouldn't this code just be in the body of the function?
+
     useEffect(() => {
         console.log("query schema:", config.query_schema);
         if (!formData) return;
@@ -83,7 +87,11 @@ export default function QueryMultipleArchives() {
                         })
 
                         setStatus(FETCHED_CREATE_QUERY)
-                        alert('status = '+status)
+                        // WARNING: status does not get updated here, why?
+                        //alert('fetched query: status = '+status)
+
+                        // q: how do I trigger a render after this
+
                     })
                     .catch((error) => {
                         alert(error)
@@ -92,18 +100,57 @@ export default function QueryMultipleArchives() {
             });
 
             // push all the gathered archive_queries to the central store
+            alert('fetched all create-queries: status = '+status)
+            // WARNING: this happens before the '.then' promise is solved.
             setArchiveQueries(archive_queries)
-
         }
 
+        let query_results = []
         if (status === RUN_SELECTED_QUERIES) {
-            alert('run queries')
 
             selectedQueries.forEach((query) => {
-                alert(query.result.query)
+
+                let dataset_query = query.result.query
+
+                // cut off the service_url and only leave the query part
+                if (dataset_query.includes('&QUERY=')) {
+                    dataset_query = query.result.query.split('&QUERY=')[1]
+                }
+
+                let url = api_host + "query/query?archive_uri=" + query.result.archive + "&collection=" + query.result.collection
+
+                setStatus(FETCHING_SELECTED_QUERIES)
+                console.log('status = '+status)
+
+                axios
+                    .get(url)
+                    .then((response) => {
+
+                        let results = response.data.results
+
+                        results.forEach((result) => {
+                            query_results.push(result)
+
+                        })
+
+                        setStatus(FETCHED_SELECTED_QUERIES)
+                        // WARNING: status does not get updated here, why?
+                        //alert('fetched selected query: status = '+status)
+
+                        // q: how do I trigger a render after this
+
+                    })
+                    .catch((error) => {
+                        alert(error)
+
+                    });
             })
 
-            setStatus(FETCHED_CREATE_QUERY)
+            // push all the gathered archive_queries to the central store
+            alert('ran and fetched all queries: status = '+status)
+            // WARNING: this happens before the '.then' promise is solved.
+            setQueryResults(query_results)
+
             console.log('status = '+status)
         }
 
@@ -113,14 +160,14 @@ export default function QueryMultipleArchives() {
     // this function is executed when the 'Create Queries' button is clicked
     function handleCreateQueries() {
         setStatus(CREATE_QUERY_PARAMS)
-        console.log('status = '+status)
+        console.log('handleCreateQueries: status = '+status)
         setQueryStep('create-query')
     }
 
     // this function is executed when the 'Run Queries' button is clicked
     function handleRunQueries() {
         setStatus(RUN_SELECTED_QUERIES)
-        console.log('status = '+status)
+        console.log('handleRunQueries: status = '+status)
         setQueryStep('run-query')
     }
 
@@ -156,7 +203,12 @@ export default function QueryMultipleArchives() {
 
     let renderCreateQueryResults
     if (status === FETCHED_CREATE_QUERY || status === QUERIES_SELECTED) {
-        renderCreateQueryResults = <CreateQueryResults results={archiveQueries} />
+        renderCreateQueryResults = <CreateMultiQueryResults results={archiveQueries} />
+    }
+
+    let renderQueryResults
+    if (status === FETCHED_SELECTED_QUERIES) {
+        renderQueryResults = <RunMultiQueryResults results={queryResults} />
     }
 
     return (
@@ -173,7 +225,7 @@ export default function QueryMultipleArchives() {
             {renderRunQueryButton}
         </Form>
           {renderCreateQueryResults}
-
+          {renderQueryResults}
       </Container>
     );
 

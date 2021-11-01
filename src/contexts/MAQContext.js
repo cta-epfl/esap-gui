@@ -19,6 +19,7 @@ export function MAQContextProvider({ children }) {
     const [queryStep, setQueryStep] = useState("create-query");
     const [archiveQueries, setArchiveQueries] = useState([]);
     const [selectedQueries, setSelectedQueries] = useState([]);
+    const [queryResults, setQueryResults] = useState([]);
     const [status, setStatus] = useState("");
 
     /*
@@ -68,6 +69,8 @@ export function MAQContextProvider({ children }) {
         setSelectedQueries,
         select: handleSelectQuery,
         unselect: handleUnselectQuery,
+        queryResults,
+        setQueryResults,
       }}
     >
       {children}
