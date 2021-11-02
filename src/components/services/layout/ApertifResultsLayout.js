@@ -18,7 +18,7 @@ export function renderRowApertif(result) {
 
     return (<>
             <td>{result.name}</td>
-            <td>{Number(result.RA).toFixed(1)}</td>
+            <td>{Number(result.ra).toFixed(1)}</td>
             <td>{Number(result.dec).toFixed(1)}</td>
             <td>{Number(result.fov).toFixed(1)}</td>
             <td>{result.dataProductType}</td>
