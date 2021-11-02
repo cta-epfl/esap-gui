@@ -6,6 +6,9 @@ import ArchiveDetails from "../components/archives/ArchiveDetails";
 import { GlobalContext } from "../contexts/GlobalContext";
 import QueryCatalogs from "../components/query/QueryCatalogs";
 import QueryIVOARegistry from "../components/query/QueryIVOARegistry";
+import QueryMultipleArchives from "../components/query/QueryMultipleArchives";
+//import QueryMultipleArchives from "../components/query/QueryNico";
+
 import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Rucio from "../components/services/Rucio";
@@ -13,6 +16,7 @@ import Interactive from "../components/services/Interactive";
 import MyBasketPage from "../components/basket/MyBasketPage";
 
 import { IVOAContextProvider } from "../contexts/IVOAContext";
+import { MAQContextProvider } from "../contexts/MAQContext";
 import { IDAContext } from "../contexts/IDAContext";
 import { AladinSimpleContextProvider } from "../contexts/AladinSimpleContext";
 import { AladinAdvancedContextProvider } from "../contexts/AladinAdvancedContext";
@@ -58,15 +62,24 @@ export default function Routes() {
 
             <Route exact path="/archives/:uri" component={ArchiveDetails} />
 
-            /* nv: this shortcuts the path to QueryCatalogs... to enable 2-stage query  */
+            /* specific behaviour for IVOA 'archive' to enable a 2-stage query  */
             <Route exact path="/archives/ivoa/query">
                 <IVOAContextProvider>
                     <QueryIVOARegistry />
                 </IVOAContextProvider>
             </Route>
 
-            <Route exact path={["/query", "/archives/:uri/query"]}>
+
+            /* default 1-stage synchronous query behaviour for most archives */
+            <Route exact path={["/archives/:uri/query"]}>
                 <QueryCatalogs />
+            </Route>
+
+            /* query multiple archives */
+            <Route exact path="/query">
+                <MAQContextProvider>
+                    <QueryMultipleArchives />
+                </MAQContextProvider>
             </Route>
 
             <Route exact path="/samp"  >
@@ -90,7 +103,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 8 oct 2021 - 15:30</small></footer>
+      <footer><small>esap-gui version 2 nov 2021 - 10:00</small></footer>
     </Router>
   );
 }

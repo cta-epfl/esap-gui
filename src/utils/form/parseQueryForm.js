@@ -6,6 +6,7 @@ import parseApertifForm from "./parseApertifForm";
 import parseASTRONVOForm from "./parseASTRONVOForm";
 import parseRucioForm from "./parseRucioForm";
 import parseZenodoForm from "./parseZenodoForm";
+import parseMultipleArchivesForm from "./parseMultipleArchivesForm";
 
 export default function parseQueryForm(gui, formData) {
   switch (gui) {
@@ -25,6 +26,8 @@ export default function parseQueryForm(gui, formData) {
         return parseRucioForm(formData);
     case "zenodo":
         return parseZenodoForm(formData);
+    case "multiple_archives":
+        return parseMultipleArchivesForm(formData);
     default:
       return null;
   }
