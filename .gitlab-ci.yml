@@ -4,7 +4,7 @@ stages:
 
 build-esap-gui:
     stage: build
-    image: node:latest
+    image: node:lts
     before_script:
       - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
     script:
