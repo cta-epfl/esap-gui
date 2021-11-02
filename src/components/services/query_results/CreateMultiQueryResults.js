@@ -19,7 +19,8 @@ export default function CreateMultiQueryResults(props) {
                     <th>Select</th>
                     <th>Archive</th>
                     <th>Dataset</th>
-                    <th>Created Query</th>
+                    <th>ESAP Query</th>
+                    <th>Archive Query</th>
                 </tr>
                 </thead>
 
@@ -31,6 +32,7 @@ export default function CreateMultiQueryResults(props) {
                         </td>
                         <td>{result.archive}</td>
                         <td>{result.dataset}</td>
+                        <td>{result.esap_query}</td>
                         <td><a href={result.query} target="_blank">{result.query}</a></td>
                     </tr>
                 ))}
