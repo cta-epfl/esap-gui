@@ -8,7 +8,7 @@ export default function ParseVOServiceForm(formData, access_url) {
   console.log(formInput);
 
   // IVOA query consists of multiple steps
-  // Step 1: get list of registry services
+  // Step 1: get list of VO services
 
   for (let [key, value] of formInput) {
     console.log(`${key}: ${value}`);

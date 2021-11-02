@@ -70,6 +70,7 @@ export default function QueryCatalogs() {
 
     queryMap.clear();
     const gui = config.query_schema.name;
+
     const queries = parseQueryForm(gui, formData);
     queries.forEach((query) => {
       queryMap.set(query.catalog, {

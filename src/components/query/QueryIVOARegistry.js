@@ -76,21 +76,21 @@ export default function QueryIVOARegistry() {
         .get(url)
         .then((queryResponse) => {
           if(queryStep === "run-query") {
-          let tf_url = api_host + "query/get-tables-fields/?dataset_uri=vo_reg&access_url=" + query.catalog;
-          console.log("table fields url: ", tf_url);
-          axios
-            .get(tf_url)
-            .then((tfResponse) => {
+            let tf_url = api_host + "query/get-tables-fields/?dataset_uri=vo_reg&access_url=" + query.catalog;
+              console.log("table fields url: ", tf_url);
+              axios
+                  .get(tf_url)
+                  .then((tfResponse) => {
 
-              queryMap.set(query.catalog, {
-                catalog: query.catalog,
-                service_type: query.service_type,
-                vo_table_schema: tfResponse.data.results.find((item) => item.table_name === "ivoa.obscore"),
-                esapquery: query.esapquery,
-                status: "fetched",
-                results: queryResponse.data,
-              });
-            })
+                      queryMap.set(query.catalog, {
+                          catalog: query.catalog,
+                          service_type: query.service_type,
+                          vo_table_schema: tfResponse.data.results.find((item) => item.table_name === "ivoa.obscore"),
+                          esapquery: query.esapquery,
+                          status: "fetched",
+                          results: queryResponse.data,
+                      });
+                  })
           }
           else {
             queryMap.set(query.catalog, {
