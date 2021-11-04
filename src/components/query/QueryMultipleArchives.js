@@ -42,12 +42,10 @@ export default function QueryMultipleArchives() {
         if (!formData) return;
 
         const query_schema_name = config.query_schema.name;
-
-        let queries = [];
         let archive_queries = []
 
         // create a list of queries based on the filled in form
-        queries = parseQueryForm(query_schema_name, formData);
+        let queries = parseQueryForm(query_schema_name, formData);
 
         console.log("queries:", queries);
 
@@ -68,13 +66,17 @@ export default function QueryMultipleArchives() {
                     let dataset_queries = response.data.query_input
                     dataset_queries.forEach((dataset_query) => {
 
+                        // transfer some properties to the state for later use
                         dataset_query['archive'] = query.archive
+                        dataset_query['esap_query'] = query.esap_query
                         archive_queries.push(dataset_query)
 
                     })
 
-                    // toggle the status to trigger the rendering of all the results
-                    setStatus(FETCHING_CREATE_QUERY)
+                    // update the object (and not just the contents) to trigger the rendering of all the results
+                    const copy = archive_queries.slice(); // make a copy (new object)
+                    setArchiveQueries(copy)
+
                     setStatus(FETCHED_CREATE_QUERY)
 
                 })
@@ -84,14 +86,13 @@ export default function QueryMultipleArchives() {
                 });
         });
 
-        // push all the gathered archive_queries to the central store MAQContext
-        // WARNING: this happens before the '.then' promise is solved.
-        setArchiveQueries(archive_queries)
     }
 
     // call to the ESAP API 'query' endpoint
     function fetchRunQueries() {
         let query_results = []
+        // create a list of queries based on the filled in form
+        //let queries = parseQueryForm(query_schema_name, formData);
 
         selectedQueries.forEach((query) => {
 
@@ -102,8 +103,14 @@ export default function QueryMultipleArchives() {
                 dataset_query = query.result.query.split('&QUERY=')[1]
             }
 
-            let url = api_host + "query/query?archive_uri=" + query.result.archive + "&collection=" + query.result.collection
+            // add archive and collection parameters
+            let url = api_host + "query/query?" + "" +
+                "&collection=" + query.result.collection +
+                "&level=" + query.result.level +
+                "&category=" + query.result.category
 
+            // add the ESAP common parameters from the GUI
+            url = url + '&' + query.result.esap_query
             setStatus(FETCHING_SELECTED_QUERIES)
             console.log('status = '+status)
 
@@ -115,23 +122,18 @@ export default function QueryMultipleArchives() {
 
                     results.forEach((result) => {
                         query_results.push(result)
-
                     })
 
+                    // update the object (and not just the contents) to trigger the rendering of all the results
+                    const copy = query_results.slice(); // make a copy (new object)
+                    setQueryResults(copy)
                     setStatus(FETCHED_SELECTED_QUERIES)
 
                 })
                 .catch((error) => {
                     alert(error)
-
                 });
         })
-
-        // push all the gathered archive_queries to the central store in MAQContext
-        // WARNING: this happens before the '.then' promise is solved.
-        setQueryResults(query_results)
-
-        console.log('status = '+status)
     }
 
     // set ConfigName for multi_archive query, execute once
@@ -226,7 +228,7 @@ export default function QueryMultipleArchives() {
     }
 
     return (
-      <Container fluid>
+        <Container fluid>
 
             <Form
               schema={config.query_schema}
@@ -237,11 +239,11 @@ export default function QueryMultipleArchives() {
             >
                 {renderCreateQueryButton}&nbsp;
                 {renderRunQueryButton}
-        </Form>
+            </Form>
 
-          {renderCreateQueryResults}
-          {renderQueryResults}
-      </Container>
+            {renderCreateQueryResults}
+            {renderQueryResults}
+        </Container>
     );
 
 }

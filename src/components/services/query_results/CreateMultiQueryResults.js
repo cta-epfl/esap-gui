@@ -19,7 +19,10 @@ export default function CreateMultiQueryResults(props) {
                     <th>Select</th>
                     <th>Archive</th>
                     <th>Dataset</th>
-                    <th>Created Query</th>
+                    <th>Collection</th>
+                    <th>Category</th>
+                    <th>Level</th>
+                    <th>ESAP Query</th>
                 </tr>
                 </thead>
 
@@ -31,7 +34,10 @@ export default function CreateMultiQueryResults(props) {
                         </td>
                         <td>{result.archive}</td>
                         <td>{result.dataset}</td>
-                        <td><a href={result.query} target="_blank">{result.query}</a></td>
+                        <td>{result.collection}</td>
+                        <td>{result.category}</td>
+                        <td>{result.level}</td>
+                        <td>{result.esap_query}</td>
                     </tr>
                 ))}
                 </tbody>
