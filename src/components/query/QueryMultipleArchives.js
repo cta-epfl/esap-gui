@@ -169,11 +169,16 @@ export default function QueryMultipleArchives() {
         setQueryStep('create-query')
     }
 
-    // texecuted when the 'Run Queries' button is clicked
+    // executed when the 'Run Queries' button is clicked
     function handleRunQueriesButton() {
         setStatus(RUN_SELECTED_QUERIES)
         console.log('handleRunQueries: status = '+status)
         setQueryStep('run-query')
+    }
+
+    // texecuted when the 'Run Queries' button is clicked
+    function handleResolveNameButton() {
+        alert(formData.target)
     }
 
     // https://react-jsonschema-form.readthedocs.io/en/latest/advanced-customization/custom-templates/#objectfieldtemplate
@@ -203,10 +208,16 @@ export default function QueryMultipleArchives() {
     // always render the 'Create Queries' button
     let renderCreateQueryButton = <Button type="submit" >{getQueryIcon()} Create Queries</Button>
 
+    let renderResolveNameButton
+    if (formData) {
+        renderResolveNameButton = <Button onClick={() => {
+            handleResolveNameButton()
+        }}>{getQueryIcon()} Resolve Target</Button>
+    }
     // only render the 'Run Queries' button when one or more queries are selected
     let renderRunQueryButton
     if (status === QUERIES_SELECTED) {
-        renderRunQueryButton= <Button type="submit" onClick={() => {handleRunQueriesButton();}}> Run Queries </Button>
+        renderRunQueryButton= <Button type="submit" onClick={() => {handleRunQueriesButton()}}> Run Queries </Button>
     }
 
     // Render the selection of available queries when they are fetched, otherwise show a spinner
@@ -236,7 +247,9 @@ export default function QueryMultipleArchives() {
               formData={formData}
               onSubmit={({ formData }) => handleCreateQueriesButton(formData)}
               {...uiSchemaProp}
+
             >
+
                 {renderCreateQueryButton}&nbsp;
                 {renderRunQueryButton}
             </Form>

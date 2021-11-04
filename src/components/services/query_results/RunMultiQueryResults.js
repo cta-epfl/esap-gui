@@ -14,6 +14,7 @@ function createItem(result){
 
 export default function RunQueryResults(props) {
 //    const { preview } = useContext(QueryContext);
+
     return (
 
         <Container fluid>
