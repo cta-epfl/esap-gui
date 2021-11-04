@@ -18,13 +18,14 @@ export default function RunQueryResults(props) {
 
         <Container fluid>
             <Card>
+                <h3>Query Results</h3>
             <Table>
                 <thead>
-                <tr><td collspan="4">Query Results</td></tr>
                 <tr className="bg-light">
-                    <th>Select</th>
+                    <th>Basket</th>
                     <th>Name</th>
                     <th>Collection</th>
+                    <th>Level</th>
                     <th>RA</th>
                     <th>dec</th>
                     <th>Link to data</th>
@@ -40,6 +41,7 @@ export default function RunQueryResults(props) {
                         </td>
                         <td>{result.name}</td>
                         <td>{result.collection}</td>
+                        <td>{result.level}</td>
                         <td>{result.ra}</td>
                         <td>{result.dec}</td>
                         <td>
@@ -49,7 +51,7 @@ export default function RunQueryResults(props) {
                                 rel="noopener noreferrer"
                                 download
                             >
-                                {result.url}
+                                Download Data
                             </a>
                         </td>
                     </tr>

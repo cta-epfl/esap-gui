@@ -104,11 +104,13 @@ export default function QueryMultipleArchives() {
             }
 
             // add archive and collection parameters
-            let url = api_host + "query/query?&collection=" + query.result.collection
+            let url = api_host + "query/query?" + "" +
+                "&collection=" + query.result.collection +
+                "&level=" + query.result.level +
+                "&category=" + query.result.category
 
             // add the ESAP common parameters from the GUI
             url = url + '&' + query.result.esap_query
-
             setStatus(FETCHING_SELECTED_QUERIES)
             console.log('status = '+status)
 
