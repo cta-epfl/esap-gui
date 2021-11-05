@@ -72,6 +72,7 @@ export default function SampPage(props) {
     // attach eventhandlers
     var callHandler = cc.callHandler;
 
+    // nv: which other events are possible except 'table.load.votable'?
     callHandler["table.load.votable"] = function(senderId, message, isCall) {
         handleLoadVOTable(cc,senderId, message, isCall)
     };

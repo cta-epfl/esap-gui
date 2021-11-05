@@ -240,7 +240,6 @@ export default function QueryMultipleArchives() {
 
     return (
         <Container fluid>
-
             <Form
               schema={config.query_schema}
               ObjectFieldTemplate={myObjectFieldTemplate}
@@ -249,7 +248,6 @@ export default function QueryMultipleArchives() {
               {...uiSchemaProp}
 
             >
-
                 {renderCreateQueryButton}&nbsp;
                 {renderRunQueryButton}
             </Form>

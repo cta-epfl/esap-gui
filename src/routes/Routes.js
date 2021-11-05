@@ -16,7 +16,6 @@ import Interactive from "../components/services/Interactive";
 import MyBasketPage from "../components/basket/MyBasketPage";
 
 import { IVOAContextProvider } from "../contexts/IVOAContext";
-import { MAQContextProvider } from "../contexts/MAQContext";
 import { IDAContext } from "../contexts/IDAContext";
 import { AladinSimpleContextProvider } from "../contexts/AladinSimpleContext";
 import { AladinAdvancedContextProvider } from "../contexts/AladinAdvancedContext";
@@ -77,9 +76,7 @@ export default function Routes() {
 
             /* query multiple archives */
             <Route exact path="/query">
-                <MAQContextProvider>
-                    <QueryMultipleArchives />
-                </MAQContextProvider>
+                <QueryMultipleArchives />
             </Route>
 
             <Route exact path="/samp"  >
@@ -103,7 +100,7 @@ export default function Routes() {
 
         </Switch>
 
-      <footer><small>esap-gui version 4 nov 2021 - 16:00</small></footer>
+      <footer><small>esap-gui version 5 nov 2021 - 16:00</small></footer>
     </Router>
   );
 }
