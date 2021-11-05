@@ -11,6 +11,7 @@ import { IVOAContext } from "../../contexts/IVOAContext";
 import parseVOServiceForm from "../../utils/form/parseVOServiceForm";
 import VOServiceResults from "../services/query_results/IVOAResults";
 import { getQueryIcon } from "../../utils/styling";
+import "../../assets/IVOA.css";
 
 export default function QueryIVOARegistry() {
   // queryMap is a map of dictionaries, where each dictionary consists of
@@ -85,7 +86,7 @@ export default function QueryIVOARegistry() {
                       queryMap.set(query.catalog, {
                           catalog: query.catalog,
                           service_type: query.service_type,
-                          vo_table_schema: tfResponse.data.results.find((item) => item.table_name === "ivoa.obscore"),
+                          vo_table_schema: queryResponse.data.results[0],
                           esapquery: query.esapquery,
                           status: "fetched",
                           results: queryResponse.data,
@@ -99,7 +100,7 @@ export default function QueryIVOARegistry() {
               esapquery: query.esapquery,
               status: "fetched",
               results: queryResponse.data,
-          })};                      
+          })};
         })
         .catch(() => {
           queryMap.set(query.catalog, {
@@ -119,7 +120,7 @@ export default function QueryIVOARegistry() {
       <div>
         <TitleField title={title} />
         <div className="row">
-          {properties.map((prop) => (
+          {properties.filter(property => property.content.props.uiSchema["ui:widget"]!="hidden").map((prop) => (
             <div
               className="col-lg-2 col-md-4 col-sm-6 col-xs-12"
               key={prop.content.key}
@@ -140,9 +141,12 @@ export default function QueryIVOARegistry() {
   console.log("Form Data:", formData);
 
   if (queryStep === "run-query") {
+
     uiSchemaProp.uiSchema = {
-      query: { "ui:widget": "textarea" },
+      adql_query: { "ui:widget": "textarea" },
       keyword: { "ui:widget": "hidden" },
+      service_type: { "ui:widget": "hidden" },
+      catalog: { "ui:widget": "hidden" },
       tap_schema: { "ui:widget": "hidden" },
       waveband: { "ui:widget": "hidden" },
     };
@@ -156,7 +160,8 @@ export default function QueryIVOARegistry() {
           onSubmit={({ formData }) => setFormData(formData)}
           {...uiSchemaProp}
         >
-          <RBForm.Control as="select" multiple>
+         <label class="control-label">Selected Services</label>
+          <RBForm.Control as="select" className="selectedServices" multiple>
             {selectedServices.map((service) => {
               return <option>{service}</option>;
             })}

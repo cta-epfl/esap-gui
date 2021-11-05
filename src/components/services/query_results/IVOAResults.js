@@ -70,8 +70,8 @@ export default function IVOAResults({ catalog }) {
                       {renderRowIVOA(queryResult, queryMap, catalog, indice, setPreview, setURL)}
 
                   </tr>
-                  { 
-                    preview === queryResult[queryMap.get(catalog).vo_table_schema.fields.findIndex((item) => item.name === "preview")] && 
+                  {
+                    preview === queryResult[queryMap.get(catalog).vo_table_schema.fields.findIndex((item) => item.name === "preview")] &&
                       <tr key={queryResult.preview}>
                         <td></td>
                         <td></td>

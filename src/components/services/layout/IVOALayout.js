@@ -6,19 +6,8 @@ export function renderHeaderIVOA(queryMap, catalog, indice) {
 
     return (<>
         {queryMap.get(catalog).vo_table_schema.fields.map((field, index) => {
-            if ((field.name === "dataproduct_type") || (field.name === "dataproduct_subtype") ||
-                (field.name === "calib_level") || (field.name === "obs_collection") ||
-                (field.name === "obs_id") ||
-                (field.name === "calib_level") || (field.name === "access_url") ||
-                (field.name === "access_estsize") || (field.name === "target_name") ||
-                (field.name === "s_ra") || (field.name === "s_dec") ||
-                (field.name === "s_fov") ||
-                (field.name === "instrument_name") || (field.name === "preview")
-            ) {
                 indice.push(index);
                 return (<th>{field.name}</th>);
-            }
-            return null;
         })}
         </>
     );
