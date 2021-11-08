@@ -91,7 +91,17 @@ export default function QueryIVOARegistry() {
                           status: "fetched",
                           results: queryResponse.data,
                       });
-                  })
+                  }).catch(() => {
+                      queryMap.set(query.catalog, {
+                          catalog: query.catalog,
+                          service_type: query.service_type,
+                          vo_table_schema:"",
+                          esapquery: query.esapquery,
+                          status: "error",
+                          results: queryResponse.data,
+                      });
+                  });
+
           }
           else {
             queryMap.set(query.catalog, {
