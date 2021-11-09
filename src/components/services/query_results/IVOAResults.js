@@ -20,11 +20,22 @@ export default function IVOAResults({ catalog }) {
   if (!queryMap.get(catalog)) return null;
   console.log("VO service queryMap:", queryMap.get(catalog));
 
+  if (queryMap.get(catalog).status === "error") {
+      if (queryMap.get(catalog).results[0].includes("ERROR")) {
+          return (
+            <Alert variant="danger">{queryMap.get(catalog).results[0]}</Alert>
+          );
+      } else {
+          return (
+            <Alert variant="danger">Unknown error while running this query!</Alert>
+          );
+
+      }
+
+  }
+
   if (queryMap.get(catalog).status === "fetched") {
-    // if (queryMap.get(catalog).results[0].includes("ERROR"))
-    //   return (
-    //     <Alert variant="warning">{queryMap.get(catalog).results[0]}</Alert>
-    //   );
+
       try {
           if (queryMap.get(catalog).results.results.length === 0)
               return <Alert variant="warning">No matching results found!</Alert>;
@@ -70,8 +81,8 @@ export default function IVOAResults({ catalog }) {
                       {renderRowIVOA(queryResult, queryMap, catalog, indice, setPreview, setURL)}
 
                   </tr>
-                  { 
-                    preview === queryResult[queryMap.get(catalog).vo_table_schema.fields.findIndex((item) => item.name === "preview")] && 
+                  {
+                    preview === queryResult[queryMap.get(catalog).vo_table_schema.fields.findIndex((item) => item.name === "preview")] &&
                       <tr key={queryResult.preview}>
                         <td></td>
                         <td></td>
