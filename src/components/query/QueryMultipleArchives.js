@@ -45,7 +45,20 @@ export default function QueryMultipleArchives() {
         let archive_queries = []
 
         // create a list of queries based on the filled in form
-        let queries = parseQueryForm(query_schema_name, formData);
+        // let queries = parseQueryForm(query_schema_name, formData);
+        let base_query = parseQueryForm(query_schema_name, formData);
+        let archives = config.archives
+        let queries = [];
+        archives.map((archive) => {
+            let esap_query = base_query + "&archive_uri=" + archive
+
+            queries.push({
+                archive: archive,
+                esap_query: esap_query,
+            });
+            return null;
+        });
+
 
         console.log("queries:", queries);
 
