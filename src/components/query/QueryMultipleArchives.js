@@ -8,16 +8,13 @@ import { QueryContext } from "../../contexts/QueryContext";
 import parseQueryForm from "../../utils/form/parseQueryForm";
 import { MAQContext,
     QUERY_FORM,
-    CREATE_QUERIES,
-    QUERIES_SELECTED,
-    FETCHING_CREATE_QUERY,
-    FETCHED_CREATE_QUERY,
+    PREPARE_QUERIES,
+    PREPARED_QUERIES,
     RUN_SELECTED_QUERIES,
     FETCHING_SELECTED_QUERIES,
     FETCHED_SELECTED_QUERIES,
     ERROR_FETCHING_QUERY } from "../../contexts/MAQContext";
 
-import CreateMultiQueryResults from "../services/query_results/CreateMultiQueryResults";
 import RunMultiQueryResults from "../services/query_results/RunMultiQueryResults";
 import { getQueryIcon } from "../../utils/styling";
 import LoadingSpinner from "../LoadingSpinner";
@@ -27,90 +24,50 @@ export default function QueryMultipleArchives() {
     const { api_host } = useContext(GlobalContext);
     const { config, setConfigName, defaultConf, formData, setFormData } = useContext(QueryContext);
     const {
-        selectedArchives, setSelectedArchives,
         queryStep, setQueryStep,
-        archiveQueries, setArchiveQueries,
-        selectedQueries,
+        selectedQueries, setSelectedQueries,
         queryResults, setQueryResults,
         status, setStatus } = useContext(MAQContext);
     const maqContext = useContext(MAQContext);
 
 
-    // call to the ESAP API 'create-query' endpoint to construct a query based on esap common parameters
-    function fetchCreateQueries() {
+    // read from the config object which datasets should be queried
+    function prepareQueries(config) {
+        //alert('prepareQueries')
+        if (!config) return null
 
-        if (!formData) return;
+        let datasets_enabled = config.datasets_enabled
+        let selected = []
 
-        const query_schema_name = config.query_schema.name;
-        let archive_queries = []
+        if (datasets_enabled) {
 
-        // create a list of queries based on the filled in form
-        let queries = parseQueryForm(query_schema_name, formData);
-
-        console.log("queries:", queries);
-
-        // iterate through the query per archive
-        queries.forEach((query) => {
-
-            let url = api_host + "query/create-query?" + query.esap_query;
-
-            setStatus(FETCHING_CREATE_QUERY)
-            console.log('status = '+status)
-
-            axios
-                .get(url)
-                .then((response) => {
-                    // the 'create-query' call will return an archive specific query for each of the
-                    // defined 'esap datasets' within that 'esap archive'
-
-                    let dataset_queries = response.data.query_input
-                    dataset_queries.forEach((dataset_query) => {
-
-                        // transfer some properties to the state for later use
-                        dataset_query['archive'] = query.archive
-                        dataset_query['esap_query'] = query.esap_query
-                        archive_queries.push(dataset_query)
-
-                    })
-
-                    // update the object (and not just the contents) to trigger the rendering of all the results
-                    const copy = archive_queries.slice(); // make a copy (new object)
-                    setArchiveQueries(copy)
-
-                    setStatus(FETCHED_CREATE_QUERY)
-
-                })
-                .catch((error) => {
-                    alert(error)
-
-                });
-        });
-
+            datasets_enabled.forEach((archive_dataset) => {
+                selected.push(archive_dataset)
+            })
+            setSelectedQueries(selected)
+            setStatus(PREPARED_QUERIES)
+        }
     }
 
     // call to the ESAP API 'query' endpoint
     function fetchRunQueries() {
+
         let query_results = []
+
+        const query_schema_name = config.query_schema.name;
+        let base_query = parseQueryForm(query_schema_name, formData);
+
         // create a list of queries based on the filled in form
-        //let queries = parseQueryForm(query_schema_name, formData);
-
         selectedQueries.forEach((query) => {
-
-            let dataset_query = query.result.query
-
-            // cut off the service_url and only leave the query part
-            if (dataset_query.includes('&QUERY=')) {
-                dataset_query = query.result.query.split('&QUERY=')[1]
-            }
-
             // add archive and collection parameters
-            let url = api_host + "query/query?" + "" +
-                "&collection=" + query.result.collection +
-                "&level=" + query.result.level +
-                "&category=" + query.result.category
+            //let url = api_host + "query/query?" + "" +
+            //"&collection=" + query.result.collection +
+            //    "&level=" + query.result.level +
+            //    "&category=" + query.result.category
 
-            // add the ESAP common parameters from the GUI
-            url = url + '&' + query.result.esap_query
+            // construct the url
+            let url = api_host + "query/query?dataset_uri=" + query.dataset + '&' + base_query
+
             setStatus(FETCHING_SELECTED_QUERIES)
             console.log('status = '+status)
 
@@ -151,8 +108,8 @@ export default function QueryMultipleArchives() {
     // execute when the form parameters or the queryStep changes
     useEffect(() => {
 
-        if (status === CREATE_QUERIES) {
-            fetchCreateQueries()
+        if (status === PREPARE_QUERIES) {
+            prepareQueries(config)
         }
 
         if (status === RUN_SELECTED_QUERIES) {
@@ -161,16 +118,9 @@ export default function QueryMultipleArchives() {
 
     }, [queryStep, formData]);
 
-
-    // executed when the 'Create Queries' button is clicked
-    function handleCreateQueriesButton(formData) {
-        setFormData(formData)
-        setStatus(CREATE_QUERIES)
-        setQueryStep('create-query')
-    }
-
     // executed when the 'Run Queries' button is clicked
-    function handleRunQueriesButton() {
+    function handleRunQueriesButton(formData) {
+        setFormData(formData)
         setStatus(RUN_SELECTED_QUERIES)
         console.log('handleRunQueries: status = '+status)
         setQueryStep('run-query')
@@ -199,14 +149,14 @@ export default function QueryMultipleArchives() {
 
     // RENDER
     if (!config) return <LoadingSpinner />
+    if (status === PREPARE_QUERIES) {
+        prepareQueries(config)
+    }
 
     // load the GUI for this configuration
     const uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
 
     // This is the 'conditional rendering' logic to construct the GUI based on the current status
-
-    // always render the 'Create Queries' button
-    let renderCreateQueryButton = <Button type="submit" >{getQueryIcon()} Create Queries</Button>
 
     let renderResolveNameButton
     if (formData) {
@@ -214,20 +164,9 @@ export default function QueryMultipleArchives() {
             handleResolveNameButton()
         }}>{getQueryIcon()} Resolve Target</Button>
     }
-    // only render the 'Run Queries' button when one or more queries are selected
-    let renderRunQueryButton
-    if (status === QUERIES_SELECTED) {
-        renderRunQueryButton= <Button type="submit" onClick={() => {handleRunQueriesButton()}}> Run Queries </Button>
-    }
 
-    // Render the selection of available queries when they are fetched, otherwise show a spinner
-    let renderCreateQueryResults
-    if (status === FETCHING_CREATE_QUERY) {
-        renderCreateQueryResults = <LoadingSpinner />;
-    }
-    if (status === FETCHED_CREATE_QUERY || status === QUERIES_SELECTED) {
-        renderCreateQueryResults = <CreateMultiQueryResults results={archiveQueries} />
-    }
+    // only render the 'Run Queries' button when one or more queries are selected
+    let renderRunQueryButton= <Button type="submit" >{getQueryIcon()} Run Queries</Button>
 
     // Render the query results when they are fetched, otherwise show a spinner
     let renderQueryResults
@@ -244,15 +183,13 @@ export default function QueryMultipleArchives() {
               schema={config.query_schema}
               ObjectFieldTemplate={myObjectFieldTemplate}
               formData={formData}
-              onSubmit={({ formData }) => handleCreateQueriesButton(formData)}
+              onSubmit={({ formData }) => handleRunQueriesButton(formData)}
               {...uiSchemaProp}
 
             >
-                {renderCreateQueryButton}&nbsp;
                 {renderRunQueryButton}
             </Form>
 
-            {renderCreateQueryResults}
             {renderQueryResults}
         </Container>
     );

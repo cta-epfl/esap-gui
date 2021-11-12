@@ -4,6 +4,8 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 
 // statusses
 export const QUERY_FORM = 'query-form'
+export const PREPARE_QUERIES = 'prepare-queries'
+export const PREPARED_QUERIES = 'prepared-queries'
 export const CREATE_QUERIES = 'create-queries'
 export const FETCHING_CREATE_QUERY = 'fetching-create-query'
 export const FETCHED_CREATE_QUERY = 'fetched-create-query'
@@ -17,11 +19,11 @@ export const MAQContext = createContext();
 
 export function MAQContextProvider({ children }) {
     const [selectedArchives, setSelectedArchives] = useState([]);
-    const [queryStep, setQueryStep] = useState("create-query");
+    const [queryStep, setQueryStep] = useState("create-queries");
     const [archiveQueries, setArchiveQueries] = useState([]);
     const [selectedQueries, setSelectedQueries] = useState([]);
     const [queryResults, setQueryResults] = useState([]);
-    const [status, setStatus] = useState("");
+    const [status, setStatus] = useState(PREPARE_QUERIES);
 
     /*
     Multiple Archives Query steps:
@@ -40,15 +42,15 @@ export function MAQContextProvider({ children }) {
         setSelectedArchives(copy);
     }
 
-    function handleSelectQuery(archiveQuery) {
-        setSelectedQueries([...selectedQueries, archiveQuery]);
+    function handleSelectQuery(query) {
+        setSelectedQueries([...selectedQueries, query]);
         setStatus(QUERIES_SELECTED)
         console.log(status)
     }
 
-    function handleUnselectQuery(archiveQuery) {
+    function handleUnselectQuery(query) {
         const copy = [...selectedQueries];
-        const index = copy.findIndex((q) => q === archiveQuery);
+        const index = copy.findIndex((q) => q === query);
         copy.splice(index, 1);
         setSelectedQueries(copy);
     }
@@ -68,8 +70,8 @@ export function MAQContextProvider({ children }) {
         setStatus,
         selectedQueries,
         setSelectedQueries,
-        select: handleSelectQuery,
-        unselect: handleUnselectQuery,
+        selectQuery: handleSelectQuery,
+        unselectQuery: handleUnselectQuery,
         queryResults,
         setQueryResults,
       }}
