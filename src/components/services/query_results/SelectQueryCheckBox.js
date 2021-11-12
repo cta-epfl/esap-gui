@@ -16,12 +16,12 @@ export default function SelectQueryCheckBox(props) {
   }
 
   function selectItem(item) {
-    maqContext.select(item);
+    maqContext.selectQuery(item);
     console.log('selectItem: '+[item, maqContext]);
   }
 
   function unselectItem(item) {
-    maqContext.unselect(item);
+    maqContext.unselectQuery(item);
     console.log('unselectItem: '+[item, maqContext]);
   }
 

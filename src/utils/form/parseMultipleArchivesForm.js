@@ -1,5 +1,5 @@
 export default function parseMultipleArchivesForm(formData) {
-
+    console.log('parseMultipleArchivesForm')
     let base_query = "";
     let formInput = Object.entries(formData);
 
@@ -8,7 +8,7 @@ export default function parseMultipleArchivesForm(formData) {
         base_query += `${`${base_query}` ? "&" : ""}` + key + "=" + value;
     }
 
-    console.log("base_query:", base_query);
+    console.log("base_query : ", base_query);
 
     return base_query
 }
