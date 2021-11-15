@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Button, Row, Col, Form as RBForm } from "react-bootstrap";
 import Form from "react-jsonschema-form";
@@ -26,9 +26,14 @@ export default function QueryIVOARegistry() {
   const { selectedServices, setSelectedServices, queryStep, setQueryStep, regPage } = useContext(
     IVOAContext
   );
+  const { setDPLevel, setCollection } = useContext(QueryContext);
+  const [categories, setCategories] = useState([]);
+  const history = useHistory();
+
   const { uri } = useParams();
   console.log("uri:", uri);
   console.log("default conf: ", defaultConf);
+
 
   // set ConfigName for archive
   useEffect(() => {
