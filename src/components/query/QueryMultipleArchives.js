@@ -22,18 +22,39 @@ import LoadingSpinner from "../LoadingSpinner";
 
 export default function QueryMultipleArchives() {
 
-    const { api_host, datasets, getDataset } = useContext(GlobalContext);
+    const { api_host } = useContext(GlobalContext);
     const { config, setConfigName, defaultConf, formData, setFormData } = useContext(QueryContext);
     const {
-        queryStep, setQueryStep,
         selectedDatasets, setSelectedDatasets,
         availableDatasets, setAvailableDatasets,
-        selectedQueries, setSelectedQueries,
         queryResults, setQueryResults,
         status, setStatus } = useContext(MAQContext);
 
     const maqContext = useContext(MAQContext);
 
+    // set confiugration for multi_archive query, execute once
+    useEffect(() => {
+        setConfigName("multiple_archives");
+        return () => {
+            console.log("cleaned up");
+            setFormData();
+            setConfigName(defaultConf);
+        };
+    }, []);
+
+
+    // execute when the status changes
+    useEffect(() => {
+
+        if (status === PREPARE_QUERIES) {
+            prepareQueries(config)
+        }
+
+        if (status === RUN_SELECTED_QUERIES) {
+            fetchRunQueries()
+        }
+
+    }, [status]);
 
     // read from the config object which datasets should be queried
     function prepareQueries(config) {
@@ -44,9 +65,8 @@ export default function QueryMultipleArchives() {
         if (config.datasets_enabled) {
 
             // convert the list of uri's to a list of available datasets which have all their properties
-            // nv: 16nov2021, although this works and shows pretty names, it is noticably slow
-            //     when users click checkboxes.
-            //available_datasets.forEach((available_dataset) => {
+            // nv: 16nov2021, although this works and shows pretty names, it is noticably slow when users click checkboxes.
+            // available_datasets.forEach((available_dataset) => {
             //    let dataset = getDataset(available_dataset)[0]
             //    available.push(dataset)
             //})
@@ -106,37 +126,12 @@ export default function QueryMultipleArchives() {
         })
     }
 
-    // set ConfigName for multi_archive query, execute once
-    useEffect(() => {
-        setConfigName("multiple_archives");
-      return () => {
-        console.log("cleaned up");
-        //queryMap.clear();
-        setFormData();
-        setConfigName(defaultConf);
-      };
-    }, []);
-
-
-    // execute when the form parameters or the queryStep changes
-    useEffect(() => {
-
-        if (status === PREPARE_QUERIES) {
-            prepareQueries(config)
-        }
-
-        if (status === RUN_SELECTED_QUERIES) {
-            fetchRunQueries()
-        }
-
-    }, [queryStep, formData]);
 
     // executed when the 'Run Queries' button is clicked
     function handleRunQueriesButton(formData) {
         setFormData(formData)
         setStatus(RUN_SELECTED_QUERIES)
         console.log('handleRunQueries: status = '+status)
-        setQueryStep('run-query')
     }
 
     // texecuted when the 'Run Queries' button is clicked
@@ -173,6 +168,7 @@ export default function QueryMultipleArchives() {
 
     // This is the 'conditional rendering' logic to construct the GUI based on the current status
 
+    // todo: implement later, perhaps in a different way
     let renderResolveNameButton
     if (formData) {
         renderResolveNameButton = <Button onClick={() => {
