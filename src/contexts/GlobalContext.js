@@ -47,7 +47,8 @@ export function GlobalContextProvider({ children }) {
       ? "http://localhost:5555/esap-api/"
       : "https://sdc-dev.astron.nl/esap-api/";
 
-    const [archives, setArchives] = useState();
+    const [archives, setArchives] = useState([]);
+    const [datasets, setDatasets] = useState([]);
     const [navbar, setNavbar] = useState();
     const [loggedInUserName, setLoggedInUserName] = useState();
     const [idToken, setIdToken] = useState([]);
@@ -60,14 +61,20 @@ export function GlobalContextProvider({ children }) {
           .then((response) => setArchives(response.data.results));
         }, [api_host]);
 
-        useEffect(() => {
+    useEffect(() => {
         axios
-        .get(api_host + "query/configuration?name=navbar")
-          .then((response) => {
-            console.log("navbar response", response.data.configuration);
-            setNavbar(response.data.configuration);
-          });
+            .get(api_host + "query/datasets-uri")
+            .then((response) => setDatasets(response.data.results));
         }, [api_host]);
+
+    useEffect(() => {
+    axios
+    .get(api_host + "query/configuration?name=navbar")
+      .then((response) => {
+        console.log("navbar response", response.data.configuration);
+        setNavbar(response.data.configuration);
+      });
+    }, [api_host]);
 
     // Zheng: "!!!!! Still need to look at sessionid and stuff"
     const [sessionid, setSessionid] = useState(getCookie("sessionid"));
@@ -131,7 +138,7 @@ export function GlobalContextProvider({ children }) {
         return (expiration - now)/1000
     }
 
-  const handleError = (event) => {
+    const handleError = (event) => {
     setIsAuthenticated(false);
     setSessionid(null);
 
@@ -142,7 +149,15 @@ export function GlobalContextProvider({ children }) {
       </>
     );
   };
-  
+
+    // find a dataset record in the list of datasets
+    const getDataset = (uri) => {
+        return datasets.filter(
+            function(datasets) {
+                return datasets.uri == uri
+            }
+        )
+    }
 
   return (
     <GlobalContext.Provider
@@ -151,6 +166,7 @@ export function GlobalContextProvider({ children }) {
           isAuthenticated,
           sessionid,
           archives,
+          datasets,
           navbar,
           handleLogin,
           handleLogout,
@@ -161,7 +177,8 @@ export function GlobalContextProvider({ children }) {
           tokenExpiration,
           refreshLogin,
           isTokenValid,
-          loginAgain
+          loginAgain,
+          getDataset
       }}
     >
       {children}

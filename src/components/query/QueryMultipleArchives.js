@@ -15,19 +15,23 @@ import { MAQContext,
     FETCHED_SELECTED_QUERIES,
     ERROR_FETCHING_QUERY } from "../../contexts/MAQContext";
 
+import AvailableDatasets from "../services/query_results/AvailableDatasets";
 import RunMultiQueryResults from "../services/query_results/RunMultiQueryResults";
 import { getQueryIcon } from "../../utils/styling";
 import LoadingSpinner from "../LoadingSpinner";
 
 export default function QueryMultipleArchives() {
 
-    const { api_host } = useContext(GlobalContext);
+    const { api_host, datasets, getDataset } = useContext(GlobalContext);
     const { config, setConfigName, defaultConf, formData, setFormData } = useContext(QueryContext);
     const {
         queryStep, setQueryStep,
+        selectedDatasets, setSelectedDatasets,
+        availableDatasets, setAvailableDatasets,
         selectedQueries, setSelectedQueries,
         queryResults, setQueryResults,
         status, setStatus } = useContext(MAQContext);
+
     const maqContext = useContext(MAQContext);
 
 
@@ -36,15 +40,24 @@ export default function QueryMultipleArchives() {
         //alert('prepareQueries')
         if (!config) return null
 
-        let datasets_enabled = config.datasets_enabled
-        let selected = []
+        // list of dataset uri's from the backend
+        if (config.datasets_enabled) {
 
-        if (datasets_enabled) {
+            // convert the list of uri's to a list of available datasets which have all their properties
+            // nv: 16nov2021, although this works and shows pretty names, it is noticably slow
+            //     when users click checkboxes.
+            //available_datasets.forEach((available_dataset) => {
+            //    let dataset = getDataset(available_dataset)[0]
+            //    available.push(dataset)
+            //})
 
-            datasets_enabled.forEach((archive_dataset) => {
-                selected.push(archive_dataset)
-            })
-            setSelectedQueries(selected)
+            // setSelectedDatasets(available)
+            // setAvailableDatasets(available)
+
+            // faster option
+            setSelectedDatasets(config.datasets_enabled)
+            setAvailableDatasets(config.datasets_enabled)
+
             setStatus(PREPARED_QUERIES)
         }
     }
@@ -58,7 +71,7 @@ export default function QueryMultipleArchives() {
         let base_query = parseQueryForm(query_schema_name, formData);
 
         // create a list of queries based on the filled in form
-        selectedQueries.forEach((query) => {
+        selectedDatasets.forEach((dataset) => {
             // add archive and collection parameters
             //let url = api_host + "query/query?" + "" +
             //"&collection=" + query.result.collection +
@@ -66,7 +79,7 @@ export default function QueryMultipleArchives() {
             //    "&category=" + query.result.category
 
             // construct the url
-            let url = api_host + "query/query?dataset_uri=" + query.dataset + '&' + base_query
+            let url = api_host + "query/query?dataset_uri=" + dataset.dataset + '&' + base_query
 
             setStatus(FETCHING_SELECTED_QUERIES)
             console.log('status = '+status)
@@ -149,9 +162,11 @@ export default function QueryMultipleArchives() {
 
     // RENDER
     if (!config) return <LoadingSpinner />
+
     if (status === PREPARE_QUERIES) {
         prepareQueries(config)
     }
+
 
     // load the GUI for this configuration
     const uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
@@ -179,6 +194,7 @@ export default function QueryMultipleArchives() {
 
     return (
         <Container fluid>
+            <AvailableDatasets results={availableDatasets}/>
             <Form
               schema={config.query_schema}
               ObjectFieldTemplate={myObjectFieldTemplate}

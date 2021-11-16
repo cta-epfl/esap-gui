@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import {Container, Card, Table } from 'react-bootstrap'
-import AddToBasket from "../../basket/AddToBasketCheckBox";
+import AddToBasketCheckBox from "../../basket/AddToBasketCheckBox";
 //import { QueryContext } from "../../../contexts/QueryContext";
 //import HandlePreview from "../../query/HandlePreview";
 //import Preview from "../../query/Preview";
@@ -25,6 +25,7 @@ export default function RunQueryResults(props) {
                 <tr className="bg-light">
                     <th>Basket</th>
                     <th>Name</th>
+                    <th>Dataset</th>
                     <th>Collection</th>
                     <th>Level</th>
                     <th>RA</th>
@@ -38,9 +39,10 @@ export default function RunQueryResults(props) {
                     <>
                     <tr key={result.url}>
                         <td>
-                            <AddToBasket id={result.url} item={createItem(result)} />
+                            <AddToBasketCheckBox id={result.url} item={createItem(result)} />
                         </td>
                         <td>{result.name}</td>
+                        <td>{result.dataset}</td>
                         <td>{result.collection}</td>
                         <td>{result.level}</td>
                         <td>{result.ra}</td>
