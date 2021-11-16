@@ -12,6 +12,7 @@ import parseVOServiceForm from "../../utils/form/parseVOServiceForm";
 import VOServiceResults from "../services/query_results/IVOAResults";
 import { getQueryIcon } from "../../utils/styling";
 import "../../assets/IVOA.css";
+import LoadingSpinner from "../LoadingSpinner";
 
 export default function QueryIVOARegistry() {
   // queryMap is a map of dictionaries, where each dictionary consists of
@@ -19,14 +20,21 @@ export default function QueryIVOARegistry() {
   //  "catalogquery": "querystring",
   //  "status": "fetching|fechted",
   //  "results": null}
-  const { config, setConfigName, defaultConf, queryMap, formData, setFormData, page, setPage } = useContext(QueryContext);
+  const {setConfigName, defaultConf, queryMap, formData, setFormData, page, setPage, setDPLevel, setCollection} = useContext(QueryContext);
   const { api_host } = useContext(
     GlobalContext
   );
   const { selectedServices, setSelectedServices, queryStep, setQueryStep, regPage } = useContext(
     IVOAContext
   );
-  const { setDPLevel, setCollection } = useContext(QueryContext);
+  const [config, setConfig] = useState(); 
+  const [url, setURL] = useState("");
+  const [dplevel] = useState();
+  const [collection] = useState();
+  const [configName] = useState(defaultConf);
+  const [preview, setPreview] = useState(false);
+  const [ds9, setDS9] = useState(false);
+  const {loginAgain } = useContext(GlobalContext);
   const [categories, setCategories] = useState([]);
   const history = useHistory();
 
@@ -34,6 +42,45 @@ export default function QueryIVOARegistry() {
   console.log("uri:", uri);
   console.log("default conf: ", defaultConf);
 
+  if (config==null){
+    fetchConfiguration(defaultConf);
+  }
+
+  function fetchConfiguration(configName) {
+
+        let configNameString = configName;
+        if (configName) {
+            configNameString = `?name=${configName}`;
+        }
+
+       axios
+            .get(api_host + "query/configuration" + configNameString)
+            .then((response) => {
+                let props = response.data["configuration"].query_schema.properties;
+
+                Object.keys(props).map((key) => {
+                    if (key === "collection" && collection) {
+                        console.log("has key collection, default value is: ", props[key]["default"]);
+                        props[key]["default"] = collection;
+                    }
+                    if (key === "level" && dplevel) {
+                        console.log("has key dplevel, default value is: ", props[key]["default"]);
+                        props[key]["default"] = dplevel;
+                    }
+                    return null;
+                });
+               setConfig(response.data["configuration"]);
+            }).catch((error) => {
+                 let description = ". Configuration not loaded. Is ESAP-API online? " + api_host
+                  console.log(error.toString() + description)
+                 //                alert(description)
+                //const loginUrl = api_host + "oidc/authenticate"
+                // window.location = loginUrl
+                //   loginAgain()
+            });
+  }
+ 
+ console.log("config:", config);
 
   // set ConfigName for archive
   useEffect(() => {
@@ -48,11 +95,14 @@ export default function QueryIVOARegistry() {
 
   // load the GUI for this configuration
   useEffect(() => {
-    console.log("query schema:", config.query_schema);
+    if (config) {
+      console.log("query schema:", config.query_schema);
+    }
     if (!formData) return;
     console.log("formData:", formData);
 
     const gui = config.query_schema.name;
+
     let queries = [];
 
     if (queryStep === "run-query") {
@@ -150,107 +200,118 @@ export default function QueryIVOARegistry() {
   }
 
   console.log("queryMap:", Array.from(queryMap.values()));
-
-  const uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
-  console.log("UI Schema props:", uiSchemaProp);
-  console.log("Form Data:", formData);
+  let uiSchemaProp = {}
+  if (config){
+    uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
+    console.log("UI Schema props:", uiSchemaProp);
+    console.log("Form Data:", formData);
+  } else {
+    uiSchemaProp = {};
+  }
 
   if (queryStep === "run-query") {
 
-    uiSchemaProp.uiSchema = {
-      adql_query: { "ui:widget": "textarea" },
-      keyword: { "ui:widget": "hidden" },
-      service_type: { "ui:widget": "hidden" },
-      catalog: { "ui:widget": "hidden" },
-      tap_schema: { "ui:widget": "hidden" },
-      waveband: { "ui:widget": "hidden" },
-    };
-    console.log("new ui schema:", uiSchemaProp);
-    return (
-      <Container fluid>
-        <Form
-          schema={config.query_schema}
-          ObjectFieldTemplate={formTemplate}
-          formData={formData}
-          onSubmit={({ formData }) => setFormData(formData)}
-          {...uiSchemaProp}
-        >
-         <label class="control-label">Selected Services</label>
-          <RBForm.Control as="select" className="selectedServices" multiple>
-            {selectedServices.map((service) => {
-              return <option>{service}</option>;
-            })}
-          </RBForm.Control>
-          <div>
-            <Button className="mt-3" type="submit">
-              Query VO Resource
-            </Button>
-          </div>
-        </Form>
-        {selectedServices.map((service) => {
-          const details = queryMap.get(service);
-          console.log("Details:", details);
-          return (
-            <div className="mt-3">
-              <VOServiceResults catalog={service} />
+    if (config){
+      uiSchemaProp.uiSchema = {
+         adql_query: { "ui:widget": "textarea" },
+         keyword: { "ui:widget": "hidden" },
+         service_type: { "ui:widget": "hidden" },
+         catalog: { "ui:widget": "hidden" },
+         tap_schema: { "ui:widget": "hidden" },
+         waveband: { "ui:widget": "hidden" },
+       };
+       console.log("new ui schema:", uiSchemaProp);
+
+       return (
+        <Container fluid>
+          <Form
+            schema={config.query_schema}
+            ObjectFieldTemplate={formTemplate}
+            formData={formData}
+            onSubmit={({ formData }) => setFormData(formData)}
+            {...uiSchemaProp}
+          >
+           <label class="control-label">Selected Services</label>
+            <RBForm.Control as="select" className="selectedServices" multiple>
+              {selectedServices.map((service) => {
+                return <option>{service}</option>;
+              })}
+            </RBForm.Control>
+            <div>
+              <Button className="mt-3" type="submit">
+                Query VO Resource
+              </Button>
             </div>
-          );
-        })}
-      </Container>
-    );
-  } else {
-    return (
-      <Container fluid>
-        <Form
-          schema={config.query_schema}
-          ObjectFieldTemplate={formTemplate}
-          formData={formData}
-          onSubmit={({ formData }) => setFormData(formData)}
-          {...uiSchemaProp}
-        >
-          <div>
-            <Button type="submit">{getQueryIcon()} Query VO Registry</Button>
-          </div>
-        </Form>
-        {Array.from(queryMap.keys()).map((catalog) => {
-          console.log("catalog:", catalog);
-          const details = queryMap.get(catalog);
-          console.log("Details:", details);
-          console.log("Results:", details.results);
-          // let catalogName =
-          //   config.query_schema.properties.catalog.enumNames[
-          //     config.query_schema.properties.catalog.enum.findIndex(
-          //       (name) => name === catalog
-          //     )
-          //   ];
-          return (
-            <div key={catalog} className="mt-3">
-              <Row>
-                <Col>
-                  <h4>List of VO Resources</h4>
-                </Col>
-                <Col>
-                  {selectedServices.length === 0 ? (
-                    <></>
-                  ) : (
-                    <Button
-                      type="submit"
-                      onClick={() => {
-                        setQueryStep("run-query");
-                      }}
-                    >
-                      Query selected VO Resources
-                    </Button>
-                  )}
-                </Col>
-              </Row>
+          </Form>
+          {selectedServices.map((service) => {
+            const details = queryMap.get(service);
+            console.log("Details:", details);
+            return (
               <div className="mt-3">
-                <QueryResults catalog={catalog} />
+                <VOServiceResults catalog={service} />
               </div>
+            );
+          })}
+        </Container>
+      );
+    }
+  } else {
+    if (config){
+      return (
+        <Container fluid>
+          <Form
+            schema={config.query_schema}
+            ObjectFieldTemplate={formTemplate}
+            formData={formData}
+            onSubmit={({ formData }) => setFormData(formData)}
+            {...uiSchemaProp}
+          >
+            <div>
+              <Button type="submit">{getQueryIcon()} Query VO Registry</Button>
             </div>
-          );
-        })}
-      </Container>
-    );
+          </Form>
+          {Array.from(queryMap.keys()).map((catalog) => {
+            console.log("catalog:", catalog);
+            const details = queryMap.get(catalog);
+            console.log("Details:", details);
+            console.log("Results:", details.results);
+            // let catalogName =
+            //   config.query_schema.properties.catalog.enumNames[
+            //     config.query_schema.properties.catalog.enum.findIndex(
+            //       (name) => name === catalog
+            //     )
+            //   ];
+            return (
+              <div key={catalog} className="mt-3">
+                <Row>
+                  <Col>
+                    <h4>List of VO Resources</h4>
+                  </Col>
+                  <Col>
+                    {selectedServices.length === 0 ? (
+                      <></>
+                    ) : (
+                      <Button
+                        type="submit"
+                        onClick={() => {
+                          setQueryStep("run-query");
+                        }}
+                      >
+                        Query selected VO Resources
+                      </Button>
+                    )}
+                  </Col>
+                </Row>
+                <div className="mt-3">
+                  <QueryResults catalog={catalog} />
+                </div>
+              </div>
+            );
+          })}
+        </Container>
+      );
+     } else {
+        return (<LoadingSpinner />);
+    }
   }
 }
