@@ -14,18 +14,20 @@ export default function AvailableDatasets(props) {
         <Container fluid>
             <Card>
                 <Table>
-                    <thead>
-                    <th>Select Datasets to query</th>
-                    </thead>
+
                     <tbody>
                     <tr>
                     {props.results.map((result, index) => (
+
                         <td key={result.dataset}>
-                            <td>
-                                <SelectDatasetCheckBox id={result.dataset} item={result} />
+                            <Card>
+
+                            <td><SelectDatasetCheckBox id={result.dataset} item={result} />
+                                {result.dataset} ({result.archive})
                             </td>
-                            <td>{result.dataset} ({result.archive})</td>
+                            </Card>
                         </td>
+
                     ))}
                     </tr>
                     </tbody>

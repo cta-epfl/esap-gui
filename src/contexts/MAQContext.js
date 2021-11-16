@@ -21,17 +21,8 @@ export function MAQContextProvider({ children }) {
     const [datasets, setDatasets] = useState([]);
     const [selectedDatasets, setSelectedDatasets] = useState([]);
     const [availableDatasets, setAvailableDatasets] = useState([]);
-    const [queryStep, setQueryStep] = useState("create-queries");
-    const [archiveQueries, setArchiveQueries] = useState([]);
-    const [selectedQueries, setSelectedQueries] = useState([]);
     const [queryResults, setQueryResults] = useState([]);
     const [status, setStatus] = useState(PREPARE_QUERIES);
-
-    /*
-    Multiple Archives Query steps:
-    1. create-query
-    2. run-query
-    */
 
     function handleAddDataset(access_url) {
         setSelectedDatasets([...selectedDatasets, access_url]);
@@ -42,19 +33,6 @@ export function MAQContextProvider({ children }) {
         const index = copy.findIndex((url) => url === access_url);
         copy.splice(index, 1);
         setSelectedDatasets(copy);
-    }
-
-    function handleSelectQuery(query) {
-        setSelectedQueries([...selectedQueries, query]);
-        setStatus(QUERIES_SELECTED)
-        console.log(status)
-    }
-
-    function handleUnselectQuery(query) {
-        const copy = [...selectedQueries];
-        const index = copy.findIndex((q) => q === query);
-        copy.splice(index, 1);
-        setSelectedQueries(copy);
     }
 
   return (
@@ -69,16 +47,8 @@ export function MAQContextProvider({ children }) {
         selectDataset: handleAddDataset,
         unselectDataset: handleRemoveDataset,
 
-        queryStep,
-        setQueryStep,
         status,
         setStatus,
-
-        selectedQueries,
-        setSelectedQueries,
-        selectQuery: handleSelectQuery,
-        unselectQuery: handleUnselectQuery,
-
         queryResults,
         setQueryResults,
       }}

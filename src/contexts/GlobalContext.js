@@ -68,12 +68,12 @@ export function GlobalContextProvider({ children }) {
         }, [api_host]);
 
     useEffect(() => {
-    axios
-    .get(api_host + "query/configuration?name=navbar")
-      .then((response) => {
-        console.log("navbar response", response.data.configuration);
-        setNavbar(response.data.configuration);
-      });
+        axios
+        .get(api_host + "query/configuration?name=navbar")
+          .then((response) => {
+            console.log("navbar response", response.data.configuration);
+            setNavbar(response.data.configuration);
+          });
     }, [api_host]);
 
     // Zheng: "!!!!! Still need to look at sessionid and stuff"
