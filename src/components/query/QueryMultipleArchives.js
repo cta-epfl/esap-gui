@@ -194,6 +194,7 @@ export default function QueryMultipleArchives() {
 
     return (
         <Container fluid>
+
             <AvailableDatasets results={availableDatasets}/>
             <Form
               schema={config.query_schema}
@@ -207,6 +208,7 @@ export default function QueryMultipleArchives() {
             </Form>
 
             {renderQueryResults}
+
         </Container>
     );
 
