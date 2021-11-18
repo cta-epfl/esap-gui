@@ -1,8 +1,10 @@
-import React, { useContext } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios";
 import { Button, Form, Container, Alert } from "react-bootstrap";
 import { IDAContext } from "../../contexts/IDAContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import "../../assets/Interactive.css";
+import LoadingSpinner from "../LoadingSpinner";
 
 export default  function Interactive() {
 
@@ -15,6 +17,32 @@ export default  function Interactive() {
   const [showMoreButton, setShowMoreButton] = React.useState(true);
   const [showDeploy, setShowDeploy] = React.useState(false);
   const [numberOfitemsShown, setNumberOfitemsShown] = React.useState(3)
+  const [loading, setLoading] = React.useState(true);
+
+
+    // Fetch Notebooks
+    useEffect(() => {
+      axios
+      .get(api_host + "ida/workflows/search")
+        .then((response) => {
+          console.log(response);
+          setList_of_workflows(response.data.results);
+          setWorkflowURL(response.data.results[0].url);
+          setLoading(false);
+        });
+    }, [api_host]);
+
+
+    // Fetch JHubs
+    useEffect(() => {
+      axios
+      .get(api_host + "ida/facilities/search")
+        .then((response) => {
+          setList_of_idaSystems(response.data.results);
+          setIdaSystemURL(response.data.results[0].url);
+        });
+    }, [api_host]);
+
 
 
   let list_of_batchsystems = [
@@ -22,8 +50,24 @@ export default  function Interactive() {
     {"name" : "CTA DIRAC", "url" : "https://ccdcta-web.in2p3.fr/DIRAC/"},
   ]
 
+  if (loading) {
+    return (
+      <Container className="ida" fluid>
+         <h1>Interactive Analysis</h1>
+    { !showFacilities ?
+
+    <div class="workflow-div">
+    <h2>Workflows</h2>
+     </div>
+    : null }
+         <LoadingSpinner/>
+      </Container>
+    )
+
+  }
+
   if ((!list_of_workflows) || (!list_of_idaSystems) || (!list_of_batchsystems)) {
-    return null
+    return null;
   }
 
   const handleChange = event => {
