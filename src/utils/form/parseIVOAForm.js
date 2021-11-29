@@ -5,18 +5,15 @@ export default function ParseIVOAForm(formData) {
   //  "esapquery": "querystring"}
   let query = "";
   let formInput = Object.entries(formData);
-  console.log(formInput);
 
   // IVOA query consists of multiple steps
   // Step 1: get list of registry services
 
   for (let [key, value] of formInput) {
-    console.log(`${key}: ${value}`);
     if (value && value !== "all" && key !== "catalog") {
       query += `${`${query}` ? "&" : ""}` + key + "=" + value;
     }
   }
-  console.log("Query:", query);
   // If catalog is set to "all", query for each catalog needs to be generated {"catalog": "catalogname",
   //  "catalogquery": "querystring",
   //  "status": "null|fetching|fetched",
@@ -36,6 +33,5 @@ export default function ParseIVOAForm(formData) {
     esapquery: esapquery,
   });
 
-  console.log("Queries:", queries);
   return queries;
 }
