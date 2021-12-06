@@ -18,9 +18,15 @@ export default function IVOAResults({ catalog }) {
   const { queryMap, page, setPage, preview, setPreview, setURL } = useContext(QueryContext);
 
   if (!queryMap.get(catalog)) return null;
-  console.log("VO service queryMap:", queryMap.get(catalog));
 
   if (queryMap.get(catalog).status === "error") {
+      console.log(queryMap.get(catalog).results);
+      if (queryMap.get(catalog).results == null){
+          return (
+            <Alert variant="danger">Unknown error while running this query!</Alert>
+          );
+
+      }
       if (queryMap.get(catalog).results[0].includes("ERROR")) {
           return (
             <Alert variant="danger">{queryMap.get(catalog).results[0]}</Alert>

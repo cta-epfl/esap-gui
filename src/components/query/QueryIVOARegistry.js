@@ -13,6 +13,10 @@ import VOServiceResults from "../services/query_results/IVOAResults";
 import { getQueryIcon } from "../../utils/styling";
 import "../../assets/IVOA.css";
 import LoadingSpinner from "../LoadingSpinner";
+import JSONTree from 'react-json-tree'
+import { Map } from 'immutable'
+
+
 
 export default function QueryIVOARegistry() {
   // queryMap is a map of dictionaries, where each dictionary consists of
@@ -27,7 +31,7 @@ export default function QueryIVOARegistry() {
   const { selectedServices, setSelectedServices, queryStep, setQueryStep, regPage } = useContext(
     IVOAContext
   );
-  const [config, setConfig] = useState(); 
+  const [config, setConfig] = useState();
   const [url, setURL] = useState("");
   const [dplevel] = useState();
   const [collection] = useState();
@@ -37,10 +41,10 @@ export default function QueryIVOARegistry() {
   const {loginAgain } = useContext(GlobalContext);
   const [categories, setCategories] = useState([]);
   const history = useHistory();
+  const [metadata, setMetadata] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
 
   const { uri } = useParams();
-  console.log("uri:", uri);
-  console.log("default conf: ", defaultConf);
 
   if (config==null){
     fetchConfiguration(defaultConf);
@@ -60,11 +64,9 @@ export default function QueryIVOARegistry() {
 
                 Object.keys(props).map((key) => {
                     if (key === "collection" && collection) {
-                        console.log("has key collection, default value is: ", props[key]["default"]);
                         props[key]["default"] = collection;
                     }
                     if (key === "level" && dplevel) {
-                        console.log("has key dplevel, default value is: ", props[key]["default"]);
                         props[key]["default"] = dplevel;
                     }
                     return null;
@@ -79,14 +81,11 @@ export default function QueryIVOARegistry() {
                 //   loginAgain()
             });
   }
- 
- console.log("config:", config);
 
   // set ConfigName for archive
   useEffect(() => {
       setConfigName("esap_ivoa");
     return () => {
-      console.log("cleaned up");
       queryMap.clear();
       setFormData();
       setConfigName(defaultConf);
@@ -95,14 +94,10 @@ export default function QueryIVOARegistry() {
 
   // load the GUI for this configuration
   useEffect(() => {
-    if (config) {
-      console.log("query schema:", config.query_schema);
-    }
+
     if (!formData) return;
-    console.log("formData:", formData);
 
     const gui = config.query_schema.name;
-
     let queries = [];
 
     if (queryStep === "run-query") {
@@ -116,7 +111,6 @@ export default function QueryIVOARegistry() {
       queries = parseQueryForm(gui, formData, regPage);
     }
 
-    console.log("queries:", queries);
 
     queryMap.clear();
     queries.forEach((query) => {
@@ -132,30 +126,14 @@ export default function QueryIVOARegistry() {
         .get(url)
         .then((queryResponse) => {
           if(queryStep === "run-query") {
-            let tf_url = api_host + "query/get-tables-fields/?dataset_uri=vo_reg&access_url=" + query.catalog;
-              console.log("table fields url: ", tf_url);
-              axios
-                  .get(tf_url)
-                  .then((tfResponse) => {
-
-                      queryMap.set(query.catalog, {
-                          catalog: query.catalog,
-                          service_type: query.service_type,
-                          vo_table_schema: queryResponse.data.results[0],
-                          esapquery: query.esapquery,
-                          status: "fetched",
-                          results: queryResponse.data,
-                      });
-                  }).catch(() => {
-                      queryMap.set(query.catalog, {
-                          catalog: query.catalog,
-                          service_type: query.service_type,
-                          vo_table_schema:"",
-                          esapquery: query.esapquery,
-                          status: "error",
-                          results: queryResponse.data,
-                      });
-                  });
+              queryMap.set(query.catalog, {
+                  catalog: query.catalog,
+                  service_type: query.service_type,
+                  vo_table_schema: queryResponse.data.results[0],
+                  esapquery: query.esapquery,
+                  status: "fetched",
+                  results: queryResponse.data,
+              });
 
           }
           else {
@@ -180,6 +158,29 @@ export default function QueryIVOARegistry() {
     });
   }, [formData, page, regPage]);
 
+
+  const theme = {
+    scheme: 'monokai',
+    author: 'wimer hazenberg (http://www.monokai.nl)',
+    base00: '#272822',
+    base01: '#383830',
+    base02: '#49483e',
+    base03: '#75715e',
+    base04: '#a59f85',
+    base05: '#f8f8f2',
+    base06: '#f5f4f1',
+    base07: '#f9f8f5',
+    base08: '#f92672',
+    base09: '#fd971f',
+    base0A: '#f4bf75',
+    base0B: '#a6e22e',
+    base0C: '#a1efe4',
+    base0D: '#66d9ef',
+    base0E: '#ae81ff',
+    base0F: '#cc6633',
+  };
+
+
   function formTemplate({ TitleField, properties, title, description }) {
     return (
       <div>
@@ -199,12 +200,10 @@ export default function QueryIVOARegistry() {
     );
   }
 
-  console.log("queryMap:", Array.from(queryMap.values()));
+
   let uiSchemaProp = {}
   if (config){
     uiSchemaProp = config.ui_schema ? { uiSchema: config.ui_schema } : {};
-    console.log("UI Schema props:", uiSchemaProp);
-    console.log("Form Data:", formData);
   } else {
     uiSchemaProp = {};
   }
@@ -220,37 +219,97 @@ export default function QueryIVOARegistry() {
          tap_schema: { "ui:widget": "hidden" },
          waveband: { "ui:widget": "hidden" },
        };
-       console.log("new ui schema:", uiSchemaProp);
 
-       return (
-        <Container fluid>
-          <Form
-            schema={config.query_schema}
-            ObjectFieldTemplate={formTemplate}
-            formData={formData}
-            onSubmit={({ formData }) => setFormData(formData)}
-            {...uiSchemaProp}
-          >
-           <label class="control-label">Selected Services</label>
-            <RBForm.Control as="select" className="selectedServices" multiple>
+    if (selectedServices && loading){
+      let catalogues = {};
+      let counter = 1;
+      let selectedServicesLength = selectedServices.length;
+      selectedServices.forEach((access_url) => {
+
+        let selectedService = access_url;
+        let catalogueTitle = access_url;
+        let tf_url = api_host + "query/get-tables-fields/?dataset_uri=vo_reg&access_url=" +  selectedService;
+        axios
+           .get(tf_url)
+           .then((tfResponse) => {
+               let jsond = tfResponse.data.results;
+               let schemas = {};
+               Object.keys(jsond).forEach(function(key) {
+                   let table = {};
+                   let fields_updated = {};
+                   let metadata_couple = jsond[key].table_name.split(/[.]+/);
+                   let schemaname = metadata_couple[0];
+                   let tablename =  metadata_couple[1];
+                   table["fields"] = {};
+                   table["type"] = "table";
+                   table["full_name"] = jsond[key]["table_name"];
+                   let fields = jsond[key].fields;
+                   Object.keys(fields).forEach(function(fieldkey) {
+                       let fieldname = fields[fieldkey].name;
+                       table["fields"][fieldname] = fields[fieldkey];
+                   });
+
+                   if (!(schemaname in schemas)) {
+                       schemas[schemaname] = {};
+                   }
+                   schemas[schemaname][tablename] = table;
+               });
+
+               catalogues[catalogueTitle] = schemas;
+               let metanew = metadata;
+               metanew[catalogueTitle] = schemas;
+               setMetadata(metanew);
+                   if (counter >= selectedServicesLength){
+                       setLoading(false);
+                   }
+               counter += 1;
+
+          }).catch(error => {
+              console.log(error);
+          });
+
+       });
+
+    }
+    return (
+      <Container fluid>
+        <Form
+          schema={config.query_schema}
+          ObjectFieldTemplate={formTemplate}
+          formData={formData}
+          onSubmit={({ formData }) => setFormData(formData)}
+          {...uiSchemaProp}
+        >
+          <label className="control-label">Selected Services</label>
+          <RBForm.Control as="select" className="selectedServices" multiple>
               {selectedServices.map((service) => {
-                return <option>{service}</option>;
+                return <option key="{service}">{service}</option>;
               })}
-            </RBForm.Control>
-            <div>
+          </RBForm.Control>
+
+
+          <div className="metadata-tree">
+            <label className="control-label">Service Metadata</label>
+
+           { !loading ?
+               <JSONTree data={metadata} theme={theme} invertTheme={true} hideRoot={true} />
+            : <LoadingSpinner/> }
+
+          </div>
+
+          <div>
               <Button className="mt-3" type="submit">
                 Query VO Resource
               </Button>
+          </div>
+        </Form>
+        {selectedServices.map((service) => {
+          const details = queryMap.get(service);
+          return (
+            <div key="{service}" className="mt-3">
+              <VOServiceResults key="{service}" catalog={service} />
             </div>
-          </Form>
-          {selectedServices.map((service) => {
-            const details = queryMap.get(service);
-            console.log("Details:", details);
-            return (
-              <div className="mt-3">
-                <VOServiceResults catalog={service} />
-              </div>
-            );
+          );
           })}
         </Container>
       );
@@ -271,10 +330,7 @@ export default function QueryIVOARegistry() {
             </div>
           </Form>
           {Array.from(queryMap.keys()).map((catalog) => {
-            console.log("catalog:", catalog);
             const details = queryMap.get(catalog);
-            console.log("Details:", details);
-            console.log("Results:", details.results);
             // let catalogName =
             //   config.query_schema.properties.catalog.enumNames[
             //     config.query_schema.properties.catalog.enum.findIndex(

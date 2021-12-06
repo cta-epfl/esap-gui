@@ -27,15 +27,12 @@ export default function VORegListResults({ catalog }) {
   // }, [checkAll]);
 
   if (!queryMap) return null;
-  console.log("VOReg queryMap:", queryMap.get(catalog));
 
   if (queryMap.get(catalog).status === "fetched") {
     if (queryMap.get(catalog).results.results.length === 0)
       return <Alert variant="warning">No matching results found!</Alert>;
 
-    console.log("VO Registry results:", queryMap.get(catalog).results.results);
     setRegistryList(queryMap.get(catalog).results.results);
-    console.log("Registry List:", registryList);
 
     const numPages = queryMap.get(catalog).results.pages;
 
@@ -92,7 +89,6 @@ export default function VORegListResults({ catalog }) {
                       <InputGroup.Checkbox
                         // checked={checkAll}
                         onChange={(event) => {
-                          console.log(event.target.checked);
                           event.target.checked
                             ? addRegistry(result.access_url)
                             : removeRegistry(result.access_url);
