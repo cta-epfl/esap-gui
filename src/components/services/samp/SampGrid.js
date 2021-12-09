@@ -46,7 +46,12 @@ export default function SampResults(props) {
                                 <AddToBasket id={id} item={SAMPBasketItem(record)} />
                             </td>
                             {record.map((col) => {
-                                let value = col.toString()
+                                let value = 'n/a'
+
+                                try {
+                                    value = col.toString()
+                                } catch (e) {
+                                }
 
                                 if (value.includes('http')) {
                                     value = <a href={value} target="_blank" rel="noopener noreferrer">{value}</a>
