@@ -7,6 +7,7 @@ import parseASTRONVOForm from "./parseASTRONVOForm";
 import parseRucioForm from "./parseRucioForm";
 import parseZenodoForm from "./parseZenodoForm";
 import parseMultipleArchivesForm from "./parseMultipleArchivesForm";
+import parseCONCORDIAForm from "./parseCONCORDIAForm";
 
 export default function parseQueryForm(gui, formData) {
   switch (gui) {
@@ -28,6 +29,8 @@ export default function parseQueryForm(gui, formData) {
         return parseZenodoForm(formData);
     case "multiple_archives":
         return parseMultipleArchivesForm(formData);
+    case "concordia":
+        return parseCONCORDIAForm(formData);
     default:
       return null;
   }
