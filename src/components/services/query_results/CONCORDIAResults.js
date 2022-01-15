@@ -21,8 +21,13 @@ export default function DIRACResults({ catalog }) {
            <>
            Job submitted:
            <br/>
-           ID {hits.JobID}
+           JobID: {hits.JobID}
            <br/>
+           Status: {hits.Status}
+           <br/>
+           Minor Status: {hits.MinorStatus}
+           <br/>
+           Site: {hits.Site}
            </>
 
 
