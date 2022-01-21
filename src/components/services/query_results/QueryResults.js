@@ -7,6 +7,7 @@ import LOFARResults from "./LOFARResults";
 import RucioResults from "./RucioResults";
 import ZenodoResults from "./ZenodoResults";
 import SampResults from "./SampResults";
+import CONCORDIAResults from "./CONCORDIAResults";
 
 export default function QueryResults({ catalog }) {
   switch (catalog) {
@@ -26,6 +27,8 @@ export default function QueryResults({ catalog }) {
       return <RucioResults catalog={catalog} />;
     case "zenodo":
       return <ZenodoResults catalog={catalog} />;
+    case "concordia":
+      return <CONCORDIAResults catalog={catalog} />;
     case "samp":
       return <SampResults catalog={catalog} />;
     default:

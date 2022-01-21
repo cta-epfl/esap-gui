@@ -48,6 +48,9 @@ export default function QueryCatalogs() {
       case "ivoa":
         setConfigName("esap_ivoa");
         break;
+      case "esap_concordia":
+        setConfigName("esap_concordia");
+        break;
 
       default:
         break;
