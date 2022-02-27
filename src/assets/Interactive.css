@@ -156,11 +156,20 @@
 }
 
 .next-button {
-  margin-left:100px;
+  margin-left:20px;
   margin-top:20px;
   width:180px;
   height:40px;
   float:right;
+}
+
+.skip-button {
+  margin-left:20px;
+  margin-top:20px;
+  width:180px;
+  height:40px;
+  float:right;
+  
 }
 
 .back-button {
