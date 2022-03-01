@@ -13,12 +13,13 @@ export default  function Interactive() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [showFacilities, setShowFacilities] = React.useState(false);
   const [showNext, setShowNext] = React.useState(false);
+  const [showSkip, setShowSkip] = React.useState(true);
   const [showBack, setShowBack] = React.useState(false);
   const [showMoreButton, setShowMoreButton] = React.useState(true);
   const [showDeploy, setShowDeploy] = React.useState(false);
   const [numberOfitemsShown, setNumberOfitemsShown] = React.useState(3)
   const [loading, setLoading] = React.useState(true);
-
+  const [defaultWorkflow] = ["https://github.com/ESAP-WP5/binder-empty"];
 
     // Fetch Notebooks
     useEffect(() => {
@@ -27,7 +28,7 @@ export default  function Interactive() {
         .then((response) => {
           console.log(response);
           setList_of_workflows(response.data.results);
-          setWorkflowURL(response.data.results[0].url);
+          setWorkflowURL(defaultWorkflow);
           setLoading(false);
         });
     }, [api_host]);
@@ -101,18 +102,20 @@ export default  function Interactive() {
   const setWorkflow = event => {
     setWorkflowURL(event.target.value);
     setShowNext(true)
+    setShowSkip(false)
+
   };
 
   const setFacility = event => {
     setIdaSystemURL(event.target.value);
-    setShowDeploy(true)
+    setShowDeploy(true);
   };
 
   const onClickNext = e => {
     e.preventDefault();
-    setSearchTerm("")
+    setSearchTerm("");
     setShowFacilities(true);
-    setShowBack(true)
+    setShowBack(true);
   };
 
   const onClickBack = e => {
@@ -123,6 +126,8 @@ export default  function Interactive() {
     setShowBack(true)
     setNumberOfitemsShown(3);
     setShowMoreButton(true);
+    setShowSkip(true);
+    setWorkflowURL(defaultWorkflow);
 
   };
 
@@ -161,6 +166,9 @@ export default  function Interactive() {
         onChange={handleChange}
       />
 
+      { showSkip ?
+      <Button className="skip-button"  onClick={onClickNext}>Skip</Button>
+         : null }
 
       { showNext ?
         <Button className="next-button"  onClick={onClickNext}>Next</Button>
