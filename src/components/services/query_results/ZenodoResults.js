@@ -21,7 +21,7 @@ export default function ZenodoResults({ catalog }) {
         <br/>
         <br/>
         <h4><a href={hits.links.latest_html} target="_blank"> {hits.metadata.title.replaceAll(regex, '')} </a></h4>
-        <a href={hits.links.conceptdoi} target="_blank"> <img src={hits.links.badge} alt="DOI"/> </a>
+        <a href={hits.links.doi} target="_blank"> <img src={hits.links.badge} alt="DOI"/> </a>
         <br/>
         {hits.metadata.description.replaceAll(regex, '').substring(0,200)}...
         </>
