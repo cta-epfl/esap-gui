@@ -15,8 +15,8 @@ export default  function Interactive() {
   const [searchTypeFilter, setSearchTypeFilter] = React.useState("");
   const [searchAuthor, setSearchAuthor] = React.useState("");
   const [searchAuthorFilter, setSearchAuthorFilter] = React.useState("");
-  const [searchPlatform, setSearchPlatform] = React.useState("");
-  const [searchPlatformFilter, setSearchPlatformFilter] = React.useState("");
+  const [searchRuntimePlatform, setSearchRuntimePlatform] = React.useState("");
+  const [searchRuntimePlatformFilter, setSearchRuntimePlatformFilter] = React.useState("");
   const [showFacilities, setShowFacilities] = React.useState(false);
   const [showNext, setShowNext] = React.useState(false);
   const [showSkip, setShowSkip] = React.useState(true);
@@ -97,7 +97,7 @@ export default  function Interactive() {
             ? list_of_workflows
 	            : list_of_workflows.filter(workflow =>
                           ((typeof workflow.keywords === 'string') && workflow.keywords.toLowerCase().includes(searchTypeFilter.toLocaleLowerCase())) &&
-                          ((typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(searchPlatformFilter.toLocaleLowerCase())) &&
+                          ((typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(searchRuntimePlatformFilter.toLocaleLowerCase())) &&
                           ((typeof workflow.author === 'string') && workflow.author.toLowerCase().includes(searchAuthorFilter.toLocaleLowerCase())))
         : list_of_workflows.filter(workflow =>
             (typeof workflow.name === 'string') && workflow.name.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
@@ -134,8 +134,8 @@ export default  function Interactive() {
     setAdvancedClicked(false);
     setSearchAuthor("");
     setSearchAuthorFilter("");
-    setSearchPlatform("");
-    setSearchPlatformFilter("");
+    setSearchRuntimePlatform("");
+    setSearchRuntimePlatformFilter("");
     setSearchType("");
     setSearchTypeFilter("");
   };
@@ -152,8 +152,8 @@ export default  function Interactive() {
     setSearchAuthorFilter("");
     setSearchType("");
     setSearchTypeFilter("");
-    setSearchPlatform("");
-    setSearchPlatformFilter("");
+    setSearchRuntimePlatform("");
+    setSearchRuntimePlatformFilter("");
 
   }
 
@@ -168,7 +168,7 @@ export default  function Interactive() {
     }
 
     if (searchAuthor.toLowerCase()!="all") {
-        setSearchPlatformFilter(searchPlatform.toLowerCase());
+        setSearchRuntimePlatformFilter(searchRuntimePlatform.toLowerCase());
     }
 
     setAdvancedClicked(true);
@@ -186,9 +186,9 @@ export default  function Interactive() {
     setSearchAuthor(e.target.value);
   }
 
-  const handlePlatformChange = e => {
+  const handleRuntimePlatformChange = e => {
     e.preventDefault();
-    setSearchPlatform(e.target.value);
+    setSearchRuntimePlatform(e.target.value);
   }
 
   const onClickBack = e => {
@@ -206,8 +206,8 @@ export default  function Interactive() {
     setSearchAuthorFilter("");
     setSearchType("");
     setSearchTypeFilter("");
-    setSearchPlatform("");
-    setSearchPlatformFilter("");
+    setSearchRuntimePlatform("");
+    setSearchRuntimePlatformFilter("");
 
   };
 
@@ -296,7 +296,7 @@ export default  function Interactive() {
               </li>
               <li>
                   <div className="advanced-form-div"><label>Runtime Platform:</label>
-                      <select class="form-select advanced-float-right" aria-label="record-type" id="record-type" name="record-type" onChange={handlePlatformChange}>
+                      <select class="form-select advanced-float-right" aria-label="record-type" id="record-type" name="record-type" onChange={handleRuntimePlatformChange}>
                           <option value="all">All</option>
                           <option value="Python">Python</option>
                           <option value="R">R</option>
