@@ -11,10 +11,18 @@ export default  function Interactive() {
   const {idaSystemURL, setIdaSystemURL, workflowURL, setWorkflowURL, batchsystemsURL, setBatchsystemsURL, list_of_workflows, setList_of_workflows, list_of_idaSystems, setList_of_idaSystems} = useContext(IDAContext);
   const {api_host } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchType, setSearchType] = React.useState("");
+  const [searchTypeFilter, setSearchTypeFilter] = React.useState("");
+  const [searchAuthor, setSearchAuthor] = React.useState("");
+  const [searchAuthorFilter, setSearchAuthorFilter] = React.useState("");
+  const [searchPlatform, setSearchPlatform] = React.useState("");
+  const [searchPlatformFilter, setSearchPlatformFilter] = React.useState("");
   const [showFacilities, setShowFacilities] = React.useState(false);
   const [showNext, setShowNext] = React.useState(false);
   const [showSkip, setShowSkip] = React.useState(true);
   const [showBack, setShowBack] = React.useState(false);
+  const [showAdvanced, setShowAdvanced] = React.useState(false);
+  const [advancedClicked, setAdvancedClicked] = React.useState(false);
   const [showMoreButton, setShowMoreButton] = React.useState(true);
   const [showDeploy, setShowDeploy] = React.useState(false);
   const [numberOfitemsShown, setNumberOfitemsShown] = React.useState(3)
@@ -83,15 +91,22 @@ export default  function Interactive() {
 
   };
 
-  const workflow_results = !searchTerm
-        ? list_of_workflows
+  let workflow_results = !searchTerm
+        ?
+          !advancedClicked
+            ? list_of_workflows
+	            : list_of_workflows.filter(workflow =>
+                          ((typeof workflow.keywords === 'string') && workflow.keywords.toLowerCase().includes(searchTypeFilter.toLocaleLowerCase())) &&
+                          ((typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(searchPlatformFilter.toLocaleLowerCase())) &&
+                          ((typeof workflow.author === 'string') && workflow.author.toLowerCase().includes(searchAuthorFilter.toLocaleLowerCase())))
         : list_of_workflows.filter(workflow =>
-            (typeof workflow.name === 'string') && workflow.name.toLowerCase().includes(searchTerm.toLocaleLowerCase()) || 
+            (typeof workflow.name === 'string') && workflow.name.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
             (typeof workflow.keywords === 'string') && workflow.keywords.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
-            (typeof workflow.author === 'string') && workflow.author.toLowerCase().includes(searchTerm.toLocaleLowerCase()) || 
-            (typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(searchTerm.toLocaleLowerCase()) || 
+            (typeof workflow.author === 'string') && workflow.author.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+            (typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
             (typeof workflow.description === 'string') && workflow.description.toLowerCase().includes(searchTerm.toLocaleLowerCase())
-  );
+         );
+
 
   const facility_results = !searchTerm
         ? list_of_idaSystems
@@ -116,7 +131,65 @@ export default  function Interactive() {
     setSearchTerm("");
     setShowFacilities(true);
     setShowBack(true);
+    setAdvancedClicked(false);
+    setSearchAuthor("");
+    setSearchAuthorFilter("");
+    setSearchPlatform("");
+    setSearchPlatformFilter("");
+    setSearchType("");
+    setSearchTypeFilter("");
   };
+
+  const onClickAdvanced = e => {
+    e.preventDefault();
+    if (showAdvanced) {
+        setShowAdvanced(false);
+    } else {
+        setShowAdvanced(true);
+    }
+    setAdvancedClicked(false);
+    setSearchAuthor("");
+    setSearchAuthorFilter("");
+    setSearchType("");
+    setSearchTypeFilter("");
+    setSearchPlatform("");
+    setSearchPlatformFilter("");
+
+  }
+
+  const onClickAdvancedSearch = e => {
+    e.preventDefault();
+    if (searchType.toLowerCase()!="all") {
+        setSearchTypeFilter(searchType.toLowerCase());
+    }
+
+    if (searchAuthor.toLowerCase()!="") {
+        setSearchAuthorFilter(searchAuthor.toLowerCase());
+    }
+
+    if (searchAuthor.toLowerCase()!="all") {
+        setSearchPlatformFilter(searchPlatform.toLowerCase());
+    }
+
+    setAdvancedClicked(true);
+    setShowAdvanced(false);
+
+  }
+
+  const handleRecordTypeChange = e => {
+    e.preventDefault();
+    setSearchType(e.target.value);
+  }
+
+  const handleRecordAuthorChange = e => {
+    e.preventDefault();
+    setSearchAuthor(e.target.value);
+  }
+
+  const handlePlatformChange = e => {
+    e.preventDefault();
+    setSearchPlatform(e.target.value);
+  }
 
   const onClickBack = e => {
     e.preventDefault();
@@ -128,6 +201,13 @@ export default  function Interactive() {
     setShowMoreButton(true);
     setShowSkip(true);
     setWorkflowURL(defaultWorkflow);
+    setAdvancedClicked(false);
+    setSearchAuthor("");
+    setSearchAuthorFilter("");
+    setSearchType("");
+    setSearchTypeFilter("");
+    setSearchPlatform("");
+    setSearchPlatformFilter("");
 
   };
 
@@ -160,11 +240,13 @@ export default  function Interactive() {
       <div class="search-buttons">
 
       <input
+        className="workflow-search"
         type="text"
         placeholder="Search for Workflows"
         value={searchTerm}
         onChange={handleChange}
       />
+
 
       { showSkip ?
       <Button className="skip-button"  onClick={onClickNext}>Skip</Button>
@@ -173,8 +255,69 @@ export default  function Interactive() {
       { showNext ?
         <Button className="next-button"  onClick={onClickNext}>Next</Button>
          : null }
+      <br/>
+      <a href="" onClick={onClickAdvanced}>Advanced Search</a>
+      <br/>
+
+      { showAdvanced ?
+
+
+      <div className="advanced-search">
+
+      <Form className="advanced-form">
+
+      <br/>
+
+      <h3>Search By:</h3>
+          <hr/>
+
+          <ul className="advanced-form-ul">
+              <li>
+                  <div className="advanced-form-div"><label>User Interface type:</label>
+                      <select class="form-select advanced-float-right" aria-label="record-type" id="record-type" name="record-type" onChange={handleRecordTypeChange}>
+                          <option value="all">All</option>
+                          <option value="desktop">Desktop Software</option>
+                          <option value="cli">Command Line</option>
+                          <option value="jupyter-notebook">Notebook</option>
+                      </select>
+                  </div>
+              </li>
+              <li>
+                  <div className="advanced-form-div"><label>Author:</label>
+                      <input
+                        type="text"
+                        className="advanced-float-right"
+                        placeholder="Author name"
+                        value={searchAuthor}
+                        onChange={handleRecordAuthorChange}
+                      />
+
+                  </div>
+              </li>
+              <li>
+                  <div className="advanced-form-div"><label>Runtime Platform:</label>
+                      <select class="form-select advanced-float-right" aria-label="record-type" id="record-type" name="record-type" onChange={handlePlatformChange}>
+                          <option value="all">All</option>
+                          <option value="Python">Python</option>
+                          <option value="R">R</option>
+                          <option value="Java">Java</option>
+                      </select>
+                  </div>
+              </li>
+
+          </ul>
+
+      <br/><br/>
+
+      <Button onClick={onClickAdvancedSearch} className="search-button">Search</Button>
+      <br/><br/>
+      </Form>
+      </div>
+
+       : null }
 
       </div>
+
 
 
       <ul class="workflow-ul">
