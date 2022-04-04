@@ -240,7 +240,7 @@ export default  function Interactive() {
       <div class="search-buttons">
 
       <input
-        className="workflow-search"
+        className="search-large"
         type="text"
         placeholder="Search for Workflows"
         value={searchTerm}
@@ -360,6 +360,7 @@ export default  function Interactive() {
     <div class="search-buttons">
 
      <input
+        className="search-large"
         type="text"
         placeholder="Search for Facilities"
         value={searchTerm}
