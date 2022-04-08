@@ -1,6 +1,6 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { Button, Form, Container, Alert } from "react-bootstrap";
+import { Button, Form, Container } from "react-bootstrap";
 import { IDAContext } from "../../contexts/IDAContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import "../../assets/Interactive.css";
@@ -8,56 +8,54 @@ import LoadingSpinner from "../LoadingSpinner";
 
 export default  function Interactive() {
 
-  const {idaSystemURL, setIdaSystemURL, workflowURL, setWorkflowURL, batchsystemsURL, setBatchsystemsURL, list_of_workflows, setList_of_workflows, list_of_idaSystems, setList_of_idaSystems} = useContext(IDAContext);
+  const {idaSystemURL, setIdaSystemURL, workflowURL, setWorkflowURL, list_of_workflows, setList_of_workflows, list_of_idaSystems, setList_of_idaSystems} = useContext(IDAContext);
   const {api_host } = useContext(GlobalContext);
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [searchType, setSearchType] = React.useState("");
-  const [searchTypeFilter, setSearchTypeFilter] = React.useState("");
-  const [searchAuthor, setSearchAuthor] = React.useState("");
-  const [searchAuthorFilter, setSearchAuthorFilter] = React.useState("");
-  const [searchRuntimePlatform, setSearchRuntimePlatform] = React.useState("");
-  const [searchRuntimePlatformFilter, setSearchRuntimePlatformFilter] = React.useState("");
-  const [showFacilities, setShowFacilities] = React.useState(false);
-  const [showNext, setShowNext] = React.useState(false);
-  const [showSkip, setShowSkip] = React.useState(true);
-  const [showBack, setShowBack] = React.useState(false);
-  const [showAdvanced, setShowAdvanced] = React.useState(false);
-  const [advancedClicked, setAdvancedClicked] = React.useState(false);
-  const [showMoreButton, setShowMoreButton] = React.useState(true);
-  const [showDeploy, setShowDeploy] = React.useState(false);
-  const [numberOfitemsShown, setNumberOfitemsShown] = React.useState(3)
-  const [loading, setLoading] = React.useState(true);
-  const [defaultWorkflow] = ["https://github.com/ESAP-WP5/binder-empty"];
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showFacilities, setShowFacilities] = useState(false);
+  const [showNext, setShowNext] = useState(false);
+  const [showSkip, setShowSkip] = useState(true);
+  const [showBack, setShowBack] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showMoreButton, setShowMoreButton] = useState(true);
+  const [showDeploy, setShowDeploy] = useState(false);
+  const [numberOfitemsShown, setNumberOfitemsShown] = useState(3)
+  const [loading, setLoading] = useState(true);
+  const [defaultWorkflow] = "https://github.com/ESAP-WP5/binder-empty";
 
-    // Fetch Notebooks
-    useEffect(() => {
+  const [advSearchFilters, setAdvSearchFilters] = useState({
+    searchAuthorFilter: "",
+    searchRuntimePlatformFilter: "",
+    searchTypeFilter: ""
+  });
+
+  const [advSearchValues, setAdvSearchValues] = useState({
+    searchAuthor: "",
+    searchRuntimePlatform: "",
+    searchType: ""
+  });
+
+
+  // Fetch Notebooks
+  useEffect(() => {
       axios
       .get(api_host + "ida/workflows/search")
         .then((response) => {
-          console.log(response);
           setList_of_workflows(response.data.results);
           setWorkflowURL(defaultWorkflow);
           setLoading(false);
         });
-    }, [api_host]);
+   }, [api_host]);
 
 
-    // Fetch JHubs
-    useEffect(() => {
+  // Fetch JHubs
+  useEffect(() => {
       axios
       .get(api_host + "ida/facilities/search")
         .then((response) => {
           setList_of_idaSystems(response.data.results);
           setIdaSystemURL(response.data.results[0].url);
         });
-    }, [api_host]);
-
-
-
-  let list_of_batchsystems = [
-    {"name" : "DIRAC EGI (LOFAR, KM3Net)", "url" : "https://dirac.egi.eu"},
-    {"name" : "CTA DIRAC", "url" : "https://ccdcta-web.in2p3.fr/DIRAC/"},
-  ]
+  }, [api_host]);
 
   if (loading) {
     return (
@@ -65,7 +63,7 @@ export default  function Interactive() {
          <h1>Interactive Analysis</h1>
     { !showFacilities ?
 
-    <div class="workflow-div">
+    <div className="workflow-div">
     <h2>Workflows</h2>
      </div>
     : null }
@@ -75,13 +73,13 @@ export default  function Interactive() {
 
   }
 
-  if ((!list_of_workflows) || (!list_of_idaSystems) || (!list_of_batchsystems)) {
+  if ((!list_of_workflows) || (!list_of_idaSystems)) {
     return null;
   }
 
   const handleChange = event => {
     setSearchTerm(event.target.value);
-    if (event.target.value==""){
+    if (event.target.value===""){
         setNumberOfitemsShown(3);
         setShowMoreButton(true);
     } else {
@@ -93,18 +91,18 @@ export default  function Interactive() {
 
   let workflow_results = !searchTerm
         ?
-          !advancedClicked
+          !showAdvanced
             ? list_of_workflows
 	            : list_of_workflows.filter(workflow =>
-                          ((typeof workflow.keywords === 'string') && workflow.keywords.toLowerCase().includes(searchTypeFilter.toLocaleLowerCase())) &&
-                          ((typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(searchRuntimePlatformFilter.toLocaleLowerCase())) &&
-                          ((typeof workflow.author === 'string') && workflow.author.toLowerCase().includes(searchAuthorFilter.toLocaleLowerCase())))
+                          ((typeof workflow.keywords === 'string') && workflow.keywords.toLowerCase().includes(advSearchFilters.searchTypeFilter.toLowerCase())) &&
+                          ((typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(advSearchFilters.searchRuntimePlatformFilter.toLowerCase())) &&
+                          ((typeof workflow.author === 'string') && workflow.author.toLowerCase().includes(advSearchFilters.searchAuthorFilter.toLowerCase())))
         : list_of_workflows.filter(workflow =>
-            (typeof workflow.name === 'string') && workflow.name.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
-            (typeof workflow.keywords === 'string') && workflow.keywords.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
-            (typeof workflow.author === 'string') && workflow.author.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
-            (typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
-            (typeof workflow.description === 'string') && workflow.description.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+            ((typeof workflow.name === 'string') && workflow.name.toLowerCase().includes(searchTerm.toLocaleLowerCase())) ||
+            ((typeof workflow.keywords === 'string') && workflow.keywords.toLowerCase().includes(searchTerm.toLocaleLowerCase())) ||
+            ((typeof workflow.author === 'string') && workflow.author.toLowerCase().includes(searchTerm.toLocaleLowerCase())) ||
+            ((typeof workflow.runtimePlatform === 'string') && workflow.runtimePlatform.toLowerCase().includes(searchTerm.toLocaleLowerCase())) ||
+            ((typeof workflow.description === 'string') && workflow.description.toLowerCase().includes(searchTerm.toLocaleLowerCase()))
          );
 
 
@@ -131,13 +129,9 @@ export default  function Interactive() {
     setSearchTerm("");
     setShowFacilities(true);
     setShowBack(true);
-    setAdvancedClicked(false);
-    setSearchAuthor("");
-    setSearchAuthorFilter("");
-    setSearchRuntimePlatform("");
-    setSearchRuntimePlatformFilter("");
-    setSearchType("");
-    setSearchTypeFilter("");
+    setAdvSearchValues({"searchType": "", "searchAuthor" : "", "searchRuntimePlatform" : ""});
+    setAdvSearchFilters({"searchTypeFilter": "", "searchAuthorFilter" : "", "searchRuntimePlatformFilter" : ""});
+
   };
 
   const onClickAdvanced = e => {
@@ -147,48 +141,27 @@ export default  function Interactive() {
     } else {
         setShowAdvanced(true);
     }
-    setAdvancedClicked(false);
-    setSearchAuthor("");
-    setSearchAuthorFilter("");
-    setSearchType("");
-    setSearchTypeFilter("");
-    setSearchRuntimePlatform("");
-    setSearchRuntimePlatformFilter("");
-
   }
 
   const onClickAdvancedSearch = e => {
     e.preventDefault();
-    if (searchType.toLowerCase()!="all") {
-        setSearchTypeFilter(searchType.toLowerCase());
-    }
-
-    if (searchAuthor.toLowerCase()!="") {
-        setSearchAuthorFilter(searchAuthor.toLowerCase());
-    }
-
-    if (searchAuthor.toLowerCase()!="all") {
-        setSearchRuntimePlatformFilter(searchRuntimePlatform.toLowerCase());
-    }
-
-    setAdvancedClicked(true);
-    setShowAdvanced(false);
-
+    setAdvSearchFilters({"searchTypeFilter": advSearchValues.searchType, "searchAuthorFilter" : advSearchValues.searchAuthor, "searchRuntimePlatformFilter" : advSearchValues.searchRuntimePlatform});
+    setShowAdvanced(true);
   }
 
   const handleRecordTypeChange = e => {
     e.preventDefault();
-    setSearchType(e.target.value);
+    setAdvSearchValues({"searchType": e.target.value, "searchAuthor" :  advSearchValues.searchAuthor, "searchRuntimePlatform" : advSearchValues.searchRuntimePlatform});
   }
 
   const handleRecordAuthorChange = e => {
     e.preventDefault();
-    setSearchAuthor(e.target.value);
+    setAdvSearchValues({"searchType": advSearchValues.searchType, "searchAuthor" : e.target.value, "searchRuntimePlatform" : advSearchValues.searchRuntimePlatform});
   }
 
   const handleRuntimePlatformChange = e => {
     e.preventDefault();
-    setSearchRuntimePlatform(e.target.value);
+    setAdvSearchValues({"searchType": advSearchValues.searchType, "searchAuthor" : advSearchValues.searchAuthor, "searchRuntimePlatform" : e.target.value});
   }
 
   const onClickBack = e => {
@@ -201,13 +174,8 @@ export default  function Interactive() {
     setShowMoreButton(true);
     setShowSkip(true);
     setWorkflowURL(defaultWorkflow);
-    setAdvancedClicked(false);
-    setSearchAuthor("");
-    setSearchAuthorFilter("");
-    setSearchType("");
-    setSearchTypeFilter("");
-    setSearchRuntimePlatform("");
-    setSearchRuntimePlatformFilter("");
+    setAdvSearchValues({"searchType": "", "searchAuthor" : "", "searchRuntimePlatform" : ""});
+    setAdvSearchFilters({"searchTypeFilter": "", "searchAuthorFilter" : "", "searchRuntimePlatformFilter" : ""});
 
   };
 
@@ -232,12 +200,12 @@ export default  function Interactive() {
 
     { !showFacilities ?
 
-    <div class="workflow-div">
+    <div className="workflow-div">
     <h2>Workflows</h2>
 
     <Form className="mt-5">
 
-      <div class="search-buttons">
+      <div className="search-buttons">
 
       <input
         className="search-large"
@@ -256,7 +224,7 @@ export default  function Interactive() {
         <Button className="next-button"  onClick={onClickNext}>Next</Button>
          : null }
       <br/>
-      <a href="" onClick={onClickAdvanced}>Advanced Search</a>
+      <a href="#" onClick={onClickAdvanced}>Advanced Search</a>
       <br/>
 
       { showAdvanced ?
@@ -274,8 +242,8 @@ export default  function Interactive() {
           <ul className="advanced-form-ul">
               <li>
                   <div className="advanced-form-div"><label>User Interface type:</label>
-                      <select class="form-select advanced-float-right" aria-label="record-type" id="record-type" name="record-type" onChange={handleRecordTypeChange}>
-                          <option value="all">All</option>
+                      <select className="form-select advanced-float-right" aria-label="record-type" id="record-type" name="record-type" onChange={handleRecordTypeChange}>
+                          <option value="">All</option>
                           <option value="desktop">Desktop Software</option>
                           <option value="cli">Command Line</option>
                           <option value="jupyter-notebook">Notebook</option>
@@ -288,7 +256,6 @@ export default  function Interactive() {
                         type="text"
                         className="advanced-float-right"
                         placeholder="Author name"
-                        value={searchAuthor}
                         onChange={handleRecordAuthorChange}
                       />
 
@@ -296,8 +263,8 @@ export default  function Interactive() {
               </li>
               <li>
                   <div className="advanced-form-div"><label>Runtime Platform:</label>
-                      <select class="form-select advanced-float-right" aria-label="record-type" id="record-type" name="record-type" onChange={handleRuntimePlatformChange}>
-                          <option value="all">All</option>
+                      <select className="form-select advanced-float-right" aria-label="record-type" id="record-type" name="record-type" onChange={handleRuntimePlatformChange}>
+                          <option value="">All</option>
                           <option value="Python">Python</option>
                           <option value="R">R</option>
                           <option value="Java">Java</option>
@@ -320,10 +287,10 @@ export default  function Interactive() {
 
 
 
-      <ul class="workflow-ul">
+      <ul className="workflow-ul">
          {workflow_results_sliced.map(item => (
-          <li class="workflow-li">
-             <label class="container workflow-checkbox"><input type="radio" name="workflow" onChange={setWorkflow} value={item.url} />  <span class="checkmark"></span></label><h5>{item.name}</h5><br/>
+          <li className="workflow-li">
+             <label className="container workflow-checkbox"><input type="radio" name="workflow" onChange={setWorkflow} value={item.url} />  <span className="checkmark"></span></label><h5>{item.name}</h5><br/>
              <span><b>Description: </b> <span dangerouslySetInnerHTML={{ __html: item.description }}></span></span><br/>
              <span><b>Link: </b> <a href="{item.url}">{item.url}</a></span><br/>
              <span><b>Author: </b>{item.author}</span><br/>
@@ -352,12 +319,12 @@ export default  function Interactive() {
 
     { showFacilities ?
 
-    <div class="facility-div">
+    <div className="facility-div">
     <h2>Compute Facilities</h2>
 
     <Form className="mt-5">
 
-    <div class="search-buttons">
+    <div className="search-buttons">
 
      <input
         className="search-large"
@@ -367,7 +334,7 @@ export default  function Interactive() {
         onChange={handleChange}
       />
 
-      <div class="deploy-buttons">
+      <div className="deploy-buttons">
 
       { showBack ?
         <Button className="back-button"  onClick={onClickBack}>&#171;</Button>
@@ -382,10 +349,10 @@ export default  function Interactive() {
 
       </div>
 
-      <ul class="facility-ul">
+      <ul className="facility-ul">
          {facility_results.map(item => (
-          <li class="facility-li">
-             <label class="container facility-checkbox"><input class="radio" onChange={setFacility} name="facility" type="radio" value={item.url} />  <span class="checkmark"></span></label><h5>{item.name}</h5><br/>
+          <li className="facility-li">
+             <label className="container facility-checkbox"><input className="radio" onChange={setFacility} name="facility" type="radio" value={item.url} />  <span className="checkmark"></span></label><h5>{item.name}</h5><br/>
              <span><b>Description:</b><br/> {item.description}</span> <br/>
              <span><b>Link:</b> <a href="{item.url}">{item.url}</a></span>
 
