@@ -18,3 +18,6 @@ yarn install
 yarn start
 ```
 
+## Contributing
+
+For developer access to this repository, please send a message on the[ ESAP channel on Rocket Chat](https://chat.escape2020.de/channel/esap).
