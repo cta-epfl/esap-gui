@@ -13,10 +13,12 @@ import { BrowserRouter as Router } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Rucio from "../components/services/Rucio";
 import Interactive from "../components/services/Interactive";
+import Batch from "../components/services/Batch";
 import MyBasketPage from "../components/basket/MyBasketPage";
 
 import { IVOAContextProvider } from "../contexts/IVOAContext";
 import { IDAContext } from "../contexts/IDAContext";
+import { BATCHContext } from "../contexts/BATCHContext";
 import { AladinSimpleContextProvider } from "../contexts/AladinSimpleContext";
 import { AladinAdvancedContextProvider } from "../contexts/AladinAdvancedContext";
 
@@ -47,6 +49,9 @@ export default function Routes() {
             </Route>
             <Route exact path="/interactive">
                 <Interactive />
+            </Route>
+            <Route exact path="/batch">
+                <Batch />
             </Route>
             /*
             <Route exact path="/vo-query">
