@@ -11,20 +11,37 @@ export default  function Batch() {
 
    const [ showMonitor, setShowMonitor ] = useState(false);
    const [ showSubmit, setShowSubmit ] = useState(false);
+   const [ showJobStatus, setShowJobStatus ] = useState(false);
 
    const onClickMonitorJob = e => {
-     e.preventDefault();
-     setShowMonitor(false);
-     setShowSubmit(true);
-   }
-
-   const onClickSubmitJob = e => {
      e.preventDefault();
      setShowSubmit(false);
      setShowMonitor(true);
    }
 
+   const onClickSubmitJob = e => {
+     e.preventDefault();
+     setShowMonitor(false);
+     setShowSubmit(true);
+   }
 
+   const onClickFindJob = e => {
+     e.preventDefault();
+     setShowMonitor(true)
+     setShowSubmit(false);
+     setShowJobStatus(true);
+   }
+
+
+   const handleJobIDChange = e => {
+     e.preventDefault();
+     setJobValues({"jobID" : e.target.value});
+   }
+
+   const [ jobValues, setJobValues] = useState({
+     jobID: ""
+   });
+ 
 
   return (
 
@@ -47,7 +64,32 @@ export default  function Batch() {
 
       <div className="advanced-search">
       <Form className="advanced-form">
-Monitor
+         Input Job ID to find information on batch jobs:
+
+       <br/><br/>
+
+        <input
+             type="text"
+             className="advanced-float-left"
+             placeholder="Job ID Number"
+             onChange={handleJobIDChange}
+         />
+
+       <br/><br/>
+         <Button onClick={onClickFindJob} className="search-button">Find Batch Jobs </Button>
+       <br/><br/>
+
+         { showJobStatus ?
+            <div className="advanced-search">
+               Job ID: {jobValues.jobID}
+               <br/>
+               Job Status: Complete
+            </div>
+          : null }
+
+       <br/><br/>
+       <br/><br/>
+       <br/><br/>
       </Form>
       </div>
 
@@ -57,7 +99,11 @@ Monitor
 
       <div className="advanced-search">
       <Form className="advanced-form">
-Submit
+       <br/><br/>
+         Batch Workflow Search will go here.
+       <br/><br/>
+       <br/><br/>
+       <br/><br/>
       </Form>
       </div>
 
