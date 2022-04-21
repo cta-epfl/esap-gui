@@ -13,18 +13,22 @@ export default  function Batch() {
    const [ showSubmit, setShowSubmit ] = useState(false);
    const [ showJobStatus, setShowJobStatus ] = useState(false);
 
+   {/* Main Monitor Job Button */}
    const onClickMonitorJob = e => {
      e.preventDefault();
      setShowSubmit(false);
      setShowMonitor(true);
    }
 
+   {/* Main Submit Job Button */}
    const onClickSubmitJob = e => {
      e.preventDefault();
      setShowMonitor(false);
      setShowSubmit(true);
    }
 
+   {/* Find Job from Monitor page Button */}
+   {/* TODO This will have to go off to the Async and create a ESAP worker job?? */}
    const onClickFindJob = e => {
      e.preventDefault();
      setShowMonitor(true)
@@ -32,12 +36,13 @@ export default  function Batch() {
      setShowJobStatus(true);
    }
 
-
+   {/* Change handler for Monitor search */}
    const handleJobIDChange = e => {
      e.preventDefault();
      setJobValues({"jobID" : e.target.value});
    }
 
+   {/* Values for Job Search */}
    const [ jobValues, setJobValues] = useState({
      jobID: ""
    });
@@ -50,6 +55,7 @@ export default  function Batch() {
 
     <h1>Batch Analysis</h1>
 
+    {/* Buttons for Monitoring and Submission */}
     <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
        <br/><br/>
        <br/><br/>
@@ -60,6 +66,7 @@ export default  function Batch() {
        <br/><br/>
     </div>
 
+    {/* If Monitor button is pressed then show this part: */}
     { showMonitor ?
 
       <div className="advanced-search">
@@ -79,6 +86,8 @@ export default  function Batch() {
          <Button onClick={onClickFindJob} className="search-button">Find Batch Jobs </Button>
        <br/><br/>
 
+         {/* If find batch jobs button pressed do/show this:  */}
+         {/* TODO This will be where the magic happens and information from Async is returned */}
          { showJobStatus ?
             <div className="advanced-search">
                Job ID: {jobValues.jobID}
@@ -95,6 +104,7 @@ export default  function Batch() {
 
      : null }
 
+    {/* If Submit button is pressed then show this part: */}
     { showSubmit ?
 
       <div className="advanced-search">
