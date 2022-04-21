@@ -292,7 +292,7 @@ export default  function Interactive() {
           <li className="workflow-li">
              <label className="container workflow-checkbox"><input type="radio" name="workflow" onChange={setWorkflow} value={item.url} />  <span className="checkmark"></span></label><h5>{item.name}</h5><br/>
              <span><b>Description: </b> <span dangerouslySetInnerHTML={{ __html: item.description }}></span></span><br/>
-             <span><b>Link: </b> <a href="{item.url}">{item.url}</a></span><br/>
+             <span><b>Link: </b> <a href={item.url}>{item.url}</a></span><br/>
              <span><b>Author: </b>{item.author}</span><br/>
              <span><b>Runtime Platform: </b>{item.runtimePlatform}</span><br/>
              <span><b>Keywords: </b>{item.keywords}</span>
@@ -354,7 +354,7 @@ export default  function Interactive() {
           <li className="facility-li">
              <label className="container facility-checkbox"><input className="radio" onChange={setFacility} name="facility" type="radio" value={item.url} />  <span className="checkmark"></span></label><h5>{item.name}</h5><br/>
              <span><b>Description:</b><br/> {item.description}</span> <br/>
-             <span><b>Link:</b> <a href="{item.url}">{item.url}</a></span>
+             <span><b>Link:</b> <a href={item.url}>{item.url}</a></span>
 
           </li>
         ))}
