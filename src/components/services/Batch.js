@@ -9,31 +9,30 @@ import LoadingSpinner from "../LoadingSpinner";
 export default  function Batch() {
 
 
-   const [ showMonitor, setShowMonitor ] = useState(false);
-   const [ showSubmit, setShowSubmit ] = useState(false);
-   const [ showJobStatus, setShowJobStatus ] = useState(false);
+   const [state, setState] = useState({
+      showMonitor: false,
+      showSubmit: false,
+      showJobStatus: false
+   });
+
 
    {/* Main Monitor Job Button */}
    const onClickMonitorJob = e => {
      e.preventDefault();
-     setShowSubmit(false);
-     setShowMonitor(true);
+     setState(prev => ({...prev, showSubmit: false, showMonitor: true}));
    }
 
    {/* Main Submit Job Button */}
    const onClickSubmitJob = e => {
      e.preventDefault();
-     setShowMonitor(false);
-     setShowSubmit(true);
+     setState(prev => ({...prev, showSubmit: true, showMonitor: false}));
    }
 
    {/* Find Job from Monitor page Button */}
    {/* TODO This will have to go off to the Async and create a ESAP worker job?? */}
    const onClickFindJob = e => {
      e.preventDefault();
-     setShowMonitor(true)
-     setShowSubmit(false);
-     setShowJobStatus(true);
+     setState(prev => ({...prev, showMonitor: true, showSubmit: false, showJobStatus: true}));
    }
 
    {/* Change handler for Monitor search */}
@@ -67,7 +66,7 @@ export default  function Batch() {
     </div>
 
     {/* If Monitor button is pressed then show this part: */}
-    { showMonitor ?
+    { state.showMonitor ?
 
       <div className="advanced-search">
       <Form className="advanced-form">
@@ -88,7 +87,7 @@ export default  function Batch() {
 
          {/* If find batch jobs button pressed do/show this:  */}
          {/* TODO This will be where the magic happens and information from Async is returned */}
-         { showJobStatus ?
+         { state.showJobStatus ?
             <div className="advanced-search">
                Job ID: {jobValues.jobID}
                <br/>
@@ -105,7 +104,7 @@ export default  function Batch() {
      : null }
 
     {/* If Submit button is pressed then show this part: */}
-    { showSubmit ?
+    { state.showSubmit ?
 
       <div className="advanced-search">
       <Form className="advanced-form">
