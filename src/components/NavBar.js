@@ -34,7 +34,6 @@ export default function NavBar() {
         height="40"
         className="d-inline-block align-top"
       />
-      <Navbar.Brand href="/">{config.title}</Navbar.Brand>
 
       <Nav className="mr-auto">
         {navlist.map((nav) => (
