@@ -1,11 +1,11 @@
-.ida h2 {
+.batch h2 {
   color:gray;
 }
-.ida span {
+.batch span {
   overflow-wrap: break-word;
 }
             
-.ida ul {
+.batch ul {
   counter-reset: li; 
   list-style: none; 
   padding: 0;
@@ -20,12 +20,12 @@
    padding:15px;
 }
     
-.ida {
+.batch {
   margin:50px;
   width: 95%;
 }
 
-.ida .input-contain{
+.batch .input-contain{
     position: relative;
 }
 
@@ -37,21 +37,21 @@
     margin-bottom:30px;
 }
 
-.ida .search-large:focus{
+.batch .search-large:focus{
     outline: none;
     border-color: blue;
 }
-.ida .search-large:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
+.batch .search-large:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
     background-color: white;
     font-size: 1.1rem;
     color: black;
     transform: translate(0, -170%);
 }
-.ida .search-large:focus + .placeholder-text .text{
+.batch .search-large:focus + .placeholder-text .text{
     border-color: blueviolet;
     color: blue;
 }
-.ida .placeholder-text{
+.batch .placeholder-text{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -63,7 +63,7 @@
     display: flex;
     align-items: center;
 }
-.ida .text{
+.batch .text{
     font-size: 1.4rem;
     padding: 0 0.5rem;
     background-color: transparent;
@@ -72,13 +72,13 @@
     transition: transform 0.15s ease-out, font-size 0.15s ease-out, background-color 0.2s ease-out, color 0.15s ease-out;
 }
 
-.ida .search-large, .placeholder-text{
+.batch .search-large, .placeholder-text{
     font-size: 1.4rem;
     padding: 0 1.2rem;
 
 }
 
-.ida @media (max-width: 40rem) {
+.batch @media (max-width: 40rem) {
     input{
         width: 70vw;
     }
@@ -90,7 +90,7 @@
 
 
 /* Customize the label (the container) */
-.ida .container {
+.batch .container {
   display: block;
   position: relative;
   padding-left: 35px;
