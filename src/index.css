@@ -4,3 +4,10 @@ body {
 
 }
 
+
+.badge-pill {
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-left: 0.3em;
+  margin-right: 0.3em;
+}

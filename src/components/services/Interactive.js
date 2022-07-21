@@ -5,6 +5,7 @@ import { IDAContext } from "../../contexts/IDAContext";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import "../../assets/Interactive.css";
 import LoadingSpinner from "../LoadingSpinner";
+import NavbarCollapse from "react-bootstrap/NavbarCollapse";
 
 export default  function Interactive() {
 
@@ -295,7 +296,9 @@ export default  function Interactive() {
              <span><b>Link: </b> <a href={item.url}>{item.url}</a></span><br/>
              <span><b>Author: </b>{item.author}</span><br/>
              <span><b>Runtime Platform: </b>{item.runtimePlatform}</span><br/>
-             <span><b>Keywords: </b>{item.keywords}</span>
+             <span><b>Keywords: </b>{item.keywords.split(",").map(item => (
+                  <span class="badge badge-info badge-pill">{item}</span>
+                ))}</span>
 
           </li>
         ))}
