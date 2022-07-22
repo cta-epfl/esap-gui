@@ -297,7 +297,7 @@ export default  function Interactive() {
              <span><b>Author: </b>{item.author}</span><br/>
              <span><b>Runtime Platform: </b>{item.runtimePlatform}</span><br/>
              <span><b>Keywords: </b>{item.keywords.split(",").map(item => (
-                  <span class="badge badge-info badge-pill">{item}</span>
+                  <span class={(item.includes(" "))?"badge badge-warning badge-pill":"badge badge-info badge-pill"}>{item}</span>
                 ))}</span>
 
           </li>
