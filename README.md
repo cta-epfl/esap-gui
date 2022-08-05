@@ -1,5 +1,8 @@
 # ESAP-GUI
 
+**this version is slightly modified for kuberenetes deployment, gitlab OIDC, CSCS deployment, and some experimentation**
+**the original version developed by ESCAPE can be found here https://git.astron.nl/astron-sdc/esap-gui/**
+
 ESCAPE ESFRI Science Analysis Platform - GUI
 
 This frontend (ReactJS) connects to the ESAP-api-gateway (Django).
